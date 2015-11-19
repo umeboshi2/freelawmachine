@@ -6,19 +6,10 @@
         {
             "type": "shell",
             "scripts": [
-                "scripts/base.sh",
-                "scripts/virtualbox.sh",
-                "scripts/vmware.sh",
-                "scripts/vagrant.sh",
-                "scripts/dep.sh",
-                "scripts/cleanup.sh",
                 "scripts/zerodisk.sh"
             ],
             "override": {
                 "virtualbox-iso": {
-                    "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
-                },
-                "vmware-iso": {
                     "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
                 }
             }
