@@ -1,3 +1,8 @@
+# packer stuff
 *.box
 packer_cache
 iso/*.iso
+
+# vagrant stuff
+Vagrantfile
+.vagrant
