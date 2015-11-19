@@ -6,7 +6,7 @@
         {
             "type": "shell",
             "scripts": [
-                "scripts/zerodisk.sh"
+                "scripts/init.sh"
             ],
             "override": {
                 "virtualbox-iso": {
