@@ -9,6 +9,11 @@ Hopefully, it will do away with the manual process described (here)
 [https://github.com/freelawproject/courtlistener/wiki/Installing-CourtListener-on-Ubuntu-Linux]
 and make having a dev environment as easy as `vagrant up`.
 
+## Requirements
+* (Vagrant 1.7.4)[https://www.vagrantup.com]
+* (Packer 0.8.x)[https://packer.io/downloads.html]
+* (Virtualbox 5.x)[https://www.virtualbox.org/]
+
 ## Various Details
 * Based on Ubuntu Server 32-bit (for now) 14.04 LTS
 * Trying to target dev machines that have:
