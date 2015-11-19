@@ -12,9 +12,14 @@ and make having a dev environment as easy as `vagrant up`.
 ## Various Details
 * Based on Ubuntu Server 32-bit (for now) 14.04 LTS
 * Trying to target dev machines that have:
-** 8 GB RAM
-** Virtualbox (maybe add VMWare later but that may involve $$)
-** Lack of VT-X support (hence 32-bit VM is the initial goal)
+  * 8 GB RAM
+  * (Virtualbox 5.x)[https://www.virtualbox.org/]
+  * Lack of VT-X support (hence 32-bit VM is the initial goal)
 
-## References
+## Possible Future Goals
+* VMWare support
+* 64-bit support
+* Prod machine box generation???
+
+## Some References
 [A packer template for Vagrant from Hashicorp](https://github.com/hashicorp/atlas-packer-vagrant-tutorial.git)
