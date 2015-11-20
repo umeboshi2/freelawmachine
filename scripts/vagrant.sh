@@ -30,7 +30,7 @@ sudo apt-get -yf install linux-headers-generic build-essential dkms
 echo 'Mounting local VirtualBox Additions ISO...'
 cd /tmp
 sudo mkdir /tmp/isomount
-sudo mount -t iso9660 -o loop /home/vagrant/$VBOX_ISO /tmp/isomount
+sudo mount -t iso9660 -o loop /home/vagrant/VBoxGuestAdditions.iso /tmp/isomount
 
 # Install the drivers!
 echo 'Installing drivers...'
@@ -39,5 +39,5 @@ sudo /tmp/isomount/VBoxLinuxAdditions.run
 # Clean up the mess, delete the ISO.
 echo 'Cleaning up...'
 sudo umount isomount
-sudo rm -rf isomount $VBOX_ISO
+sudo rm -rf isomount /home/vagrant/VBoxGuestAdditions.iso
 ###
