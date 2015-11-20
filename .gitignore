@@ -2,6 +2,7 @@
 *.box
 packer_cache
 iso/*.iso
+output-virtualbox-iso/
 
 # vagrant stuff
 Vagrantfile
