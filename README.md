@@ -13,6 +13,8 @@ and make having a dev environment as easy as `vagrant up`.
 * [Packer 0.8.x](https://packer.io/downloads.html)
 * [Virtualbox 5.x](https://www.virtualbox.org/)
 
+And a network connection since the VM will need to pull down packages.
+
 ## Usage
 Here's how to crank out a box if you've got the Requirements above.
 
@@ -26,7 +28,7 @@ Here's how to crank out a box if you've got the Requirements above.
 `vagrant box add packer_virtualbox-iso_virtualbox.box --name freelaw/devbox`
 
 3. Initialize a Vagrantfile
-`vagrant init freelaw/devbox`
+`vagrant init freelaw/trusty32-devbox`
 
 4. Vagrant up!
 `vagrant up`

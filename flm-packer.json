@@ -6,12 +6,17 @@
         {
             "type": "shell",
             "scripts": [
-                "scripts/init.sh",
-                "scripts/vagrant.sh"
+                "scripts/vagrant.sh",
+                "scripts/init.sh"
             ],
             "environment_vars": [
               "VBOX_ISO=VBoxGuestAdditions_{{.Version}}.iso"
-            ]
+            ],
+            "override": {
+                "virtualbox-iso": {
+                    "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
+                }
+            }
         }
     ],
     "builders": [

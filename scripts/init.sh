@@ -14,9 +14,9 @@ echo '>> ...complete.'
 echo '>> Configuring environment properties...'
 sudo echo 'CL_SOLR_XMX=500M' > /etc/courtlistener
 
-echo '>> Installing Pyton dependencies..'
+echo '>> Installing Python dependencies..'
 echo '...installing Stripe...'
-pip install --index-url https://code.stripe.com --upgrade stripe
+sudo -H pip install --index-url https://code.stripe.com --upgrade stripe
 
 echo '>> Creating development CourtListener directories...'
 sudo mkdir /var/log/courtlistener
