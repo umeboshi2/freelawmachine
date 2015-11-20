@@ -10,10 +10,12 @@ and make having a dev environment as easy as `vagrant up`.
 
 ## Requirements
 * [Vagrant 1.7.4](https://www.vagrantup.com)
-* [Packer 0.8.x](https://packer.io/downloads.html)
+* [Packer 0.8.6](https://packer.io/downloads.html)
 * [Virtualbox 5.x](https://www.virtualbox.org/)
 
-And a network connection since the VM will need to pull down packages.
+And a high-speed network connection since the VM will need to pull down
+packages! (You are installing Ubuntu...so do this via a cellular data connection
+at your own $$ peril!)
 
 ## Usage
 Here's how to crank out a box if you've got the Requirements above.
@@ -35,6 +37,16 @@ Here's how to crank out a box if you've got the Requirements above.
 
 5. Get your popcorn ready and log in
 `vagrant ssh`
+
+## Development Tips
+If you're playing around, here are some things to remember:
+* Vagrant installs boxes typically in your home directory under something like
+`.vagrant.d`. Make sure you use the same box name when using `vagrant box add`
+and it will replace that existing box. (You probably need to add `--force` or
+  something to the command, btw.)
+* Vagrant keeps instances of vm's in the local directory where your Vagrantfile
+is and where you are running `vagrant up`. Do a simple `vagrant destroy` to
+wipe it out when you've built a new box version and want to start over.
 
 
 ## Various Details
