@@ -6,7 +6,8 @@
         {
             "type": "shell",
             "scripts": [
-                "scripts/init.sh"
+                "scripts/init.sh",
+                "scripts/vagrant.sh"
             ],
             "override": {
                 "virtualbox-iso": {
