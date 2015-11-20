@@ -25,7 +25,7 @@ echo '== VIRTUALBOX CONFIGURATION =='
 echo 'Mounting VirtualBox Additions ISO...'
 cd /tmp
 sudo mkdir /tmp/isomount
-sudo mount -t iso9660 -o loop $VBOXISO /tmp/isomount
+sudo mount -t iso9660 -o loop /home/vagrant/$VBOXISO /tmp/isomount
 
 # Install the drivers
 echo 'Installing drivers...'
