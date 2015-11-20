@@ -41,3 +41,8 @@ echo '>> Setting up some stuff...'
 #PYTHON_SITES_PACKAGES_DIR=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
 #sudo -u vagrant ln -s /usr/local/lib/python2.7/dist-packages/django/contrib/admin/media $INSTALL_ROOT/alert/assets/media/adminMedia
 # TODO: THIS STUFF CONFIRMED BROKEN!!
+
+
+echo '>> Installing Reporters DB...'
+sudo git clone https://github.com/freelawproject/reporters-db /usr/local/reporters_db
+sudo ln -s /usr/local/reporters_db  `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/reporters_db
