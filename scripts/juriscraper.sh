@@ -10,7 +10,7 @@ export ARCH=i686 # change to x86_64 for 64-bit
 sudo apt-get install libxml2-dev libxslt-dev  # In Ubuntu prior to 14.04 this is libxslt-devel
 
 # Install PhantomJS
-sudo -H pip install selenium
+sudo pip install selenium
 
 # modified
 mkdir /home/vagrant/phantomjs ; cd /home/vagrant/phantomjs
