@@ -27,7 +27,7 @@ Here's how to crank out a box if you've got the Requirements above.
 `packer build flm-packer.json`
 
 2. Install the Vagrant box locally
-`vagrant box add packer_virtualbox-iso_virtualbox.box --name freelaw/devbox`
+`vagrant box add packer_virtualbox-iso_virtualbox.box --name freelaw/trusty32-devbox`
 
 3. Initialize a Vagrantfile
 `vagrant init freelaw/trusty32-devbox`
