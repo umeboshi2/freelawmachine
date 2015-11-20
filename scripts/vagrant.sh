@@ -1,8 +1,7 @@
 #!/bin/bash -eux
 
 # sudo configuration
-#echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
-#sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
+echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers.d/vagrant
 
 # Setup password-less SSH for Vagrant SSH
 mkdir -p /home/vagrant/.ssh
