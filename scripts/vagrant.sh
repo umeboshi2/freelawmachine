@@ -15,3 +15,4 @@ chown -R vagrant /home/vagrant/.ssh
 
 # make mapping directory for /vagrant
 sudo mkdir /vagrant
+sudo chown vagrant:vagrant /vagrant

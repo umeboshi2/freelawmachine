@@ -13,6 +13,28 @@ and make having a dev environment as easy as `vagrant up`.
 * [Packer 0.8.x](https://packer.io/downloads.html)
 * [Virtualbox 5.x](https://www.virtualbox.org/)
 
+## Usage
+Here's how to crank out a box if you've got the Requirements above.
+
+0. Grab the latest:
+`git clone https://github.com/voutilad/freelawmachine ; cd freelawmachine`
+
+1. Get packing:
+`packer build flm-packer.json`
+
+2. Install the Vagrant box locally
+`vagrant box add packer_virtualbox-iso_virtualbox.box --name freelaw/devbox`
+
+3. Initialize a Vagrantfile
+`vagrant init freelaw/devbox`
+
+4. Vagrant up!
+`vagrant up`
+
+5. Get your popcorn ready and log in
+`vagrant ssh`
+
+
 ## Various Details
 * Based on Ubuntu Server 32-bit (for now) 14.04 LTS
 * Trying to target dev machines that have:
