@@ -50,3 +50,8 @@ sudo ln -s /usr/local/reporters_db  `python -c "from distutils.sysconfig import 
 #sudo git clone https://github.com/freelawproject/seal-rookery /usr/local/seal_rookery
 # TODO: do we need this translated?
 # sudo ln -s /usr/local/seal_rookery $INSTALL_ROOT/../.virtualenvs/courtlistener/bin/seal_rookery
+
+
+echo '>> Prepping CourtListener for PostgreSQL...'
+cp $INSTALL_ROOT/alert/settings/05-private.example $INSTALL_ROOT/alert/settings/05-private.py
+python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" >> $INSTALL_ROOT/alert/settings/05-private.py

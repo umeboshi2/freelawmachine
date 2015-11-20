@@ -3,12 +3,15 @@ echo '=================================='
 echo ' Free Law Machine [PostgreSQL]'
 echo '=================================='
 
-sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'the-super-user-password';"
-sudo -u postgres psql -c "CREATE ROLE django WITH PASSWORD 'django-password';"
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'password';"
+sudo -u postgres createuser django --createdb
+sudo -u postgres psql -c "ALTER ROLE django WITH PASSWORD 'your-password';"
+
 sudo service postgresql restart
 
-sudo -u postgres createdb -U django -E utf8 -O django courtlistener -T template0
+# hat tip: http://stackoverflow.com/questions/8351436/change-lc-ctype-for-postgresql-and-postgis-use
+sudo -u postgres createdb -U django -E UTF8 --locale=en_US.utf8 -O django courtlistener -T template0
 
-echo "localhost:5432:*:postgres:the-super-user-password" >> ~/.pgpass
-echo "localhost:5432:courtlistener:django:django-password" >> ~/.pgpass
+echo "localhost:5432:*:postgres:password" >> ~/.pgpass
+echo "localhost:5432:courtlistener:django:your-password" >> ~/.pgpass
 chmod 0600 ~/.pgpass
