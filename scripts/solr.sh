@@ -17,3 +17,6 @@ sudo ln -s -f $INSTALL_ROOT/Solr/conf/solrconfig.xml /usr/local/solr/example/sol
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/collection1/conf/schema.xml
 sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/audio
 sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
+
+# run the script jobby
+cd $INSTALL_ROOT

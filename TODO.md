@@ -10,3 +10,4 @@ Just some personal reminders...
   their workstation
   * Vagrant box should have all dev tools needed so all the user needs is an
   editor (or use nano/vim/whatever) and a web browser
+* figure out how to de-couple Solr for dev purposes

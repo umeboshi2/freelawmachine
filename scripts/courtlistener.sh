@@ -26,6 +26,7 @@ sudo pip install django-tastypie
 sudo pip install django-debug-toolbar==1.3
 sudo pip install django-localflavor
 sudo pip install httplib2
+sudo pip install sunburnt
 
 echo '...installing Stripe...'
 sudo pip install --index-url https://code.stripe.com --upgrade stripe
