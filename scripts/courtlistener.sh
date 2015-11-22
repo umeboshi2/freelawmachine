@@ -10,7 +10,7 @@ sudo apt-get -yf install autoconf automake antiword checkinstall curl daemon \
   g++ gcc git imagemagick libjpeg62-dev libpng12-dev libtool libwpd-tools \
   libxml2-dev  libxslt-dev make openjdk-6-jre poppler-utils postgresql \
   postgresql-server-dev-all python-dev python-pip python-simplejson \
-  subversion tcl8.5 zlib1g-dev
+  subversion tcl8.5 zlib1g-dev python-psycopg2
 echo '>> ...complete.'
 
 echo '>> Configuring environment properties...'
@@ -18,10 +18,15 @@ export INSTALL_ROOT=/var/www/courtlistener
 sudo bash -c "echo $'INSTALL_ROOT=\"/var/www/courtlistener\"' >> /etc/courtlistener"
 sudo bash -c "echo $'CL_SOLR_XMX=\"500M\"' >> /etc/courtlistener"
 
-echo '>> Installing Python dependencies..'
-sudo pip install Django
+echo '>> Installing Django dependencies..'
+sudo pip install Django==1.6
 sudo pip install django-celery
 sudo pip install django-cors-headers
+sudo pip install django-tastypie
+sudo pip install django-debug-toolbar==1.3
+sudo pip install django-localflavor
+sudo pip install httplib2
+
 echo '...installing Stripe...'
 sudo pip install --index-url https://code.stripe.com --upgrade stripe
 
