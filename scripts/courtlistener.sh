@@ -61,3 +61,4 @@ sudo ln -s /usr/local/reporters_db  `python -c "from distutils.sysconfig import 
 echo '>> Prepping CourtListener for PostgreSQL...'
 cp $INSTALL_ROOT/alert/settings/05-private.example $INSTALL_ROOT/alert/settings/05-private.py
 python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" >> $INSTALL_ROOT/alert/settings/05-private.py
+sudo chown vagrant:vagrant $INSTALL_ROOT/alert/settings/05-private.py

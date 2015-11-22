@@ -10,7 +10,7 @@ sudo -u postgres psql -c "ALTER ROLE django WITH PASSWORD 'your-password';"
 sudo service postgresql restart
 
 # hat tip: http://stackoverflow.com/questions/8351436/change-lc-ctype-for-postgresql-and-postgis-use
-sudo -u postgres createdb -U django -E UTF8 --locale=en_US.utf8 -O django courtlistener -T template0
+sudo -u postgres createdb -E UTF8 --locale=en_US.utf8 -O django courtlistener -T template0
 
 echo "localhost:5432:*:postgres:password" >> ~/.pgpass
 echo "localhost:5432:courtlistener:django:your-password" >> ~/.pgpass
