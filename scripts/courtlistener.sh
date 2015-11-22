@@ -15,12 +15,13 @@ echo '>> ...complete.'
 
 echo '>> Configuring environment properties...'
 export INSTALL_ROOT=/var/www/courtlistener
-sudo bash -c 'echo INSTALL_ROOT="/var/www/courtlistener" >> /etc/courtlistener'
-sudo bash -c 'echo CL_SOLR_XMX=500M >> /etc/courtlistener'
+sudo bash -c "echo $'INSTALL_ROOT=\"/var/www/courtlistener\"' >> /etc/courtlistener"
+sudo bash -c "echo $'CL_SOLR_XMX=\"500M\"' >> /etc/courtlistener"
 
 echo '>> Installing Python dependencies..'
 sudo pip install Django
 sudo pip install django-celery
+sudo pip install django-cors-headers
 echo '...installing Stripe...'
 sudo pip install --index-url https://code.stripe.com --upgrade stripe
 
