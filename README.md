@@ -12,6 +12,7 @@ and make having a dev environment as easy as `vagrant up`.
 * [Vagrant 1.7.4](https://www.vagrantup.com)
 * [Packer 0.8.6](https://packer.io/downloads.html)
 * [Virtualbox 5.x](https://www.virtualbox.org/)
+* Git
 
 And a high-speed network connection since the VM will need to pull down
 packages! (You are installing Ubuntu...so do this via a cellular data connection
@@ -32,11 +33,23 @@ Here's how to crank out a box if you've got the Requirements above.
 3. Initialize a Vagrantfile
 `vagrant init freelaw/trusty32-devbox`
 
-4. Vagrant up!
+4. Grab CourtListener (opinion-split branch)
+`git clone -b opinion-split https://github.com/freelawproject/courtlistener.git`
+
+5. Vagrant up!
 `vagrant up`
 
-5. Get your popcorn ready and log in
+6. Connect to the Vagrant box
 `vagrant ssh`
+
+7. Start CourtListener (from wit)
+``` bash
+cd /var/www/courtlistener
+./manage.py runserver 0.0.0.0:8000
+```
+
+8. Fire up your browser (on your local machine)!
+[http://localhost:8000](http://localhost:8000)
 
 ## Development Tips
 If you're playing around, here are some things to remember:
