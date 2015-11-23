@@ -6,3 +6,4 @@ output-virtualbox-iso/
 
 # vagrant stuff
 .vagrant
+vagrant/

@@ -7,7 +7,7 @@ echo '=================================='
 
 echo '>> Installing base dependencies...'
 sudo apt-get -yf install autoconf automake antiword checkinstall curl daemon \
-  g++ gcc git imagemagick libjpeg62-dev libpng12-dev libtool libwpd-tools \
+  g++ gcc imagemagick libjpeg62-dev libpng12-dev libtool libwpd-tools \
   libxml2-dev  libxslt-dev make openjdk-6-jre poppler-utils postgresql \
   postgresql-server-dev-all python-dev python-pip python-simplejson \
   subversion tcl8.5 zlib1g-dev python-psycopg2
@@ -26,6 +26,7 @@ sudo pip install django-tastypie==0.10
 sudo pip install django-debug-toolbar==0.9.4
 sudo pip install django-localflavor==1.0
 sudo pip install httplib2==0.8
+sudo pip install south==0.7.5
 sudo pip install sunburnt
 sudo pip install Pillow==2.3
 

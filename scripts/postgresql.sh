@@ -15,3 +15,4 @@ sudo -u postgres createdb -E UTF8 --locale=en_US.utf8 -O django courtlistener -T
 echo "localhost:5432:*:postgres:password" >> ~/.pgpass
 echo "localhost:5432:courtlistener:django:password" >> ~/.pgpass
 chmod 0600 ~/.pgpass
+sudo chown vagrant:vagrant ~/.pgpass
