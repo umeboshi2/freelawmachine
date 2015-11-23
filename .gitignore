@@ -8,3 +8,5 @@ output-virtualbox-iso/
 .vagrant
 vagrant/
 courtlistener/
+
+.DS_Store
