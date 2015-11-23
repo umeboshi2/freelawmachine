@@ -19,14 +19,15 @@ sudo bash -c "echo $'INSTALL_ROOT=\"/var/www/courtlistener\"' >> /etc/courtliste
 sudo bash -c "echo $'CL_SOLR_XMX=\"500M\"' >> /etc/courtlistener"
 
 echo '>> Installing Django dependencies..'
-sudo pip install Django==1.6
-sudo pip install django-celery
+sudo pip install Django==1.5.4
+sudo pip install django-celery==3.0.11
 sudo pip install django-cors-headers
-sudo pip install django-tastypie
-sudo pip install django-debug-toolbar==1.3
-sudo pip install django-localflavor
-sudo pip install httplib2
+sudo pip install django-tastypie==0.10
+sudo pip install django-debug-toolbar==0.9.4
+sudo pip install django-localflavor==1.0
+sudo pip install httplib2==0.8
 sudo pip install sunburnt
+sudo pip install Pillow==2.3
 
 echo '...installing Stripe...'
 sudo pip install --index-url https://code.stripe.com --upgrade stripe
