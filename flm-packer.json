@@ -9,7 +9,8 @@
                 "scripts/vagrant.sh",
                 "scripts/courtlistener.sh",
                 "scripts/juriscraper.sh",
-                "scripts/postgresql.sh"
+                "scripts/postgresql.sh",
+                "scripts/solr.sh"
             ],
             "override": {
                 "virtualbox-iso": {

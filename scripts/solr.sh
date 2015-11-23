@@ -20,3 +20,4 @@ sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/
 
 # run the script jobby
 cd $INSTALL_ROOT
+# TODO: put this in Vagrantfile probably...

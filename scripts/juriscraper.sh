@@ -24,6 +24,7 @@ sudo mv phantomjs-1.9.7-linux-$ARCH/bin/phantomjs /usr/local/phantomjs
 rm -r phantomjs-1.9.7*  # Cleanup
 
 # Finally, install the code
+# TODO: Move GIT stuff to host machine and just prep guest
 sudo mkdir /usr/local/juriscraper  # or somewhere else or `mkvirtualenv juriscraper`
 sudo chown -R vagrant:vagrant /usr/local/juriscraper
 cd /usr/local/juriscraper

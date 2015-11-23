@@ -38,9 +38,9 @@ sudo chown -R vagrant:vagrant /var/log/courtlistener
 sudo mkdir -p $INSTALL_ROOT
 sudo chown -R vagrant:vagrant $INSTALL_ROOT
 
-echo '>> Pulling from GIT...'
-cd $INSTALL_ROOT
-sudo -u vagrant git clone https://github.com/freelawproject/courtlistener $INSTALL_ROOT
+#echo '>> Pulling from GIT...'
+#cd $INSTALL_ROOT
+#sudo -u vagrant git clone https://github.com/freelawproject/courtlistener $INSTALL_ROOT
 
 echo '>> Setting up some stuff...'
 # the following doesn't seem to give us the correct path.
@@ -59,8 +59,8 @@ sudo ln -s /usr/local/reporters_db  `python -c "from distutils.sysconfig import 
 # TODO: do we need this translated?
 # sudo ln -s /usr/local/seal_rookery $INSTALL_ROOT/../.virtualenvs/courtlistener/bin/seal_rookery
 
-
-echo '>> Prepping CourtListener for PostgreSQL...'
-cp $INSTALL_ROOT/alert/settings/05-private.example $INSTALL_ROOT/alert/settings/05-private.py
-python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" >> $INSTALL_ROOT/alert/settings/05-private.py
-sudo chown vagrant:vagrant $INSTALL_ROOT/alert/settings/05-private.py
+# TODO: MOVE TO Vagrantfile
+# echo '>> Prepping CourtListener for PostgreSQL...'
+# cp $INSTALL_ROOT/alert/settings/05-private.example $INSTALL_ROOT/alert/settings/05-private.py
+# python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" >> $INSTALL_ROOT/alert/settings/05-private.py
+# sudo chown vagrant:vagrant $INSTALL_ROOT/alert/settings/05-private.py
