@@ -22,6 +22,8 @@ sudo mkdir -p /usr/local/phantomjs
 # 64bit: sudo mv phantomjs-1.9.7-linux-x86_64/bin/phantomjs /usr/local/phantomjs
 sudo mv phantomjs-1.9.7-linux-$ARCH/bin/phantomjs /usr/local/phantomjs
 rm -r phantomjs-1.9.7*  # Cleanup
+cd /home/vagrant ; rm -Rf phantomjs
+
 
 # Finally, install the code
 # TODO: Move GIT stuff to host machine and just prep guest

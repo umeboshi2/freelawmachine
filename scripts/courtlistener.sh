@@ -9,7 +9,7 @@ echo '=================================='
 
 echo '>> Installing base dependencies...'
 sudo apt-get -yf install autoconf automake antiword checkinstall curl daemon \
-  g++ gcc imagemagick libjpeg62-dev libpng12-dev libtool libwpd-tools \
+  g++ git gcc imagemagick libjpeg62-dev libpng12-dev libtool libwpd-tools \
   libxml2-dev  libxslt-dev make openjdk-6-jre poppler-utils postgresql \
   postgresql-server-dev-all python-dev python-pip python-simplejson \
   subversion tcl8.5 zlib1g-dev python-psycopg2
