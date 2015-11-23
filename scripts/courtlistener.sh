@@ -1,8 +1,10 @@
 #!/bin/bash
 # DOES THIS REALLY RUN IN BASH WHEN USING PACKER?!? Could cause issues if no
+export CL_BRANCH=opinion-split
 
 echo '=================================='
 echo ' Free Law Machine [CourtListener]'
+echo "    branch: $CL_BRANCH"
 echo '=================================='
 
 echo '>> Installing base dependencies...'
@@ -19,16 +21,9 @@ sudo bash -c "echo $'INSTALL_ROOT=\"/var/www/courtlistener\"' >> /etc/courtliste
 sudo bash -c "echo $'CL_SOLR_XMX=\"500M\"' >> /etc/courtlistener"
 
 echo '>> Installing Django dependencies..'
-sudo pip install Django==1.5.4
-sudo pip install django-celery==3.0.11
-sudo pip install django-cors-headers
-sudo pip install django-tastypie==0.10
-sudo pip install django-debug-toolbar==0.9.4
-sudo pip install django-localflavor==1.0
-sudo pip install httplib2==0.8
-sudo pip install south==0.7.5
-sudo pip install sunburnt
-sudo pip install Pillow==2.3
+cd ~
+wget --no-check-certificate https://raw.githubusercontent.com/freelawproject/courtlistener/$CL_BRANCH/requirements.txt
+sudo pip install -r requirements.txt
 
 echo '...installing Stripe...'
 sudo pip install --index-url https://code.stripe.com --upgrade stripe
