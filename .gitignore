@@ -1,12 +1,14 @@
 # packer stuff
-*.box
-packer_cache
-iso/*.iso
-output-virtualbox-iso/
+packer/*.box
+packer/packer_cache
+packer/iso/*.iso
+packer/output-virtualbox-iso/
 
 # vagrant stuff
 .vagrant
-vagrant/
-courtlistener/
+vagrant/courtlistener
+vagrant/juriscraper
+!vagrant/README.md
+
 
 .DS_Store
