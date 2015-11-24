@@ -69,10 +69,10 @@
       {
         "type": "vagrant",
         "keep_input_artifact": false,
-        "vagrantfile_template": "Vagrantfile",
+        "vagrantfile_template": "../Vagrantfile",
         "include": [
-          "Vagrantfile",
-          "vagrant_provision.sh"
+          "../Vagrantfile",
+          "../provision.sh"
         ],
         "output": "freelawbox-trusty32-dev-{{timestamp}}.box"
       }
