@@ -43,7 +43,7 @@ sudo pip install -r requirements.txt
 sudo rm requirements.txt
 
 # add Juriscraper to your python path (in Ubuntu/Debian)
-sudo ln -s /usr/local/Juriscaper \
+sudo ln -s /usr/local/juriscraper/juriscraper \
  `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/juriscraper
 
 echo 'Setting up Juriscraper log dir...'

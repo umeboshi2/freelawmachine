@@ -16,3 +16,5 @@ sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/co
 sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/audio
 sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
 sudo service solr start
+
+sudo -u vagrant python $INSTALL_ROOT/manage.py shell < /home/vagrant/create_solr_core.py
