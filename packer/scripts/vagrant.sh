@@ -4,7 +4,7 @@
 echo '== VAGRANT PRE-CONFIGURATION =='
 # sudo configuration
 echo 'Setting up sudoers...'
-sudo echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers.d/vagrant
+sudo bash -c "echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'" >> /etc/sudoers.d/vagrant
 
 # Setup password-less SSH for Vagrant SSH
 echo 'Setting up SSH keys...'
