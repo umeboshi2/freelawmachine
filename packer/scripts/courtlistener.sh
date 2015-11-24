@@ -22,7 +22,8 @@ sudo bash -c "echo $'CL_SOLR_XMX=\"500M\"' >> /etc/courtlistener"
 
 echo '>> Installing Django dependencies..'
 cd ~
-wget --no-check-certificate https://raw.githubusercontent.com/freelawproject/courtlistener/$CL_BRANCH/requirements.txt
+wget --no-check-certificate \
+ https://raw.githubusercontent.com/freelawproject/courtlistener/$CL_BRANCH/requirements.txt
 sudo pip install -r requirements.txt
 
 echo '...installing Stripe...'
