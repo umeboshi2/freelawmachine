@@ -18,6 +18,10 @@ sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/co
 sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/audio
 sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
 
-# run the script jobby
-cd $INSTALL_ROOT
-# TODO: put this in Vagrantfile probably...
+# fetch the current script from github for now...maybe we
+# can switch to an apt-get install of solr-jetty and then
+# configure it to point to $INSTALL_ROOT
+cd /etc/init.d
+sudo wget --no-check-certificate \
+ https://raw.githubusercontent.com/freelawproject/courtlistener/opinion-split/scripts/init/solr
+sudo ./solr start
