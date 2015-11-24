@@ -1,14 +1,19 @@
 #!/bin/bash
+export SCRAPER_BRANCH=issue-59-pip
+
 echo '=================================='
 echo ' Free Law Machine [Juriscraper]'
+echo "    branch: $SCRAPER_BRANCH"
 echo '=================================='
 
 export ARCH=i686 # change to x86_64 for 64-bit
 
-# SOME FROM: https://github.com/freelawproject/juriscraper/
 # install the dependencies
-sudo apt-get install libxml2-dev libxslt-dev  # In Ubuntu prior to 14.04 this is libxslt-devel
+echo 'Installing dependencies...'
+sudo apt-get install libxml2-dev libxslt-dev
 
+
+echo 'Installing PhantomJS...'
 # Install PhantomJS
 sudo pip install selenium
 
@@ -24,18 +29,24 @@ sudo mv phantomjs-1.9.7-linux-$ARCH/bin/phantomjs /usr/local/phantomjs
 rm -r phantomjs-1.9.7*  # Cleanup
 cd /home/vagrant ; rm -Rf phantomjs
 
-
+echo 'Preparing location for Juriscaper code...'
 # Finally, install the code
 # TODO: Move GIT stuff to host machine and just prep guest
 sudo mkdir /usr/local/juriscraper  # or somewhere else or `mkvirtualenv juriscraper`
 sudo chown -R vagrant:vagrant /usr/local/juriscraper
-cd /usr/local/juriscraper
-git clone https://github.com/freelawproject/juriscraper.git .
+
+echo 'Installing current Juriscraper python dependencies...'
+cd /tmp
+sudo wget --no-check-certificate \
+ https://raw.githubusercontent.com/freelawproject/juriscraper/issue-59-pip/requirements.txt
 sudo pip install -r requirements.txt
+sudo rm requirements.txt
 
 # add Juriscraper to your python path (in Ubuntu/Debian)
-sudo ln -s `pwd` `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/juriscraper
+sudo ln -s /usr/local/Juriscaper \
+ `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/juriscraper
 
+echo 'Setting up Juriscraper log dir...'
 # create a directory for logs (this can be skipped, and no logs will be created)
 sudo mkdir -p /var/log/juriscraper
-# END FROM
+sudo chown vagrant:vagrant /var/log/juriscraper
