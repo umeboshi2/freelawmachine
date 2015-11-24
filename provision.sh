@@ -3,9 +3,7 @@ export INSTALL_ROOT=/var/www/courtlistener
 export SETTINGS_PATH=$INSTALL_ROOT/cl/settings
 
 # Git the project source and set up a dev version of the 05-private.py
-cd $INSTALL_ROOT
-git clone -b opinion-split https://github.com/freelawproject/courtlistener.git .
-chown -R vagrant:vagrant $INSTALL_ROOT
+sudo chown -R vagrant:vagrant $INSTALL_ROOT
 cp $SETTINGS_PATH/05-private.example $SETTINGS_PATH/05-private.py
 python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" >> $SETTINGS_PATH/05-private.py
 
@@ -17,4 +15,5 @@ sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr
 sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
 sudo service solr start
 
-sudo -u vagrant python $INSTALL_ROOT/manage.py shell < /home/vagrant/create_solr_core.py
+cd $INSTALL_ROOT
+python manage.py shell < /home/vagrant/create_solr_core.py

@@ -25,13 +25,13 @@ Here's how to crank out a box if you've got the Requirements above.
 `git clone https://github.com/voutilad/freelawmachine ; cd freelawmachine`
 
 1. Get packing:
-`packer build flm-packer.json`
+`cd packer; packer build flm-packer.json`
 
 2. Install the Vagrant box locally
-`vagrant box add packer_virtualbox-iso_virtualbox.box --name freelaw/trusty32-devbox`
+`vagrant box add freelawbox-trusty32-dev-{timestamp}.box --name freelaw/trusty32-dev`
 
 3. Initialize a Vagrantfile
-`vagrant init freelaw/trusty32-devbox`
+`cd ..; vagrant init freelaw/trusty32-dev`
 
 4. Grab CourtListener (opinion-split branch)
 `git clone -b opinion-split https://github.com/freelawproject/courtlistener.git`
