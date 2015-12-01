@@ -15,8 +15,8 @@ sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr
 sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
 sudo service solr start
 
-# sleep a second to let solr start
-sleep 3
+# sleep a few second to let solr start
+sleep 10
 
 # create solr core
 cd $INSTALL_ROOT
