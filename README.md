@@ -51,7 +51,7 @@ may appear nothing is happening for a little while. It's ok.)
 3. Install the Vagrant box on your local machine. The new _.box_ file will
 have a timestamp in the filename, so make sure to add the correct file:
 
-  `vagrant box add freelawbox-trusty32-dev-{timestamp}.box --name freelaw/trusty32-dev`
+  `vagrant box add freelawbox-{timestamp}.box --name freelaw/freelawbox32`
 
 Voila! You now have a new Vagrant box installed locally. You can even share the
 _.box_ file with others the old fashioned way, host it at a URL, etc. Vagrant

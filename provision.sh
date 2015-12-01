@@ -21,3 +21,9 @@ sleep 10
 # create solr core
 cd $INSTALL_ROOT
 sudo -u vagrant python manage.py shell < /home/vagrant/create_solr_core.py
+
+# update packaged stuff
+cd /usr/local/seal_rookery
+git pull
+cd /usr/local/reporters_db
+git pull
