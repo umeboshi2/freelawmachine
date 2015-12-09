@@ -1,75 +1,48 @@
-Free Law (Virtual) Machine v1.0.1
+Free Law (Virtual) Machine v1.1.0
 ==========================
 
 This project is designed to provide automation around building a ready-to-run
-development environment for the [Free Law Project](https://github.com/freelawproject)
-using Vagrant boxes.
+development environment for the [Free Law Project](https://github.com/freelawproject) using Vagrant boxes.
 
-Hopefully, it will do away with the manual process described [here](https://github.com/freelawproject/courtlistener/wiki/Installing-CourtListener-on-Ubuntu-Linux)
+Hopefully, it will do away with the manual process described
+[here](https://github.com/freelawproject/courtlistener/wiki/Installing-CourtLitener-on-Ubuntu-Linux)
 and make having a dev environment as easy as `vagrant up`.
 
 ## Requirements
 * [Vagrant 1.7.4](https://www.vagrantup.com)
-* [Packer 0.8.6](https://packer.io/downloads.html)
 * [Virtualbox 5.x](https://www.virtualbox.org/)
-* Git
+* [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* (Optional) [Packer 0.8.6](https://packer.io/downloads.html)
+
 
 And a high-speed network connection since the VM will need to pull down
-packages! (You are installing Ubuntu...so do this via a cellular data connection
-at your own $$ peril!)
+packages! (You are installing Ubuntu...so do this via a cellular data
+connection at your own $$ peril!)
 
 ## How to Get Started
 
 There are two phases to using this project (for the time being):
-1. *Building the Vagrant Box* - in the future, this box will be available
-prebuilt and hosted online allowing users to skip the Building steps.
 
-2. *Initializing the Vagrant Box* - this is the most common Vagrant task and
-is what brings your local Free Law development environment online.
+1. *Initializing the Vagrant Box* - this is the most common Vagrant task and
+is what brings your local Free Law development environment online and ready
+for use in development or testing CourtListener.
 
-### Building the Vagrant Box
-Here's how to crank out a box if you've got the Requirements above. Depending
-on your network connection, CPU, disk, etc. this could take anywhere from 5 mins
-to maybe 30 mins. Be patient :-)
+2. *Building the Vagrant Box (Optional)* - if you want to customize how the box
+is built or you want to contribute to this project.
 
-All of the tools required to build the box using [Packer](https://packer.io)
-are contained in the [packer](./packer) directory of this project.
-
-0. Grab the latest Free Law Machine source:
-
-  `git clone https://github.com/voutilad/freelawmachine`
-
-1. Jump into the packer directory:
-
-  `cd packer`
-
-2. Build the box! (Yes, it's that simple. Since it's configured headless, it
-may appear nothing is happening for a little while. It's ok.)
-
-  `packer build flm-packer.json`
-
-3. Install the Vagrant box on your local machine. The new _.box_ file will
-have a timestamp in the filename, so make sure to add the correct file:
-
-  `vagrant box add freelawbox-trusty32-dev-{timestamp}.box --name freelaw/trusty32-dev`
-
-Voila! You now have a new Vagrant box installed locally. You can even share the
-_.box_ file with others the old fashioned way, host it at a URL, etc. Vagrant
-supports pulling boxes via URL, so that's an option! (In the future, the box
-will most likely be published online making the above steps left to those that
-want to customize the box or update it for future versions of CourtListener.)
 
 ### Creating a local Free Law Development Environment
 
-Now that you have your box installed (it secretly lives in `~/.vagrant` or your
-equivalent), launching a brand-new, clean dev environment is simple.
+You have two choices: build the box from scratch (the hard way) or grab a hosted copy (the easy way).
+
+#### The Easy Way
 
 1. In the root of this project, change to the `vagrant` dir:
 
   `cd vagrant`
 
 2. We need to now grab the CourtListener and Juriscraper source. At time of
-this writing, the following will grab the two relevant branches:
+this writing, the following will grab the two relevant development branches:
 
   `git clone -b opinion-split https://github.com/freelawproject/courtlistener.git`
 
@@ -79,34 +52,76 @@ this writing, the following will grab the two relevant branches:
 
   `cd ..`
 
-4. Now this is where the magic happens! Just run:
+4. Now this is where the ✨magic ✨ happens! (The hosted box that is prebuilt
+  will be pulled down and installed by Vagrant.) Just run:
 
   `vagrant up`
 
-5. You should see some logging output and some provisioning output. Now to log
-into the box, it's a simple:
+5. Now to log into the box, it's a simple:
 
   `vagrant ssh`
 
-6. If you haven't used the machine yet, you'll need to do some basic CourtListener
-provisioning steps that currently aren't handled (yet) by our Vagrant provisioning
-scripts.
+6. If you haven't used the machine yet, you'll need to do some basic
+CourtListener provisioning steps that currently aren't handled (yet) by our
+Vagrant provisioning scripts.
 
   ``` bash
-  >cd /var/www/courtlistener
-  >./manage.py migrate
-  >./manage.py runserver 0.0.0.0:8000
+  cd /var/www/courtlistener
+  ./manage.py migrate
   ```
 
-  Make sure you specified that ip address of 0.0.0.0!!! We need Django to bind to
-  the network adapter(s) other than the loopback adapter, otherwise the port
-  forwarding set up by Vagrant won't work! (For more details on why this is,
-  check out [this StackOverflow post.](http://stackoverflow.com/questions/1621457/about-ip-0-0-0-0-in-django))
+#### The Hard Way
+Don't like the easy way? Skip ahead to "Building the Vagrant Box (Optional)"
+and complete those steps first, then run through the "Easy Way" steps. This is
+not for the feint of heart.
 
-7. Fire up your browser (on your local machine!) and confirm you've got a local
+#### Starting CourtListener
+From within the `/var/www/courtlistener` directory, simply use Django's manage
+scripts to launch the app. Make sure you pay close attention to adding the IP
+address and port number so it plays nice with Vagrant's NAT networking and the
+box's network adapters.
+
+` ./manage.py runserver 0.0.0.0:8000
+`
+For more details on why this is, check out this StackOverflow
+[post](http://stackoverflow.com/questions/1621457/about-ip-0-0-0-0-in-django).
+
+Fire up your browser (on your local machine!) and confirm you've got a local
 instance that looks like [courtlistener.org](https://www.courtlistener.com/).
 
   Navigate to: [http://localhost:8000](http://localhost:8000)
+
+### Building the Vagrant Box (Optional)
+Here's how to crank out a box if you've got the Requirements above. Depending
+on your network connection, CPU, disk, etc. this could take anywhere from 5
+mins to maybe 30 mins. Be patient :-)
+
+All of the tools required to build the box using [Packer](https://packer.io)
+are contained in the [packer](./packer) directory of this project.
+
+  0. Grab the latest Free Law Machine source:
+
+    `git clone https://github.com/voutilad/freelawmachine`
+
+  1. Jump into the packer directory:
+
+    `cd packer`
+
+  2. Build the box! (Yes, it's that simple. Since it's configured headless, it
+  may appear nothing is happening for a little while. It's ok.)
+
+    `packer build flm-packer.json`
+
+  3. Install the Vagrant box on your local machine. The new _.box_ file will
+  have a timestamp in the filename, so make sure to add the correct file:
+
+    `vagrant box add freelawbox-{timestamp}.box --name freelaw/freelawbox32`
+
+Voila! You now have a new Vagrant box installed locally. You can even share the
+_.box_ file with others the old fashioned way, host it at a URL, etc. Vagrant
+supports pulling boxes via URL, so that's an option! You can always host your
+own version in Hashicorp's [Atlas](https://atlas.hashicorp.com/) so others
+can find and use it!
 
 
 ## Development Tips
@@ -121,14 +136,14 @@ wipe it out when you've built a new box version and want to start over.
 
 
 ## Various Details
-* Based on Ubuntu Server 32-bit (for now) 14.04 LTS Trusty Tahr
-* Trying to target dev machines that have:
+* Current box is based on Ubuntu Server 32-bit (for now) 14.04 LTS Trusty Tahr
+* Trying to target dev's machines that have:
   * 8 GB RAM
   * [Virtualbox 5.x](https://www.virtualbox.org/)
-  * Lack of VT-X support (hence 32-bit VM is the initial goal)
+  * Iffy VT-X support or running inside another VM (hence 32-bit VM)
 
 ## Possible Future Goals
-* VMWare support
+* VMWare support (cost $$$?)
 * 64-bit support - does this matter?
 * Help stub out some complicated dependencies (like Solr) to cut down on box
   size and complexity.

@@ -7,6 +7,10 @@ echo ' Free Law Machine [CourtListener]'
 echo "    branch: $CL_BRANCH"
 echo '=================================='
 
+echo '>> Generating and configuring proper en_US.utf8 locale...'
+sudo locale-gen
+sudo update-locale LANG=en_US.utf8 LANGUAGE=en_US:utf8
+
 echo '>> Installing base dependencies...'
 sudo apt-get -yf install autoconf automake antiword checkinstall curl daemon \
   g++ git gcc imagemagick libjpeg62-dev libpng12-dev libtool libwpd-tools \

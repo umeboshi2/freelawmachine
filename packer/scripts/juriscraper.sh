@@ -50,3 +50,9 @@ echo 'Setting up Juriscraper log dir...'
 # create a directory for logs (this can be skipped, and no logs will be created)
 sudo mkdir -p /var/log/juriscraper
 sudo chown vagrant:vagrant /var/log/juriscraper
+
+
+echo 'Downloading Seal Rookery (This takes awhile! Grab some coffee)...'
+cd /usr/local
+sudo git clone https://github.com/freelawproject/seal-rookery /usr/local/seal_rookery
+sudo ln -s `pwd`/seal_rookery `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/seal_rookery

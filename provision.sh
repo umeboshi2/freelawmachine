@@ -15,9 +15,15 @@ sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr
 sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
 sudo service solr start
 
-# sleep a second to let solr start
-sleep 3
+# sleep a few second to let solr start
+sleep 10
 
 # create solr core
 cd $INSTALL_ROOT
 sudo -u vagrant python manage.py shell < /home/vagrant/create_solr_core.py
+
+# update packaged stuff
+cd /usr/local/seal_rookery
+git pull
+cd /usr/local/reporters_db
+git pull
