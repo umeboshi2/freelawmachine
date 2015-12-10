@@ -89,7 +89,7 @@ For more details on why this is, check out this StackOverflow
 Fire up your browser (on your local machine!) and confirm you've got a local
 instance that looks like [courtlistener.org](https://www.courtlistener.com/).
 
-  Navigate to: [http://localhost:8000](http://localhost:8000)
+  Navigate to: [http://localhost:8888](http://localhost:8888)
 
 ### Building the Vagrant Box (Optional)
 Here's how to crank out a box if you've got the Requirements above. Depending
