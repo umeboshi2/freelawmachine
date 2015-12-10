@@ -14,7 +14,7 @@ sudo update-locale LANG=en_US.utf8 LANGUAGE=en_US:utf8
 echo '>> Installing base dependencies...'
 sudo apt-get -yf install autoconf automake antiword checkinstall curl daemon \
   g++ git gcc imagemagick libjpeg62-dev libpng12-dev libtool libwpd-tools \
-  libxml2-dev  libxslt-dev make openjdk-6-jre poppler-utils postgresql \
+  libxml2-dev libxslt-dev make openjdk-6-jre poppler-utils postgresql \
   postgresql-server-dev-all python-dev python-pip python-simplejson \
   subversion tcl8.5 zlib1g-dev python-psycopg2
 echo '>> ...complete.'
