@@ -35,12 +35,12 @@ echo 'Preparing location for Juriscaper code...'
 sudo mkdir /usr/local/juriscraper  # or somewhere else or `mkvirtualenv juriscraper`
 sudo chown -R vagrant:vagrant /usr/local/juriscraper
 
-echo 'Installing current Juriscraper python dependencies...'
-cd /tmp
-sudo wget --no-check-certificate \
- https://raw.githubusercontent.com/freelawproject/juriscraper/issue-59-pip/requirements.txt
-sudo pip install -r requirements.txt
-sudo rm requirements.txt
+#echo 'Installing current Juriscraper python dependencies...'
+#cd /tmp
+#sudo wget --no-check-certificate \
+# https://raw.githubusercontent.com/freelawproject/juriscraper/issue-59-pip/requirements.txt
+#sudo pip install -r requirements.txt
+#sudo rm requirements.txt
 
 # add Juriscraper to your python path (in Ubuntu/Debian)
 sudo ln -s /usr/local/juriscraper/juriscraper \
