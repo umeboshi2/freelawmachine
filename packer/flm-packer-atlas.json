@@ -1,6 +1,8 @@
 {
     "variables": {
-        "ubuntu_iso": "ubuntu-14.04.3-server-i386.iso"
+        "ubuntu_iso": "ubuntu-14.04.3-server-i386.iso",
+        "atlas_username": "voutilad",
+        "atlas_name": "freelaw-devbox"
     },
     "provisioners": [
         {
@@ -57,6 +59,16 @@
         "type": "vagrant",
         "keep_input_artifact": false,
         "output": "freelawbox32-{{timestamp}}.box"
+      },
+      {
+          "type": "atlas",
+          "only": ["virtualbox-iso"],
+          "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+          "artifact_type": "vagrant.box",
+          "metadata": {
+              "provider": "virtualbox",
+              "version": "1.1.4"
+          }
       }
     ]
 }
