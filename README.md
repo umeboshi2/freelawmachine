@@ -1,5 +1,5 @@
-Free Law (Virtual) Machine v1.1.8
-==========================
+Free Law (Virtual) Machine v1.1.9
+=================================
 
 This project is designed to provide automation around building a ready-to-run
 development environment for the [Free Law Project](https://github.com/freelawproject) using Vagrant boxes.
@@ -81,8 +81,10 @@ scripts to launch the app. Make sure you pay close attention to adding the IP
 address and port number so it plays nice with Vagrant's NAT networking and the
 box's network adapters.
 
-` ./manage.py runserver 0.0.0.0:8000
-`
+```bash
+./manage.py runserver 0.0.0.0:8000
+```
+
 For more details on why this is, check out this StackOverflow
 [post](http://stackoverflow.com/questions/1621457/about-ip-0-0-0-0-in-django).
 
@@ -90,6 +92,39 @@ Fire up your browser (on your local machine!) and confirm you've got a local
 instance that looks like [courtlistener.org](https://www.courtlistener.com/).
 
   Navigate to: [http://localhost:8888](http://localhost:8888)
+
+You'll see there's no content/opinions, but you can load them using the
+[Juriscraper](https://github.com/freelawproject/juriscraper/) commands built
+into CourtListener. In either a new SSH session/shell or after cancelling
+(`ctrl-c`) the "runserver" command, try:
+
+```bash
+./manage.py cl_scrape_opinions \
+  --courts juriscraper.opinions.united_states.federal_appellate.ca1 \
+  --rate 5
+```
+
+CourtListener will spin up a Juriscraper instance for the given court scraper
+and load the output into the PostgreSQL instance as well as feed the results to
+the Solr instance. Once complete (after a timeout) or after you manually kill it
+with some `ctrl-c`'s, you need to tell Solr to commit changes and make the new
+docs in the index go live:
+
+```bash
+./manage.py cl_update_index --do-commit --type opinions \
+  --solr-url http://127.0.0.1:8983/solr/collection1
+```
+
+Then (if you don't have it running in another shell), bring CourtListener back
+up with:
+
+```bash
+./manage.py runserver 0.0.0.0:8000
+```
+
+You should now have some results on the landing page as well as fully searchable
+opinions!
+
 
 ### Building the Vagrant Box (Optional)
 Here's how to crank out a box if you've got the Requirements above. Depending
