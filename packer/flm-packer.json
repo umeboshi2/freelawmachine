@@ -56,10 +56,10 @@
         }
     ],
     "post-processors": [
-      {
+      [{
         "type": "vagrant",
         "keep_input_artifact": false,
         "output": "{{user `atlas_name`}}-{{user `version`}}.box"
-      }
+      }]
     ]
 }
