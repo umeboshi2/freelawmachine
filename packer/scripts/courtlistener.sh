@@ -47,3 +47,7 @@ sudo chown -R vagrant:vagrant $INSTALL_ROOT
 echo '>> Installing Reporters DB...'
 sudo git clone https://github.com/freelawproject/reporters-db /usr/local/reporters_db
 sudo ln -s /usr/local/reporters_db  `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/reporters_db
+
+
+echo '>> Installing Libav...'
+sudo apt-get install libav-tools
