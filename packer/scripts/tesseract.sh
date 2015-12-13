@@ -4,7 +4,7 @@ echo ' Free Law Machine [Tesseract]'
 echo '=================================='
 export INSTALL_ROOT=/var/www/courtlistener
 
-sudo apt-get install imagemagick libpng12-dev zlib1g-dev autoconf automake
+sudo apt-get -yf install imagemagick libpng12-dev zlib1g-dev autoconf automake
 
 cd ~
 wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz
