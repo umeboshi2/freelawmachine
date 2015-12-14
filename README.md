@@ -1,5 +1,5 @@
-Free Law (Virtual) Machine v1.1.9
-=================================
+Free Law (Virtual) Machine v1.1.10
+==================================
 
 This project is designed to provide automation around building a ready-to-run
 development environment for the [Free Law Project](https://github.com/freelawproject) using Vagrant boxes.
