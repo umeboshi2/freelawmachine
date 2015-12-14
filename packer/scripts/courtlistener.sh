@@ -50,4 +50,4 @@ sudo ln -s /usr/local/reporters_db  `python -c "from distutils.sysconfig import 
 
 
 echo '>> Installing Libav...'
-sudo apt-get install libav-tools
+sudo apt-get -yf install libav-tools
