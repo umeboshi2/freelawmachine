@@ -7,6 +7,9 @@ sudo chown -R vagrant:vagrant $INSTALL_ROOT
 cp $SETTINGS_PATH/05-private.example $SETTINGS_PATH/05-private.py
 python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" >> $SETTINGS_PATH/05-private.py
 
+# Purge Solr indices if they exist
+sudo rm -Rf $INSTALL_ROOT/Solr/data*
+
 # Initialize Solr
 sudo mv /usr/local/solr/example/solr/collection1/conf/solrconfig.xml /usr/local/solr/example/solr/collection1/conf/solrconfig.orig
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/solrconfig.xml /usr/local/solr/example/solr/collection1/conf/solrconfig.xml
