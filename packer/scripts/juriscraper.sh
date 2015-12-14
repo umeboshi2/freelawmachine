@@ -36,11 +36,7 @@ sudo mkdir /usr/local/juriscraper  # or somewhere else or `mkvirtualenv juriscra
 sudo chown -R vagrant:vagrant /usr/local/juriscraper
 
 #echo 'Installing current Juriscraper python dependencies...'
-#cd /tmp
-#sudo wget --no-check-certificate \
-# https://raw.githubusercontent.com/freelawproject/juriscraper/issue-59-pip/requirements.txt
-#sudo pip install -r requirements.txt
-#sudo rm requirements.txt
+# REMOVED AS THE FOCUS IS CURRENTLY TO USE JURISCRAPER WITHIN COURTLISTENER
 
 # add Juriscraper to your python path (in Ubuntu/Debian)
 sudo ln -s /usr/local/juriscraper/juriscraper \
