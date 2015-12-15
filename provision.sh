@@ -29,6 +29,10 @@ sudo -u vagrant python manage.py shell < /home/vagrant/create_solr_core.py
 
 # eat your celery
 sudo cp $INSTALL_ROOT/scripts/etc/celeryd /etc/default/celeryd
+printf "CELERY_BIN='/usr/local/bin/celery' \n\
+CELERYD_USER='vagrant' \n\
+CELERYD_GROUP='vagrant'\n" \
+| sudo tee -a /etc/default/celeryd
 
 # update packaged stuff
 cd /usr/local/seal_rookery
