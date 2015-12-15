@@ -32,4 +32,4 @@ cd ~
 sudo rm -Rf tesseract*
 
 # Link the OCR data over to support good fonts
-sudo ln -s $INSTALL_ROOT/OCR/eng.traineddata /usr/local/share/tessdata/
+sudo ln -s $INSTALL_ROOT/OCR/eng.traineddata /usr/local/share/tessdata
