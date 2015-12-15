@@ -29,7 +29,7 @@ make
 sudo make install
 sudo ldconfig
 cd ~
-sudo rm -Rf tesseract*
+sudo rm -Rf tesseract* leptonica*
 
 # Link the OCR data over to support good fonts
 sudo ln -s $INSTALL_ROOT/OCR/eng.traineddata /usr/local/share/tessdata
