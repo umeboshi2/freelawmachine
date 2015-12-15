@@ -27,8 +27,15 @@ sleep 10
 cd $INSTALL_ROOT
 sudo -u vagrant python manage.py shell < /home/vagrant/create_solr_core.py
 
+# eat your celery
+sudo cp $INSTALL_ROOT/scripts/etc/celeryd /etc/default/celeryd
+
 # update packaged stuff
 cd /usr/local/seal_rookery
 git pull
 cd /usr/local/reporters_db
 git pull
+
+# celery and redis
+sudo service start celeryd
+sudo service redis_6379 start
