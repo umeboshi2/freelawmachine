@@ -1,10 +1,12 @@
 #!/bin/bash
 # TODO: MOVE TO Vagrantfile
 echo '=================================='
-echo ' Free Law Machine [SysV]'
+echo '     Free Law Machine [SysV]'
 echo '=================================='
 
 export INSTALL_ROOT=/var/www/courtlistener
+
+# should be safe to make these all prior to the files/code actually being there
 
 sudo ln -s $INSTALL_ROOT/scripts/init/solr /etc/init.d/solr
 sudo ln -s $INSTALL_ROOT/scripts/log/solr /etc/logrotate.d/solr

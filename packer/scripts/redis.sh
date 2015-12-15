@@ -16,7 +16,6 @@ cd redis-stable
 make
 sudo make install
 
-
 sudo mkdir /etc/redis
 sudo mkdir /var/redis
 sudo cp utils/redis_init_script /etc/init.d/redis_6379
