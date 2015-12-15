@@ -37,5 +37,5 @@ cd /usr/local/reporters_db
 git pull
 
 # celery and redis
-sudo service start celeryd
+sudo service celeryd start
 sudo service redis_6379 start

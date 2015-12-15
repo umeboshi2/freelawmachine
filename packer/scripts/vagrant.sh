@@ -40,4 +40,6 @@ sudo /tmp/isomount/VBoxLinuxAdditions.run
 echo 'Cleaning up...'
 sudo umount isomount
 sudo rm -rf isomount /home/vagrant/VBoxGuestAdditions.iso
-###
+
+# let's see some color
+sed -i 's/#force_color_prompt/force_color_prompt/g' /home/vagrant/.bashrc

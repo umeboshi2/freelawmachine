@@ -3,7 +3,7 @@
         "ubuntu_iso": "ubuntu-14.04.3-server-i386.iso",
         "atlas_username": "voutilad",
         "atlas_name": "freelawbox32",
-        "version": "1.2.0"
+        "version": "1.2.1"
     },
     "provisioners": [
         {
@@ -17,6 +17,7 @@
                 "scripts/tesseract.sh",
                 "scripts/redis.sh",
                 "scripts/celery.sh",
+                "scripts/init.sh",
                 "scripts/zerodisk.sh"
             ],
             "override": {
