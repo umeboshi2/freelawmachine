@@ -11,7 +11,10 @@ wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz
 wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
 wget https://leptonica.googlecode.com/files/leptonica-1.69.tar.gz
 tar -zvxf tesseract-ocr-3.02.02.tar.gz
+mv tesseract-ocr-3.02.eng.tar.gz tesseract-ocr
+cd tesseract-ocr
 tar -zvxf tesseract-ocr-3.02.eng.tar.gz
+cd ..
 tar -zvxf leptonica-1.69.tar.gz
 
 # Install leptonica
@@ -29,7 +32,7 @@ make
 sudo make install
 sudo ldconfig
 cd ~
-sudo rm -Rf tesseract* leptonica*
+# sudo rm -Rf tesseract* leptonica*
 
 # Link the OCR data over to support good fonts
 sudo ln -s $INSTALL_ROOT/OCR/eng.traineddata /usr/local/share/tessdata
