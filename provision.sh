@@ -45,3 +45,7 @@ git pull
 # celery and redis
 sudo service celeryd start
 sudo service redis_6379 start
+
+# lastly, do any last second upgrades for CourtListener dependencies
+cd $INSTALL_ROOT
+sudo pip install -r requirements.txt --upgrade
