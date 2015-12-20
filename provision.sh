@@ -15,6 +15,8 @@ sudo mv /usr/local/solr/example/solr/collection1/conf/solrconfig.xml /usr/local/
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/solrconfig.xml /usr/local/solr/example/solr/collection1/conf/solrconfig.xml
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/collection1/conf/schema.xml
 sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/audio
+sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/opinion_test
+sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/audio_test
 sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
 
 # might not be needed due to [develop a680df1] change
