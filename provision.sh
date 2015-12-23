@@ -18,6 +18,7 @@ sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr
 sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/opinion_test
 sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/audio_test
 sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
+sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio_test/conf/schema.xml
 
 # might not be needed due to [develop a680df1] change
 sudo service solr start
