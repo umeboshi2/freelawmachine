@@ -1,4 +1,4 @@
-Free Law (Virtual) Machine v1.2.6
+Free Law (Virtual) Machine v1.3.0
 ==================================
 
 This project is designed to provide automation around building a ready-to-run
@@ -136,7 +136,7 @@ are contained in the [packer](./packer) directory of this project.
 
   0. Grab the latest Free Law Machine source:
 
-    `git clone https://github.com/voutilad/freelawmachine`
+    `git clone https://github.com/freelawproject/freelawmachine`
 
   1. Jump into the packer directory:
 
