@@ -75,11 +75,14 @@ Don't like the easy way? Skip ahead to "Building the Vagrant Box (Optional)"
 and complete those steps first, then run through the "Easy Way" steps. This is
 not for the feint of heart.
 
-#### Starting Solr
-If Solr is not up and running, you will have to start it manually.
+#### Starting Solr and Redis
+If Solr or Redis is not already up and running, you will have to start both.
 
-  `sudo service solr start`
 
+  ``` bash
+  sudo service solr start
+  sudo sudo service redis_6379 start
+  ```
 
 #### Starting CourtListener
 From within the `/var/www/courtlistener` directory, simply use Django's manage
