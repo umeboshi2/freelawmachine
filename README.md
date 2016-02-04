@@ -75,6 +75,15 @@ Don't like the easy way? Skip ahead to "Building the Vagrant Box (Optional)"
 and complete those steps first, then run through the "Easy Way" steps. This is
 not for the feint of heart.
 
+#### Starting Solr and Redis
+If Solr or Redis is not already up and running, you will have to start both.
+
+
+  ``` bash
+  sudo service solr start
+  sudo sudo service redis_6379 start
+  ```
+
 #### Starting CourtListener
 From within the `/var/www/courtlistener` directory, simply use Django's manage
 scripts to launch the app. Make sure you pay close attention to adding the IP
@@ -125,6 +134,8 @@ up with:
 You should now have some results on the landing page as well as fully searchable
 opinions!
 
+To check for logs during the setup, Open your browser.
+Navigate to :  [http://localhost:8999/solr/#/](http://localhost:8999/solr/#/)
 
 ### Building the Vagrant Box (Optional)
 Here's how to crank out a box if you've got the Requirements above. Depending
