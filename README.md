@@ -133,8 +133,9 @@ up with:
 You should now have some results on the landing page as well as fully searchable
 opinions!
 
-To check for logs during the setup, Open your browser.
-Navigate to :  [http://localhost:8999/solr/#/](http://localhost:8999/solr/#/)
+If you've uncommented the lines in the Vagrantfile to forward the Solr web ports
+you can inspect the index cores directly using your browser:
+[http://localhost:8999/solr/#/](http://localhost:8999/solr/#/)
 
 ### Building the Vagrant Box (Optional)
 Here's how to crank out a box if you've got the Requirements above. Depending
