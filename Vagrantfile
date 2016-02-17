@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Begin the heinous provisioning script!
+# Begin the heinous provisioning script! (formerly in provision.sh)
 $script = <<SCRIPT
 export INSTALL_ROOT=/var/www/courtlistener
 export SETTINGS_PATH=$INSTALL_ROOT/cl/settings
@@ -86,8 +86,9 @@ Vagrant.configure(2) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 8000, host: 8888
+
   # To open an access port for Solr logs outside the machine, uncomment the
-  # following line:
+  # following line. Be careful with the admin ui as you could delete cores!
   # config.vm.network "forwarded_port", guest: 8983, host: 8999
 
   # Share an additional folder to the guest VM. The first argument is
@@ -109,7 +110,6 @@ Vagrant.configure(2) do |config|
   #   vb.memory = "1024"
   end
 
-  # config.vm.provision "file", source:"create_solr_core.py", destination:"~/create_solr_core.py"
-  # config.vm.provision "shell", path: "./provision.sh"
+  # Execute our embedded/inline provisioning script.
   config.vm.provision "shell", inline: $script
 end
