@@ -28,7 +28,7 @@ sleep 10
 
 # create solr core
 cd $INSTALL_ROOT
-sudo -u vagrant python manage.py shell < /home/vagrant/create_solr_core.py
+# sudo -u vagrant python manage.py shell < /home/vagrant/create_solr_core.py
 
 # eat your celery
 sudo cp $INSTALL_ROOT/scripts/etc/celeryd /etc/default/celeryd
@@ -57,4 +57,11 @@ export SOLR_AUDIO_SCHEMA=$INSTALL_ROOT/Solr/conf/audio_schema.xml
 export SOLR_AUDIO_INSTANCE_DIR=/usr/local/solr/example/solr/audio
 export SOLR_AUDIO_CONFIG=$INSTALL_ROOT/Solr/conf/solrconfig.xml
 
-curl http://localhost:8983/solr/admin/cores?action=CREATE&name=audio&config=$SOLR_AUDIO_CONFIG&instanceDir=$SOLR_AUDIO_INSTANCE_DIR&schema=$SOLR_AUDIO_SCHEMA&dataDir=$SOLR_AUDIO_DATA_DIR
+curl -X GET -G \
+	"http://127.0.0.1:8983/solr/admin/cores" \
+	-d action=CREATE \
+	-d name=audio \
+	-d config=$SOLR_AUDIO_CONFIG \
+	-d instanceDir=$SOLR_AUDIO_INSTANCE_DIR \
+	-d schema=$SOLR_AUDIO_SCHEMA \
+	-d dataDir=$SOLR_AUDIO_DATA_DIR
