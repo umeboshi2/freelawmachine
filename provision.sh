@@ -50,3 +50,11 @@ sudo service redis_6379 start
 # lastly, do any last second upgrades for CourtListener dependencies
 cd $INSTALL_ROOT
 sudo pip install -r requirements.txt --upgrade
+
+# finally, create Solr core for oral arguments
+export SOLR_AUDIO_DATA_DIR=$INSTALL_ROOT/Solr/data_audio
+export SOLR_AUDIO_SCHEMA=$INSTALL_ROOT/Solr/conf/audio_schema.xml
+export SOLR_AUDIO_INSTANCE_DIR=/usr/local/solr/example/solr/audio
+export SOLR_AUDIO_CONFIG=$INSTALL_ROOT/Solr/conf/solrconfig.xml
+
+curl http://localhost:8983/solr/admin/cores?action=CREATE&name=audio&config=$SOLR_AUDIO_CONFIG&instanceDir=$SOLR_AUDIO_INSTANCE_DIR&schema=$SOLR_AUDIO_SCHEMA&dataDir=$SOLR_AUDIO_DATA_DIR

@@ -38,6 +38,6 @@ Vagrant.configure(2) do |config|
   #   vb.memory = "1024"
   end
 
-  config.vm.provision "file", source:"create_solr_core.py", destination:"~/create_solr_core.py"
+  # config.vm.provision "file", source:"create_solr_core.py", destination:"~/create_solr_core.py"
   config.vm.provision "shell", path: "./provision.sh"
 end
