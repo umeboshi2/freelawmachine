@@ -28,11 +28,10 @@ sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/
 sudo service solr start
 
 # sleep a few second to let solr start
-sleep 10
+sleep 5
 
 # create solr core
 cd $INSTALL_ROOT
-# sudo -u vagrant python manage.py shell < /home/vagrant/create_solr_core.py
 
 # eat your celery
 sudo cp $INSTALL_ROOT/scripts/etc/celeryd /etc/default/celeryd
