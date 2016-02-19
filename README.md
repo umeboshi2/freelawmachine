@@ -37,9 +37,9 @@ You have two choices: build the box from scratch (the hard way) or grab a hosted
 
 #### The Easy Way
 
-1. In the root of this project, change to the `vagrant` dir:
+1. In the root of this project, change to the `flp` dir:
 
-  `cd vagrant`
+  `cd flp`
 
 2. We need to now grab the CourtListener and Juriscraper source. At time of
 this writing, the following will grab the two relevant development branches:
@@ -183,7 +183,7 @@ wipe it out when you've built a new box version and want to start over.
 
 ## Various Details
 * Current box is based on Ubuntu Server 32-bit (for now) 14.04 LTS Trusty Tahr
-* Trying to target dev's machines that have:
+* Trying to target developer host machines that have:
   * 8 GB RAM
   * [Virtualbox 5.x](https://www.virtualbox.org/)
   * Iffy VT-X support or running inside another VM (hence 32-bit VM)
