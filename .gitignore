@@ -6,9 +6,9 @@ packer/output-virtualbox-iso/
 
 # vagrant stuff
 .vagrant
-vagrant/courtlistener
-vagrant/juriscraper
-!vagrant/README.md
+flp/courtlistener
+flp/juriscraper
+!flp/README.md
 
 
 .DS_Store

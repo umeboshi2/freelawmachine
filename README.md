@@ -1,4 +1,4 @@
-Free Law (Virtual) Machine v1.4.0
+Free Law (Virtual) Machine v1.5.0
 ==================================
 
 This project is designed to provide automation around building a ready-to-run
