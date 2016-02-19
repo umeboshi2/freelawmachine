@@ -28,11 +28,10 @@ sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/
 sudo service solr start
 
 # sleep a few second to let solr start
-sleep 10
+sleep 5
 
 # create solr core
 cd $INSTALL_ROOT
-# sudo -u vagrant python manage.py shell < /home/vagrant/create_solr_core.py
 
 # eat your celery
 sudo cp $INSTALL_ROOT/scripts/etc/celeryd /etc/default/celeryd
@@ -95,8 +94,8 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "./vagrant/courtlistener", "/var/www/courtlistener"
-  config.vm.synced_folder "./vagrant/juriscraper", "/usr/local/juriscraper"
+  config.vm.synced_folder "./flp/courtlistener", "/var/www/courtlistener", create: true
+  config.vm.synced_folder "./flp/juriscraper", "/usr/local/juriscraper", create: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.

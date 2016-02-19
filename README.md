@@ -1,4 +1,4 @@
-Free Law (Virtual) Machine v1.4.0
+Free Law (Virtual) Machine v1.5.0
 ==================================
 
 This project is designed to provide automation around building a ready-to-run
@@ -44,9 +44,9 @@ You have two choices: build the box from scratch (the hard way) or grab a hosted
 2. We need to now grab the CourtListener and Juriscraper source. At time of
 this writing, the following will grab the two relevant development branches:
 
-  `git clone https://github.com/freelawproject/courtlistener.git`
+  `git clone https://github.com/freelawproject/courtlistener`
 
-  `git clone https://github.com/freelawproject/juriscraper`
+  `git clone -b issue-59-pip https://github.com/freelawproject/juriscraper`
 
 3. Return to the root of this project.
 
