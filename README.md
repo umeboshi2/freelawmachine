@@ -46,7 +46,7 @@ this writing, the following will grab the two relevant development branches:
 
   `git clone https://github.com/freelawproject/courtlistener`
 
-  `git clone -b issue-59-pip https://github.com/freelawproject/juriscraper`
+  `git clone https://github.com/freelawproject/juriscraper`
 
 3. Return to the root of this project.
 
