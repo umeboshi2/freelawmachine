@@ -9,7 +9,8 @@ export SETTINGS_PATH=$INSTALL_ROOT/cl/settings
 # Git the project source and set up a dev version of the 05-private.py
 sudo chown -R vagrant:vagrant $INSTALL_ROOT
 cp $SETTINGS_PATH/05-private.example $SETTINGS_PATH/05-private.py
-python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" >> $SETTINGS_PATH/05-private.py
+python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" \
+| sudo tee -a $SETTINGS_PATH/05-private.py
 
 # Purge Solr indices if they exist
 sudo rm -Rf $INSTALL_ROOT/Solr/data*
@@ -103,6 +104,7 @@ Vagrant.configure(2) do |config|
   #
   config.vm.provider "virtualbox" do |vb, override|
   #   # Display the VirtualBox GUI when booting the machine
+		vb.customize ["modifyvm", :id, "--vram", "22"]
     vb.gui = false
   #
   #   # Customize the amount of memory on the VM:
