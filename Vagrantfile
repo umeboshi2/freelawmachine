@@ -9,8 +9,16 @@ export SETTINGS_PATH=$INSTALL_ROOT/cl/settings
 # Git the project source and set up a dev version of the 05-private.py
 sudo chown -R vagrant:vagrant $INSTALL_ROOT
 cp $SETTINGS_PATH/05-private.example $SETTINGS_PATH/05-private.py
-python -c "from random import choice; print 'SECRET_KEY = \''+''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])+'\''" \
-| sudo tee -a $SETTINGS_PATH/05-private.py
+printf "\
+from random import choice\n\
+f = open('secret_key.txt', 'wb')\n\
+key = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(50)])\n\
+quote = '\\u22'\n\
+f.write('SECRET_KEY = ' + quote + key + quote)\n\
+f.close()\n" | tee -a keygen.py
+
+python keygen.py
+cat secret_key.txt | sudo tee -a $SETTINGS_PATH/05-private.py
 
 # Purge Solr indices if they exist
 sudo rm -Rf $INSTALL_ROOT/Solr/data*
