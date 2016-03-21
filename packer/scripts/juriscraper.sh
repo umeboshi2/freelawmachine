@@ -39,7 +39,7 @@ sudo chown -R vagrant:vagrant /usr/local/juriscraper
 # REMOVED AS THE FOCUS IS CURRENTLY TO USE JURISCRAPER WITHIN COURTLISTENER
 
 # add Juriscraper to your python path (in Ubuntu/Debian)
-sudo ln -s /usr/local/juriscraper/juriscraper \
+sudo ln -s /usr/local/juriscraper \
  `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/juriscraper
 
 echo 'Setting up Juriscraper log dir...'
