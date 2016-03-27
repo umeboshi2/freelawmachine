@@ -1,6 +1,6 @@
 #!/bin/bash
 # DOES THIS REALLY RUN IN BASH WHEN USING PACKER?!? Could cause issues if no
-export CL_BRANCH=opinion-split
+export CL_BRANCH=master
 
 echo '=================================='
 echo ' Free Law Machine [CourtListener]'

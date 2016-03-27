@@ -1,5 +1,5 @@
 #!/bin/bash
-export SCRAPER_BRANCH=issue-59-pip
+export SCRAPER_BRANCH=master
 
 echo '=================================='
 echo ' Free Law Machine [Juriscraper]'
