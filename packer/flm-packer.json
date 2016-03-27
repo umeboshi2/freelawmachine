@@ -48,7 +48,7 @@
             "iso_checksum_type": "sha256",
             "iso_urls": [
               "iso/{{user `ubuntu_iso`}}",
-              "http://mirror.pnl.gov/releases/trusty/ubuntu-14.04.3-server-i386.iso"
+              "http://mirror.pnl.gov/releases/trusty/ubuntu-14.04.4-server-i386.iso"
             ],
             "ssh_username": "vagrant",
             "ssh_password": "vagrant",
