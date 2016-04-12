@@ -3,7 +3,7 @@
         "ubuntu_iso": "ubuntu-14.04.3-server-i386.iso",
         "atlas_username": "freelawproject",
         "atlas_name": "freelawbox32",
-        "version": "1.5.3"
+        "version": "1.5.4"
     },
     "provisioners": [
         {
