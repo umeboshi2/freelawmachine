@@ -40,5 +40,9 @@ echo '>> Installing Reporters DB...'
 sudo git clone https://github.com/freelawproject/reporters-db /usr/local/reporters_db
 sudo ln -s /usr/local/reporters_db  `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/reporters_db
 
+echo '>> Installing Judge Pics...'
+sudo git clone https://github.com/freelawproject/judge-pics /usr/local/judge_pics
+sudo ln -s /usr/local/judge_pics `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/judge_pics
+
 echo '>> Installing Libav...'
 sudo apt-get -yf install libav-tools
