@@ -49,10 +49,12 @@ CELERYD_USER='vagrant' \n\
 CELERYD_GROUP='vagrant'\n" \
 | sudo tee -a /etc/default/celeryd
 
-# update packaged stuff
+# do some 'git pull'-ups for upper body strength
 cd /usr/local/seal_rookery
 git pull
 cd /usr/local/reporters_db
+git pull
+cd /usr/local/judge_pics
 git pull
 
 # celery and redis
