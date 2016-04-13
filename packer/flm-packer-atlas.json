@@ -17,6 +17,7 @@
                 "scripts/tesseract.sh",
                 "scripts/redis.sh",
                 "scripts/celery.sh",
+                "scripts/neo4j.sh",
                 "scripts/init.sh",
                 "scripts/zerodisk.sh"
             ],
