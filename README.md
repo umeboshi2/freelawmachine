@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Free Law (Virtual) Machine v1.6.0
+=======
+Free Law (Virtual) Machine v1.5.5
+>>>>>>> master
 ==================================
 
 This project is designed to provide automation around building a ready-to-run
@@ -9,10 +13,10 @@ Hopefully, it will do away with the manual process described
 and make having a dev environment as easy as `vagrant up`.
 
 ## Requirements
-* [Vagrant 1.7.4](https://www.vagrantup.com)
+* [Vagrant 1.8.1](https://www.vagrantup.com)
 * [Virtualbox 5.x](https://www.virtualbox.org/)
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* (Optional) [Packer 0.8.6](https://packer.io/downloads.html)
+* (Optional) [Packer 0.10.0](https://packer.io/downloads.html)
 
 
 And a high-speed network connection since the VM will need to pull down

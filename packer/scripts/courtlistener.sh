@@ -24,12 +24,6 @@ export INSTALL_ROOT=/var/www/courtlistener
 sudo bash -c "echo $'INSTALL_ROOT=\"/var/www/courtlistener\"' >> /etc/courtlistener"
 sudo bash -c "echo $'CL_SOLR_XMX=\"500M\"' >> /etc/courtlistener"
 
-echo '>> Installing Django dependencies..'
-cd ~
-wget --no-check-certificate \
- https://raw.githubusercontent.com/freelawproject/courtlistener/$CL_BRANCH/requirements.txt
-sudo pip install -r requirements.txt
-
 echo '>> Creating development CourtListener directories...'
 sudo mkdir /var/log/courtlistener
 sudo chown -R vagrant:vagrant /var/log/courtlistener
@@ -44,5 +38,13 @@ echo '>> Installing Judge Pics...'
 sudo git clone https://github.com/freelawproject/judge-pics /usr/local/judge_pics
 sudo ln -s /usr/local/judge_pics `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/judge_pics
 
-echo '>> Installing Libav...'
-sudo apt-get -yf install libav-tools
+echo '>> Installing non-Python dependencies ...'
+sudo apt-get -yf install libav-tools libffi-dev
+sudo apt-get -yf install python-numpy python-scipy libblas-dev liblapack-dev \
+  gfortran python-dev cython
+
+echo '>> Installing CourtListener Python requirements..'
+cd ~
+wget --no-check-certificate \
+ https://raw.githubusercontent.com/freelawproject/courtlistener/$CL_BRANCH/requirements.txt
+sudo pip install -r requirements.txt
