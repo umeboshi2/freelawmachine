@@ -30,9 +30,9 @@ sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/co
 for CORE in "audio", "opinion" "docket" "person"
 	do
 		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$CORE
-		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$CORE_test
-		sudo ln -s -f /var/www/courtlistener/Solr/conf/$CORE_schema.xml /usr/local/solr/example/solr/$CORE/conf/schema.xml
-		sudo ln -s -f /var/www/courtlistener/Solr/conf/$CORE_schema.xml /usr/local/solr/example/solr/$CORE_test/conf/schema.xml
+		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$CORE\_test
+		sudo ln -s -f /var/www/courtlistener/Solr/conf/$CORE\_schema.xml /usr/local/solr/example/solr/$CORE/conf/schema.xml
+		sudo ln -s -f /var/www/courtlistener/Solr/conf/$CORE\_schema.xml /usr/local/solr/example/solr/$CORE_test/conf/schema.xml
 	done
 
 # might not be needed due to [develop a680df1] change
@@ -73,7 +73,7 @@ for CORE in "audio", "opinion" "docket" "person"
 			-d name=$CORE \
 			-d config=$INSTALL_ROOT/Solr/conf/solrconfig.xml \
 			-d instanceDir=/usr/local/solr/example/solr/$CORE \
-			-d schema=$INSTALL_ROOT/Solr/conf/$CORE_schema.xml \
+			-d schema=$INSTALL_ROOT/Solr/conf/$CORE\_schema.xml \
 			-d dataDir=$INSTALL_ROOT/Solr/data_$CORE
 	done
 
