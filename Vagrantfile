@@ -27,12 +27,15 @@ sudo rm -Rf $INSTALL_ROOT/Solr/data*
 sudo mv /usr/local/solr/example/solr/collection1/conf/solrconfig.xml /usr/local/solr/example/solr/collection1/conf/solrconfig.orig
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/solrconfig.xml /usr/local/solr/example/solr/collection1/conf/solrconfig.xml
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/collection1/conf/schema.xml
-for CORE in "audio", "opinion" "docket" "person"
+
+for CORE in "audio" "opinion" "docket" "person"
 	do
+		TEST_DIR=$CORE\_test
+		SCHEMA_FILE=$CORE\_schema.xml
 		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$CORE
-		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$CORE\_test
-		sudo ln -s -f /var/www/courtlistener/Solr/conf/$CORE\_schema.xml /usr/local/solr/example/solr/$CORE/conf/schema.xml
-		sudo ln -s -f /var/www/courtlistener/Solr/conf/$CORE\_schema.xml /usr/local/solr/example/solr/$CORE_test/conf/schema.xml
+		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$TEST_DIR
+		sudo ln -s -f $INSTALL_ROOT/Solr/conf/$SCHEMA_FILE /usr/local/solr/example/solr/$CORE/conf/schema.xml
+		sudo ln -s -f $INSTALL_ROOT/Solr/conf/$SCHEMA_FILE /usr/local/solr/example/solr/$TEST_DIR/conf/schema.xml
 	done
 
 # might not be needed due to [develop a680df1] change
@@ -65,16 +68,26 @@ cd $INSTALL_ROOT
 sudo pip install -r requirements.txt --upgrade
 
 # finally, create Solr core for oral arguments
-for CORE in "audio", "opinion" "docket" "person"
+for CORE in "audio" "opinion" "docket" "person"
 	do
+		DATA_DIR=$INSTALL_ROOT/Solr/data_$CORE
+		INSTANCE_DIR=/usr/local/solr/example/solr/$CORE
+		CONFIG_FILE=$INSTALL_ROOT/Solr/conf/solrconfig.xml
+		EXT=_schema.xml
+		SCHEMA_FILE=$INSTALL_ROOT/Solr/conf/$CORE$EXT
+		echo creating core $CORE with:
+		echo -- DATA_DIR=$DATA_DIR
+		echo -- INSTANCE_DIR=$INSTANCE_DIR
+		echo -- CONFIG_FILE=$CONFIG_FILE
+		echo -- SCHEMA_FILE=$SCHEMA_FILE
 		curl -v -X GET -G \
 			"http://127.0.0.1:8983/solr/admin/cores" \
 			-d action=CREATE \
 			-d name=$CORE \
-			-d config=$INSTALL_ROOT/Solr/conf/solrconfig.xml \
-			-d instanceDir=/usr/local/solr/example/solr/$CORE \
-			-d schema=$INSTALL_ROOT/Solr/conf/$CORE\_schema.xml \
-			-d dataDir=$INSTALL_ROOT/Solr/data_$CORE
+			-d config=$CONFIG_FILE \
+			-d instanceDir=$INSTANCE_DIR \
+			-d schema=$SCHEMA_FILE \
+			-d dataDir=$DATA_DIR
 	done
 
 SCRIPT
