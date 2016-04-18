@@ -31,7 +31,8 @@ sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/co
 for CORE in "audio" "opinion" "dockets" "person"
 	do
 		TEST_DIR=$CORE\_test
-		SCHEMA_FILE=$CORE\_schema.xml
+		EXT=_schema.xml
+		SCHEMA_FILE=$CORE$EXT
 		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$CORE
 		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$TEST_DIR
 		sudo ln -s -f $INSTALL_ROOT/Solr/conf/$SCHEMA_FILE /usr/local/solr/example/solr/$CORE/conf/schema.xml
@@ -73,21 +74,16 @@ for CORE in "audio" "dockets" "person"
 	do
 		DATA_DIR=$INSTALL_ROOT/Solr/data_$CORE
 		INSTANCE_DIR=/usr/local/solr/example/solr/$CORE
-		CONFIG_FILE=$INSTALL_ROOT/Solr/conf/solrconfig.xml
-		EXT=_schema.xml
-		SCHEMA_FILE=$INSTALL_ROOT/Solr/conf/$CORE$EXT
 		echo creating core $CORE with:
 		echo -- DATA_DIR=$DATA_DIR
 		echo -- INSTANCE_DIR=$INSTANCE_DIR
-		echo -- CONFIG_FILE=$CONFIG_FILE
-		echo -- SCHEMA_FILE=$SCHEMA_FILE
 		curl -v -X GET -G \
 			"http://127.0.0.1:8983/solr/admin/cores" \
 			-d action=CREATE \
 			-d name=$CORE \
-			-d config=$CONFIG_FILE \
+			-d config=solrconfig.xml \
 			-d instanceDir=$INSTANCE_DIR \
-			-d schema=$SCHEMA_FILE \
+			-d schema=schema.xml \
 			-d dataDir=$DATA_DIR
 	done
 
