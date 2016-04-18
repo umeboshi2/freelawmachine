@@ -23,24 +23,27 @@ cat secret_key.txt | sudo tee -a $SETTINGS_PATH/05-private.py
 # Purge Solr indices if they exist
 sudo rm -Rf $INSTALL_ROOT/Solr/data*
 
-# Initialize Solr
+# Initialize Solr Cores
 sudo mv /usr/local/solr/example/solr/collection1/conf/solrconfig.xml /usr/local/solr/example/solr/collection1/conf/solrconfig.orig
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/solrconfig.xml /usr/local/solr/example/solr/collection1/conf/solrconfig.xml
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/collection1/conf/schema.xml
-sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/audio
-sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/opinion_test
-sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/audio_test
-sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio/conf/schema.xml
-sudo ln -s -f /var/www/courtlistener/Solr/conf/audio_schema.xml /usr/local/solr/example/solr/audio_test/conf/schema.xml
+
+for CORE in "audio" "opinion" "dockets" "person"
+	do
+		TEST_DIR=$CORE\_test
+		EXT=_schema.xml
+		SCHEMA_FILE=$CORE$EXT
+		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$CORE
+		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$TEST_DIR
+		sudo ln -s -f $INSTALL_ROOT/Solr/conf/$SCHEMA_FILE /usr/local/solr/example/solr/$CORE/conf/schema.xml
+		sudo ln -s -f $INSTALL_ROOT/Solr/conf/$SCHEMA_FILE /usr/local/solr/example/solr/$TEST_DIR/conf/schema.xml
+	done
 
 # might not be needed due to [develop a680df1] change
 sudo service solr start
 
 # sleep a few second to let solr start
 sleep 5
-
-# create solr core
-cd $INSTALL_ROOT
 
 # eat your celery
 sudo cp $INSTALL_ROOT/scripts/etc/celeryd /etc/default/celeryd
@@ -66,19 +69,23 @@ cd $INSTALL_ROOT
 sudo pip install -r requirements.txt --upgrade
 
 # finally, create Solr core for oral arguments
-export SOLR_AUDIO_DATA_DIR=$INSTALL_ROOT/Solr/data_audio
-export SOLR_AUDIO_SCHEMA=$INSTALL_ROOT/Solr/conf/audio_schema.xml
-export SOLR_AUDIO_INSTANCE_DIR=/usr/local/solr/example/solr/audio
-export SOLR_AUDIO_CONFIG=$INSTALL_ROOT/Solr/conf/solrconfig.xml
-
-curl -v -X GET -G \
-	"http://127.0.0.1:8983/solr/admin/cores" \
-	-d action=CREATE \
-	-d name=audio \
-	-d config=$SOLR_AUDIO_CONFIG \
-	-d instanceDir=$SOLR_AUDIO_INSTANCE_DIR \
-	-d schema=$SOLR_AUDIO_SCHEMA \
-	-d dataDir=$SOLR_AUDIO_DATA_DIR
+# note: we remove "opinion" as that's only configred previously for testing
+for CORE in "audio" "dockets" "person"
+	do
+		DATA_DIR=$INSTALL_ROOT/Solr/data_$CORE
+		INSTANCE_DIR=/usr/local/solr/example/solr/$CORE
+		echo creating core $CORE with:
+		echo -- DATA_DIR=$DATA_DIR
+		echo -- INSTANCE_DIR=$INSTANCE_DIR
+		curl -v -X GET -G \
+			"http://127.0.0.1:8983/solr/admin/cores" \
+			-d action=CREATE \
+			-d name=$CORE \
+			-d config=solrconfig.xml \
+			-d instanceDir=$INSTANCE_DIR \
+			-d schema=schema.xml \
+			-d dataDir=$DATA_DIR
+	done
 
 SCRIPT
 
@@ -99,7 +106,7 @@ Vagrant.configure(2) do |config|
 
   # To open an access port for Solr logs outside the machine, uncomment the
   # following line. Be careful with the admin ui as you could delete cores!
-  # config.vm.network "forwarded_port", guest: 8983, host: 8999
+  config.vm.network "forwarded_port", guest: 8983, host: 8999
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
