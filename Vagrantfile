@@ -28,7 +28,7 @@ sudo mv /usr/local/solr/example/solr/collection1/conf/solrconfig.xml /usr/local/
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/solrconfig.xml /usr/local/solr/example/solr/collection1/conf/solrconfig.xml
 sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/collection1/conf/schema.xml
 
-for CORE in "audio" "opinion" "docket" "person"
+for CORE in "audio" "opinion" "dockets" "person"
 	do
 		TEST_DIR=$CORE\_test
 		SCHEMA_FILE=$CORE\_schema.xml
@@ -68,7 +68,8 @@ cd $INSTALL_ROOT
 sudo pip install -r requirements.txt --upgrade
 
 # finally, create Solr core for oral arguments
-for CORE in "audio" "opinion" "docket" "person"
+# note: we remove "opinion" as that's only configred previously for testing
+for CORE in "audio" "dockets" "person"
 	do
 		DATA_DIR=$INSTALL_ROOT/Solr/data_$CORE
 		INSTANCE_DIR=/usr/local/solr/example/solr/$CORE
@@ -109,7 +110,7 @@ Vagrant.configure(2) do |config|
 
   # To open an access port for Solr logs outside the machine, uncomment the
   # following line. Be careful with the admin ui as you could delete cores!
-  # config.vm.network "forwarded_port", guest: 8983, host: 8999
+  config.vm.network "forwarded_port", guest: 8983, host: 8999
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
