@@ -100,7 +100,7 @@ Vagrant.configure(2) do |config|
 
   # To open an access port for Solr logs outside the machine, uncomment the
   # following line. Be careful with the admin ui as you could delete cores!
-  # config.vm.network "forwarded_port", guest: 8983, host: 8999
+  config.vm.network "forwarded_port", guest: 8983, host: 8999
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
