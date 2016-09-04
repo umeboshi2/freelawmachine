@@ -1,6 +1,6 @@
 {
     "variables": {
-        "ubuntu_iso": "ubuntu-14.04.3-server-i386.iso",
+        "ubuntu_iso": "ubuntu-14.04.5-server-i386.iso",
         "atlas_username": "freelawproject",
         "atlas_name": "freelawbox32",
         "version": "1.6.0"
@@ -44,11 +44,11 @@
             "disk_size": 20480,
             "guest_os_type": "Ubuntu",
             "http_directory": "http",
-            "iso_checksum": "e20cf9e0812b52287ca22ac1815bc933c0cfef2be88191110b697d8943bef19e",
+            "iso_checksum": "6071b0844ecbb8aa9a246b15c7aa20e798d42ed5b41c1b71aaea1f4283985ba4",
             "iso_checksum_type": "sha256",
             "iso_urls": [
               "iso/{{user `ubuntu_iso`}}",
-              "http://mirror.pnl.gov/releases/trusty/ubuntu-14.04.4-server-i386.iso"
+              "http://mirror.pnl.gov/releases/trusty/{{user `ubuntu_iso`}}"
             ],
             "ssh_username": "vagrant",
             "ssh_password": "vagrant",
