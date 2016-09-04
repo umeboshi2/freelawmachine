@@ -53,10 +53,12 @@ CELERYD_GROUP='vagrant'\n" \
 | sudo tee -a /etc/default/celeryd
 
 # do some 'git pull'-ups for upper body strength
-cd /usr/local/seal_rookery
-git pull
-cd /usr/local/reporters_db
-git pull
+# cd /usr/local/seal_rookery
+# git pull
+# cd /usr/local/reporters_db
+# git pull
+sudo -H pip install seal_rookery
+sudo -H pip install juriscraper
 cd /usr/local/judge_pics
 git pull
 
@@ -66,7 +68,7 @@ sudo service redis_6379 start
 
 # lastly, do any last second upgrades for CourtListener dependencies
 cd $INSTALL_ROOT
-sudo pip install -r requirements.txt --upgrade
+sudo -H pip install -r requirements.txt --upgrade
 
 # finally, create Solr core for oral arguments
 # note: we remove "opinion" as that's only configred previously for testing
@@ -97,7 +99,7 @@ Vagrant.configure(2) do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
-  config.vm.box = "freelawproject/freelawbox32"
+  config.vm.box = "freelawproject/freelawbox64"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -113,7 +115,7 @@ Vagrant.configure(2) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder "./flp/courtlistener", "/var/www/courtlistener", create: true
-  config.vm.synced_folder "./flp/juriscraper", "/usr/local/juriscraper", create: true
+  # config.vm.synced_folder "./flp/juriscraper", "/usr/local/juriscraper", create: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -125,7 +127,7 @@ Vagrant.configure(2) do |config|
     vb.gui = false
   #
   #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
+    vb.memory = "2048"
   end
 
   # Execute our embedded/inline provisioning script.

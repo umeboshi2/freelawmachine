@@ -38,17 +38,18 @@ sudo chown -R vagrant:vagrant /usr/local/juriscraper
 #echo 'Installing current Juriscraper python dependencies...'
 # REMOVED AS THE FOCUS IS CURRENTLY TO USE JURISCRAPER WITHIN COURTLISTENER
 
+# moving Juriscraper to just a pip-based provisioning in Vagrantfile
 # add Juriscraper to your python path (in Ubuntu/Debian)
-sudo ln -s /usr/local/juriscraper \
- `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/juriscraper
+#sudo ln -s /usr/local/juriscraper \
+# `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/juriscraper
 
 echo 'Setting up Juriscraper log dir...'
 # create a directory for logs (this can be skipped, and no logs will be created)
 sudo mkdir -p /var/log/juriscraper
 sudo chown vagrant:vagrant /var/log/juriscraper
 
-
-echo 'Downloading Seal Rookery (This takes awhile! Grab some coffee)...'
-cd /usr/local
-sudo git clone https://github.com/freelawproject/seal-rookery /usr/local/seal_rookery
-sudo ln -s `pwd`/seal_rookery `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/seal_rookery
+## moving seal_rookery to just a pip-based provisioning in Vagrantfile
+# echo 'Downloading Seal Rookery (This takes awhile! Grab some coffee)...'
+#cd /usr/local
+#sudo git clone https://github.com/freelawproject/seal-rookery /usr/local/seal_rookery
+#sudo ln -s `pwd`/seal_rookery `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`/seal_rookery

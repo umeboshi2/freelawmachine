@@ -1,8 +1,8 @@
 {
     "variables": {
-        "ubuntu_iso": "ubuntu-14.04.5-server-i386.iso",
+        "ubuntu_iso": "ubuntu-14.04.5-server-amd64.iso",
         "atlas_username": "freelawproject",
-        "atlas_name": "freelawbox32",
+        "atlas_name": "freelawbox64",
         "version": "1.6.0"
     },
     "provisioners": [
@@ -42,9 +42,9 @@
             "headless": true,
             "boot_wait": "10s",
             "disk_size": 20480,
-            "guest_os_type": "Ubuntu",
+            "guest_os_type": "Ubuntu_64",
             "http_directory": "http",
-            "iso_checksum": "6071b0844ecbb8aa9a246b15c7aa20e798d42ed5b41c1b71aaea1f4283985ba4",
+            "iso_checksum": "dde07d37647a1d2d9247e33f14e91acb10445a97578384896b4e1d985f754cc1",
             "iso_checksum_type": "sha256",
             "iso_urls": [
               "iso/{{user `ubuntu_iso`}}",
@@ -68,16 +68,6 @@
         "type": "vagrant",
         "keep_input_artifact": false,
         "output": "{{user `atlas_name`}}-{{user `version`}}.box"
-      },
-      {
-          "type": "atlas",
-          "only": ["virtualbox-iso"],
-          "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
-          "artifact_type": "vagrant.box",
-          "metadata": {
-              "provider": "virtualbox",
-              "version": "{{user `version`}}"
-          }
       }]
     ]
 }
