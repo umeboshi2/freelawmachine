@@ -58,6 +58,7 @@ CELERYD_GROUP='vagrant'\n" \
 # cd /usr/local/reporters_db
 # git pull
 sudo -H pip install seal_rookery
+update-seals -f
 sudo -H pip install juriscraper
 cd /usr/local/judge_pics
 git pull
