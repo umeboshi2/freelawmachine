@@ -10,6 +10,7 @@
             "type": "shell",
             "scripts": [
                 "scripts/vagrant.sh",
+                "scripts/git.sh",
                 "scripts/courtlistener.sh",
                 "scripts/juriscraper.sh",
                 "scripts/postgresql.sh",
