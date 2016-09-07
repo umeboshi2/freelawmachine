@@ -1,6 +1,7 @@
 {
     "variables": {
-        "ubuntu_iso": "ubuntu-14.04.5-server-i386.iso",
+        "target_arch": "i386",
+        "ubuntu_version": "ubuntu-14.04.5-server",
         "atlas_username": "freelawproject",
         "atlas_name": "freelawbox32",
         "version": "1.6.0"
@@ -20,6 +21,9 @@
                 "scripts/celery.sh",
                 "scripts/init.sh",
                 "scripts/zerodisk.sh"
+            ],
+            "environment_vars": [
+              "TARGET_ARCH={{user `target_arch`}}"
             ],
             "override": {
                 "virtualbox-iso": {
@@ -48,8 +52,8 @@
             "iso_checksum": "6071b0844ecbb8aa9a246b15c7aa20e798d42ed5b41c1b71aaea1f4283985ba4",
             "iso_checksum_type": "sha256",
             "iso_urls": [
-              "iso/{{user `ubuntu_iso`}}",
-              "http://mirror.pnl.gov/releases/trusty/{{user `ubuntu_iso`}}"
+              "./iso/{{user `ubuntu_version`}}-{{user `target_arch`}}.iso",
+              "http://mirror.pnl.gov/releases/trusty/{{user `ubuntu_version`}}-{{user `target_arch`}}.iso"
             ],
             "ssh_username": "vagrant",
             "ssh_password": "vagrant",

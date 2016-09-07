@@ -5,8 +5,11 @@ echo '=================================='
 echo ' Free Law Machine [Juriscraper]'
 echo "    branch: $SCRAPER_BRANCH"
 echo '=================================='
-
-export ARCH=i686 # change to x86_64 for 64-bit
+if ["$TARGET_ARCH" = "amd64"]; then
+  export ARCH=x86_64 # change to x86_64 for 64-bit
+else
+  export ARCH=i686
+fi
 
 # install the dependencies
 echo 'Installing dependencies...'
