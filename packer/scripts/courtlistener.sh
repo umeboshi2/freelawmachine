@@ -45,6 +45,9 @@ sudo apt-get -yf install python-numpy python-scipy libblas-dev liblapack-dev \
 
 echo '>> Installing CourtListener Python requirements..'
 cd ~
+sudo -H pip install pip --upgrade
+sudo -H pip install setuptools --upgrade
+sudo -H pip install wheel --upgrade
 wget --no-check-certificate \
  https://raw.githubusercontent.com/freelawproject/courtlistener/$CL_BRANCH/requirements.txt
 sudo -H pip install -r requirements.txt --upgrade
