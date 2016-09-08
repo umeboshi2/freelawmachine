@@ -38,9 +38,11 @@ sudo ln -s -f $INSTALL_ROOT/Solr/conf/schema.xml /usr/local/solr/example/solr/co
 
 for CORE in "audio" "opinion" "dockets" "person"
 	do
-		TEST_DIR=$CORE\_test
+		echo "Copying and symlinking files for core: $CORE"
+		TEST_DIR="$CORE"_test
 		EXT=_schema.xml
 		SCHEMA_FILE=$CORE$EXT
+		echo "--{TEST_DIR: $TEST_DIR, SCHEMA_FILE: $SCHEMA_FILE}"
 		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$CORE
 		sudo cp -r /usr/local/solr/example/solr/collection1 /usr/local/solr/example/solr/$TEST_DIR
 		sudo ln -s -f $INSTALL_ROOT/Solr/conf/$SCHEMA_FILE /usr/local/solr/example/solr/$CORE/conf/schema.xml
