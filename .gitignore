@@ -9,6 +9,6 @@ packer/output-virtualbox-iso/
 flp/courtlistener
 flp/juriscraper
 !flp/README.md
-
+courtlistener/
 
 .DS_Store

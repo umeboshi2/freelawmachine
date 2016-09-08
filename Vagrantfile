@@ -6,8 +6,15 @@ $script = <<SCRIPT
 export INSTALL_ROOT=/var/www/courtlistener
 export SETTINGS_PATH=$INSTALL_ROOT/cl/settings
 
-# Git the project source and set up a dev version of the 05-private.py
 sudo chown -R vagrant:vagrant $INSTALL_ROOT
+cd $INSTALL_ROOT
+
+# git what needs to be got, if it needs git'in
+if [ ! -d ".git" ]; then
+	git clone https://github.com/freelawproject/courtlistener .
+fi
+
+# Git the project source and set up a dev version of the 05-private.py
 cp $SETTINGS_PATH/05-private.example $SETTINGS_PATH/05-private.py
 printf "\
 from random import choice\n\
@@ -19,6 +26,7 @@ f.close()\n" | tee -a keygen.py
 
 python keygen.py
 cat secret_key.txt | sudo tee -a $SETTINGS_PATH/05-private.py
+rm keygen.py secret_key.txt
 
 # Purge Solr indices if they exist
 sudo rm -Rf $INSTALL_ROOT/Solr/data*
@@ -115,7 +123,7 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "./flp/courtlistener", "/var/www/courtlistener", create: true
+  config.vm.synced_folder "./courtlistener", "/var/www/courtlistener", create: true
   # config.vm.synced_folder "./flp/juriscraper", "/usr/local/juriscraper", create: true
 
   # Provider-specific configuration so you can fine-tune various
