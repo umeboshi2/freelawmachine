@@ -32,7 +32,7 @@ resides. _This is not required as the box should do that for you at startup._
 * VirtualBox is now told to allocate *2 GB* of memory to the box. This should be
 enough for dev use of CourtListener and small enough not to impact most hosts.
 
-## Using the Free Law Machine
+# Using the Free Law Machine
 
 There are two ways to use this project:
 
@@ -44,7 +44,7 @@ for use in development or testing CourtListener.
 how the box is built or you want to contribute to this project.
 
 
-### Running CourtListener
+# Running CourtListener
 
 1. Make sure you have the base requirements of *Vagrant* and *VirtualBox*
 installed and up to date.
@@ -80,14 +80,11 @@ Vagrant provisioning scripts.
   ./manage.py syncdb [to create the admin user]
   ```
 
-## Building Your Own Free Law Machine
-Don't like the easy way? Skip ahead to "Building the Vagrant Box (Optional)"
-and complete those steps first, then run through the "Easy Way" steps. This is
-not for the feint of heart.
+#  Recommended Things to do Once Up and Running
+Here are a couple additional steps to get you started if you're unfamiliar with
+CourtListener or your way around a Django app.
 
-### Recommended Things to do Once Up and Running
-
-#### Starting CourtListener
+## Starting CourtListener
 From within the `/var/www/courtlistener` directory, simply use Django's manage
 scripts to launch the app. Make sure you pay close attention to adding the IP
 address and port number so it plays nice with Vagrant's NAT networking and the
@@ -106,7 +103,7 @@ instance that looks like [courtlistener.com](https://www.courtlistener.com/).
   Navigate to: [http://localhost:8888](http://localhost:8888)
 
 
-#### Scrape Some Court Opinions!
+## Scrape Some Court Opinions!
 
 You can easily load some content into your CourtListener instance by scraping
 some courts using the [Juriscraper](https://github.com/freelawproject/juriscraper/)
@@ -132,24 +129,6 @@ docs in the index go live:
   --solr-url http://127.0.0.1:8983/solr/collection1
 ```
 
-
-#### Starting and Stopping Solr and Redis
-If Solr or Redis is not already up and running, you can start both using the
-`service` commands as root.
-
-  ``` bash
-  sudo service solr start
-  sudo sudo service redis_6379 start
-  ```
-
-
-Then (if you don't have it running in another shell), bring CourtListener back
-up with:
-
-```bash
-./manage.py runserver 0.0.0.0:8000
-```
-
 You should now have some results on the landing page as well as fully searchable
 opinions!
 
@@ -157,7 +136,7 @@ If you've uncommented the lines in the Vagrantfile to forward the Solr web ports
 you can inspect the index cores directly using your browser:
 [http://localhost:8999/solr/#/](http://localhost:8999/solr/#/)
 
-### Building a new Vagrant Box (For Contributors)
+# Building a new Vagrant Box (For Contributors)
 Here's how to crank out a box if you've got the Requirements above. Depending
 on your network connection, CPU, disk, etc. this could take anywhere from 5
 mins to maybe 30 mins. Be patient :-)
@@ -188,7 +167,7 @@ _.box_ file with others the old fashioned way, host it at a URL, etc. (Vagrant
 supports pulling boxes via URL.)
 
 
-## Development Tips
+# Vagrant Tips
 If you're playing around, here are some things to remember:
 * Vagrant installs boxes typically in your home directory under something like
 `.vagrant.d`. Make sure you use the same box name when using `vagrant box add`
@@ -199,5 +178,5 @@ is and where you are running `vagrant up`. Do a simple `vagrant destroy` to
 wipe it out when you've built a new box version and want to start over.
 
 
-## Some References
+# Some References
 [A packer template for Vagrant from Hashicorp](https://github.com/hashicorp/atlas-packer-vagrant-tutorial.git)
