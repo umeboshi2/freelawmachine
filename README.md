@@ -25,6 +25,12 @@ connection at your own $$ peril!)
 * Updated to use the latest Ubuntu 14.04 LTS release.
 * Automatic cloning of CourtListener, so you don't even need a local Git client!
 
+Major changes for users of 1.5 and earlier:
+* The `flp` directory is no longer used or needed. If you want to pre-clone a
+copy of CourtListener, simply clone it to the directory where the Vagrantfile
+resides. _This is not required as the box should do that for you at startup._
+* VirtualBox is now told to allocate *2 GB* of memory to the box. This should be
+enough for dev use of CourtListener and small enough not to impact most hosts.
 
 ## Using the Free Law Machine
 
@@ -50,9 +56,9 @@ available.
 3. Open a terminal or command line and change to the directory with the
 Vagrantfile.
 
-  `cd <directory`
+  `cd <directory>`
 
-4. This is where the ✨magic ✨ happens! Just run:
+4. This is where the ✨magic✨ happens! Just run:
 
   `vagrant up`
 
