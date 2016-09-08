@@ -28,7 +28,7 @@ connection at your own $$ peril!)
 
 ## Using the Free Law Machine
 
-There are two ways to using this project:
+There are two ways to use this project:
 
 1. *Running CourtListener* - this is the most common Vagrant task
 and is what brings your local Free Law development environment online and ready
