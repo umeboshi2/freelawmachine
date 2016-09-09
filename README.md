@@ -80,7 +80,7 @@ Vagrant provisioning scripts.
   ./manage.py syncdb [to create the admin user]
   ```
 
-#  Recommended Things to do Once Up and Running
+#  Recommended Next Steps
 Here are a couple additional steps to get you started if you're unfamiliar with
 CourtListener or your way around a Django app.
 
