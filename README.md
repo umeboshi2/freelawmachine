@@ -77,7 +77,7 @@ Vagrant provisioning scripts.
   ``` bash
   cd /var/www/courtlistener
   ./manage.py migrate
-  ./manage.py syncdb [to create the admin user]
+  ./manage.py syncdb #to create the admin user
   ```
 
 #  Recommended Next Steps
