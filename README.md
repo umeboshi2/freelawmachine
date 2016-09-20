@@ -1,4 +1,4 @@
-Free Law (Virtual) Machine v1.6.0
+Free Law (Virtual) Machine v2.0.0
 ==================================
 
 This project is designed to provide automation around building a ready-to-run
@@ -19,11 +19,10 @@ And a high-speed network connection since the VM will need to pull down
 packages! (You are installing Ubuntu...so do this via a cellular data
 connection at your own $$ peril!)
 
-## New in Version 1.6.0!
+## New in Version 2.0.0!
 
-* 64-bit VM support is now the default! (32-bit is now deprecated.)
-* Updated to use the latest Ubuntu 14.04 LTS release.
-* Automatic cloning of CourtListener, so you don't even need a local Git client!
+Major changes for users of 1.6:
+* TBD
 
 Major changes for users of 1.5 and earlier:
 * The `flp` directory is no longer used or needed. If you want to pre-clone a
