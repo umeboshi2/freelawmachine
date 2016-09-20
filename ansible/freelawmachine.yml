@@ -1,0 +1,9 @@
+#!/usr/bin/env ansible-playbook
+---
+# Build out a FreeLawMachine from an Ubuntu Trusty64 Vagrantbox
+- hosts: dev
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  roles:
+    - vagrantbox
