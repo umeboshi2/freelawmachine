@@ -1,0 +1,14 @@
+---
+# redis service role
+#
+- name: make redis directory
+  become_user: root
+  command: mkdir -p /opt/redis
+  args:
+    creates: /opt/redis
+
+- name: change redis directory ownership
+  file:
+    path=/opt/redis
+    owner={{ redis_user }}
+    group={{ redis_user }}

@@ -1,4 +1,5 @@
 ---
+# vagrantbox role
 - name: configure BASH for colors
   lineinfile:
     dest=/home/vagrant/.bashrc
