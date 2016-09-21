@@ -10,14 +10,14 @@
   args:
     creates: "{{ item }}"
   with_items:
-    - /opt/redis
+    - "{{ install_directory }}"
     - /etc/redis
-    - /var/redis/6379
-    - /var/log/redis
+    - "{{ run_directory }}"
+    - "{{ log_directory }}"
 
 - name: change redis directory ownership
   file:
-    path=/opt/redis
+    path={{ install_directory }}
     owner={{ redis_user }}
     group={{ redis_user }}
 
@@ -28,21 +28,21 @@
   unarchive:
     src=http://download.redis.io/redis-stable.tar.gz
     copy=no
-    dest=/opt/redis
+    dest="{{ install_directory }}"
     remote_src=yes
-    creates=/opt/redis/redis-stable
+    creates="{{ install_directory }}/redis-stable"
 
 - name: make redis
   command: make
   args:
-    chdir: /opt/redis/redis-stable
-    creates: /opt/redis/redis-stable/src/redis-server
+    chdir: "{{ install_directory }}/redis-stable"
+    creates: "{{ install_directory }}/redis-stable/src/redis-server"
 
 - name: install redis
   become_user: root
   command: make install
   args:
-    chdir: /opt/redis/redis-stable
+    chdir: "{{ install_directory }}/redis-stable"
     creates: /usr/local/bin/redis-server
 
 - name: copy init and config files
@@ -51,8 +51,8 @@
   args:
     creates: "{{ item.dest }}"
   with_items:
-    - { src: '/opt/redis/redis-stable/utils/redis_init_script', dest: '/etc/init.d/redis_6379' }
-    - { src: '/opt/redis/redis-stable/redis.conf', dest: '/etc/redis/6379.conf' }
+    - { src: '{{ install_directory }}/redis-stable/utils/redis_init_script', dest: '/etc/init.d/redis_6379' }
+    - { src: '{{ install_directory }}/redis-stable/redis.conf', dest: '/etc/redis/6379.conf' }
 
 - name: tell redis to include CL overrides
   lineinfile:
@@ -64,11 +64,13 @@
 # instance) and maybe parameterize the paths used
 - name: copy over the redis_cl_overrides.conf file
   become_user: root
-  copy:
+  template:
     src=redis_cl_overrides.conf
     dest=/etc/redis/
 
 - name: ensure redis is running
+  become_user: root
   service:
     name: redis_6379
     state: started
+    enabled: yes
