@@ -1,14 +1,43 @@
 ---
 # redis service role
 #
-- name: make redis directory
+- name: make redis directories
   become_user: root
-  command: mkdir -p /opt/redis
+  command: mkdir -p {{ item }}
   args:
-    creates: /opt/redis
+    creates: "{{ item }}"
+  with_items:
+    - /opt/redis
+    - /etc/redis
+    - /var/redis/6379
+    - /var/log/redis
 
 - name: change redis directory ownership
   file:
     path=/opt/redis
     owner={{ redis_user }}
     group={{ redis_user }}
+
+# TODO: swap over to logic involving getting latest stable by vresion number
+# and validating sha1 hash via
+#   https://github.com/antirez/redis-hashes/blob/master/README
+- name: download and unpack redis
+  unarchive:
+    src=http://download.redis.io/redis-stable.tar.gz
+    copy=no
+    dest=/opt/redis
+    remote_src=yes
+    creates=/opt/redis/redis-stable
+
+- name: make redis
+  command: make
+  args:
+    chdir: /opt/redis/redis-stable
+    creates: /opt/redis/redis-stable/src/redis-server
+
+- name: install redis
+  become_user: root
+  command: make install
+  args:
+    chdir: /opt/redis/redis-stable
+    creates: /usr/local/bin/redis-server
