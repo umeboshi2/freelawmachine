@@ -7,11 +7,14 @@
   become_method: sudo
   vars:
     courtlistener_directory: /var/www/courtlistener
+    cl_pg_password: courtlistener
     virtualenv_directory: /home/vagrant/.virtualenvs/courtlistener
     celery_user: vagrant
     redis_user: vagrant
+    pg_user: vagrant
   roles:
     - ubuntu-trusty
     - vagrantbox
     - redis
     - celery
+    - postgres

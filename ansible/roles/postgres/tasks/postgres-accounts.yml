@@ -1,0 +1,19 @@
+---
+- name: configure postgres super user
+  become_user: postgres
+  become: yes
+  postgresql_user: name=postgres password={{ pg_password }}
+
+- name: configure django postgres user
+  become_user: postgres
+  become: yes
+  postgresql_user: name=django password={{ cl_pg_password }} role_attr_flags=CREATEDB
+
+- name: create courtlistener db
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name=courtlister
+    encoding='UTF-8'
+    template='template0'
+    owner=django
