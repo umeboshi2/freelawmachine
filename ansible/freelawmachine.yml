@@ -9,5 +9,6 @@
     celery_user: vagrant
     redis_user: vagrant
   roles:
+    - ubuntu-trusty
     - vagrantbox
     - redis
