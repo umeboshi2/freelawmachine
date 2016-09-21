@@ -1,6 +1,9 @@
 ---
-# redis service role
+###################################################################
 #
+#  Redis service role
+#
+###################################################################
 - name: make redis directories
   become_user: root
   command: mkdir -p {{ item }}
@@ -41,3 +44,31 @@
   args:
     chdir: /opt/redis/redis-stable
     creates: /usr/local/bin/redis-server
+
+- name: copy init and config files
+  become_user: root
+  command: cp {{ item.src }} {{ item.dest }}
+  args:
+    creates: "{{ item.dest }}"
+  with_items:
+    - { src: '/opt/redis/redis-stable/utils/redis_init_script', dest: '/etc/init.d/redis_6379' }
+    - { src: '/opt/redis/redis-stable/redis.conf', dest: '/etc/redis/6379.conf' }
+
+- name: tell redis to include CL overrides
+  lineinfile:
+    dest=/etc/redis/6379.conf
+    line='include /etc/redis/redis_cl_overrides.conf'
+
+# TODO: this will need to be updated to properly construct the
+# ip addresses for other hosts (when not running CL in a single
+# instance) and maybe parameterize the paths used
+- name: copy over the redis_cl_overrides.conf file
+  become_user: root
+  copy:
+    src=redis_cl_overrides.conf
+    dest=/etc/redis/
+
+- name: ensure redis is running
+  service:
+    name: redis_6379
+    state: started
