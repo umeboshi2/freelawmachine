@@ -1,0 +1,5 @@
+---
+log_directory: /var/log/solr
+run_directory: /usr/local/solr
+install_directory: /opt
+solr_xmx: 500M

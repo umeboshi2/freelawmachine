@@ -1,0 +1,62 @@
+---
+###################################################################
+#
+#  Solr service role
+#
+###################################################################
+- name: make sure java is installed (using openjdk7)
+  apt:
+    pkg=openjdk-7-jre-headless
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+
+- name: make solr log directory
+  become_user: root
+  file:
+    state=directory
+    path="{{ log_directory }}"
+    owner="{{ solr_user }}"
+    group="{{ solr_user }}"
+
+- name: download and unpack solr
+  become_user: root
+  unarchive:
+    src=https://archive.apache.org/dist/lucene/solr/{{ solr_version}}/solr-{{ solr_version }}.tgz
+    copy=no
+    dest="{{ install_directory }}"
+    remote_src=yes
+    owner="{{ solr_user }}"
+    group="{{ solr_user }}"
+    creates="{{ install_directory }}/solr-{{ solr_version }}"
+
+- name: symlink /usr/local/solr
+  become_user: root
+  file:
+    state=link
+    path="{{ run_directory }}"
+    src="{{ install_directory }}/solr-{{ solr_version }}/example"
+    owner="{{ solr_user }}"
+    group="{{ solr_user }}"
+
+- name: make sure daemon is installed
+  apt:
+    pkg=daemon
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+
+- name: install Solr daemon config
+  become_user: root
+  template: src=solr.sysv dest=/etc/init.d/solr mode=0755
+
+- name: add logrotate settings
+  become_user: root
+  template: src=solr.logrotate dest=/etc/logrotate.d/solr
+
+- name: start Solr service
+  become_user: root
+  service:
+    name: solr
+    state: started
+    enabled: yes

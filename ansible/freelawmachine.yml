@@ -12,9 +12,12 @@
     celery_user: vagrant
     redis_user: vagrant
     pg_user: vagrant
+    solr_user: vagrant
+    solr_version: 4.1.0
   roles:
     - ubuntu-trusty
     - vagrantbox
     - redis
     - celery
     - postgres
+    - solr
