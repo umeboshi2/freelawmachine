@@ -20,6 +20,7 @@
       - opinion
       - recap
       - person
+    ocr_user: vagrant
   roles:
     - ubuntu-trusty
     - vagrantbox
@@ -27,3 +28,4 @@
     - celery
     - postgres
     - solr
+    - ocr
