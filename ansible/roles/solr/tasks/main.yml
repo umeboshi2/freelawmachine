@@ -11,31 +11,34 @@
     update_cache=yes
     cache_valid_time=3600
 
-- name: make solr log directory
+- name: make solr log and cores directories
   become_user: root
   file:
     state=directory
-    path="{{ log_directory }}"
+    path="{{ item }}"
     owner="{{ solr_user }}"
     group="{{ solr_user }}"
+  with_items:
+    - "{{ log_directory }}"
+    - "{{ cores_directory }}"
 
 - name: download and unpack solr
   become_user: root
   unarchive:
     src=https://archive.apache.org/dist/lucene/solr/{{ solr_version}}/solr-{{ solr_version }}.tgz
     copy=no
-    dest="{{ install_directory }}"
+    dest="{{ install_root }}"
     remote_src=yes
     owner="{{ solr_user }}"
     group="{{ solr_user }}"
-    creates="{{ install_directory }}/solr-{{ solr_version }}"
+    creates="{{ install_root }}/solr-{{ solr_version }}"
 
 - name: symlink /usr/local/solr
   become_user: root
   file:
     state=link
     path="{{ run_directory }}"
-    src="{{ install_directory }}/solr-{{ solr_version }}/example"
+    src="{{ install_root }}/solr-{{ solr_version }}"
     owner="{{ solr_user }}"
     group="{{ solr_user }}"
 
@@ -53,6 +56,10 @@
 - name: add logrotate settings
   become_user: root
   template: src=solr.logrotate dest=/etc/logrotate.d/solr
+
+- name: configure solr cores...
+  become_user: "{{ solr_user }}"
+  include: cores.yml
 
 - name: start Solr service
   become_user: root

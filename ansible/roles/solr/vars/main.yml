@@ -1,5 +1,7 @@
 ---
 log_directory: /var/log/solr
 run_directory: /usr/local/solr
-install_directory: /opt
+install_root: /opt
+cores_directory: "{{ install_root }}/solr-cores"
 solr_xmx: 500M
+default_core: collection1

@@ -13,7 +13,13 @@
     redis_user: vagrant
     pg_user: vagrant
     solr_user: vagrant
-    solr_version: 4.1.0
+    solr_version: 4.10.4
+    solr_cores:
+      - collection1
+      - audio
+      - opinion
+      - recap
+      - person
   roles:
     - ubuntu-trusty
     - vagrantbox
