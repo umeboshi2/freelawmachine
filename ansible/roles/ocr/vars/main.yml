@@ -1,6 +1,6 @@
 ---
 # Variables for OCR role
-src_directory: /opt/ocr
+src_directory: /tmp/ocr
 
 tesseract_version: "3.04.01"
 tesseract_url: https://github.com/tesseract-ocr/tesseract/archive/{{ tesseract_version }}.tar.gz
