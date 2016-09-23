@@ -1,0 +1,13 @@
+---
+###################################################################
+#
+#  Courtlistener service role
+#
+###################################################################
+- name: configure CourtListener directories
+  become_user: root
+  file:
+    state=directory
+    path="{{ install_root }}"
+    owner="{{ cl_user }}"
+    group="{{ cl_user }}"
