@@ -18,6 +18,10 @@
     - zlib1g-dev
     - autoconf
     - automake
+    - libtool
+    - pkg-config
+    - libtiff5-dev
+    - libjpeg8-dev
 
 - name: basic check to see if tesseract and leptonica are available
   become_user: "{{ ocr_user }}"

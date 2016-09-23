@@ -22,13 +22,6 @@
     group="{{ ocr_user }}"
     creates="tesseract-{{ tesseract_version }}"
 
-- name: download tessdata for our default language
-  become_user: "{{ ocr_user }}"
-  get_url:
-    url="{{ tessdata_url }}/{{ item }}"
-    dest="{{ src_directory }}/tesseract-{{ tesseract_version }}/tessdata"
-  with_items: "{{ tesseract_lang_data }}"
-
 - name: make tessearct
   become_user: "{{ ocr_user }}"
   command: "{{ item }}"
@@ -38,6 +31,7 @@
       - "{{ src_directory }}/tesseract-{{ tesseract_version }}/api/tesseract"
       - - /usr/local/lib/liblept.so
   with_items:
+    - ./autogen.sh
     - ./configure
     - make
 
@@ -52,3 +46,30 @@
   with_items:
     - make install
     - ldconfig
+
+- name: "create tessdata directory if it doesn't exist"
+  become_user: root
+  file:
+    state=directory
+    path="{{ tessdata_directory }}"
+
+- name: download tessdata for our default language
+  become_user: root
+  get_url:
+    url="{{ tessdata_url }}/{{ item }}"
+    dest="{{ tessdata_directory }}"
+  with_items: "{{ tesseract_lang_data }}"
+
+- name: deploy custom legal english traineddata file
+  become_user: root
+  copy:
+    src=eng.traineddata
+    dest="{{ tessdata_directory }}"
+    force=yes
+
+- name: set environment variable for TESSDATA_PREFIX
+  become_user: root
+  lineinfile:
+    dest=/etc/environment
+    line="TESSDATA_PREFIX={{ tessdata_prefix }}"
+    state=present
