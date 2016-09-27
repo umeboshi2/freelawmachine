@@ -4,3 +4,6 @@ install_root: "{{ courtlistener_directory }}"
 log_directory: /var/log/courtlistener
 reporters_db_directory: /usr/local/reporters_db
 judge_pics_directory: /usr/local/judge_pics
+
+phantomjs_version: 2.1.1
+phantomjs_symlink_root: /usr/local/bin

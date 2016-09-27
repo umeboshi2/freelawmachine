@@ -103,6 +103,8 @@
     requirements="{{ install_root }}/requirements.txt"
     virtualenv="{{ virtualenv_directory }}"
 
+- include: juriscraper.yml
+
 - name: setup /etc/courtlistener
   become_user: root
   lineinfile:
@@ -123,10 +125,11 @@
   keygen:
   register: result
 
-- name: insert django secret key
+- name: insert an updated django secret key
   become_user: "{{ cl_user }}"
   lineinfile:
     name="{{ install_root }}/cl/settings/05-private.py"
-    line='SECRET_KEY="{{ result.secret_key }}"'
+    regexp="^SECRET_KEY\s+[=]\s+[\'\"](.+?)[\'\"]$"
+    line='SECRET_KEY = "{{ result.secret_key }}"'
     state=present
     create=yes
