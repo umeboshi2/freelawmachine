@@ -1,0 +1,10 @@
+{{ log_directory }}/*.log {
+  weekly
+  rotate 12
+  compress
+  delaycompress
+  create 640 root root
+  postrotate
+	/etc/init.d/solr restart
+  endscript
+}

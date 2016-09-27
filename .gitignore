@@ -10,5 +10,5 @@ flp/courtlistener
 flp/juriscraper
 !flp/README.md
 courtlistener/
-
+!ansible/roles/courtlistener
 .DS_Store

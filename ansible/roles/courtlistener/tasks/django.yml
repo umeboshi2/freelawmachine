@@ -1,0 +1,40 @@
+---
+###################################################################
+#
+#  Django configuration
+#
+###################################################################
+- name: copy django settings example file
+  become_user: "{{ cl_user }}"
+  copy:
+    remote_src=True
+    src="{{ install_root }}/cl/settings/05-private.example"
+    dest="{{ install_root }}/cl/settings/05-private.py"
+
+- name: generate a django secret key
+  become_user: "{{ cl_user }}"
+  keygen:
+  register: result
+
+- name: insert an updated django secret key
+  become_user: "{{ cl_user }}"
+  lineinfile:
+    name="{{ install_root }}/cl/settings/05-private.py"
+    regexp="^SECRET_KEY\s+[=]\s+[\'\"](.+?)[\'\"]$"
+    line='SECRET_KEY = "{{ result.secret_key }}"'
+    state=present
+    create=yes
+
+- name: migrate the database
+  become_user: "{{ cl_user }}"
+  django_manage:
+    command=migrate
+    virtualenv="{{ virtualenv_directory }}"
+    app_path="{{ install_root }}"
+
+- name: create superuser
+  become_user: "{{ cl_user }}"
+  django_manage:
+    command="createsuperuser --noinput --username=admin --email=dev-admin@free.law"
+    virtualenv="{{ virtualenv_directory }}"
+    app_path="{{ install_root }}"

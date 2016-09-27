@@ -1,0 +1,26 @@
+---
+# Variables for OCR role
+src_directory: /tmp/ocr
+tessdata_prefix: /usr/local/share
+tessdata_directory: "{{ tessdata_prefix }}/tessdata"
+
+tesseract_version: "3.04.01"
+tesseract_url: https://github.com/tesseract-ocr/tesseract/archive/{{ tesseract_version }}.tar.gz
+
+tessdata_version: "master"
+tessdata_url: https://raw.githubusercontent.com/tesseract-ocr/tessdata/{{ tessdata_version }}/
+
+leptonica_version: "1.73"
+leptonica_url: https://github.com/DanBloomberg/leptonica/archive/v{{ leptonica_version }}.tar.gz
+
+default_language: eng
+tesseract_lang_data:
+  - "{{ default_language }}.cube.bigrams"
+  - "{{ default_language }}.cube.fold"
+  - "{{ default_language }}.cube.lm"
+  - "{{ default_language }}.cube.nn"
+  - "{{ default_language }}.cube.params"
+  - "{{ default_language }}.cube.size"
+  - "{{ default_language }}.cube.word-freq"
+  - "{{ default_language }}.tesseract_cube.nn"
+  - "{{ default_language }}.traineddata"

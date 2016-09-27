@@ -1,0 +1,11 @@
+---
+###################################################################
+#
+#  Base Vagrantbox configuration
+#
+###################################################################
+- name: configure BASH for colors
+  lineinfile:
+    dest=/home/vagrant/.bashrc
+    regexp='^force_color_prompt=yes$'
+    line='force_color_prompt=yes'

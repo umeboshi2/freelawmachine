@@ -1,0 +1,83 @@
+---
+###################################################################
+#
+#  Configure Solr cores
+#
+###################################################################
+
+- name: create instance data directories for each core
+  file:
+    state=directory
+    path="{{ cores_directory }}/{{ item }}/data"
+  with_items: "{{ solr_cores }}"
+
+- name: create initial solr.xml detailing cores
+  template:
+    src="solr.xml.j2"
+    dest="{{ cores_directory }}/solr.xml"
+
+# epic sadness! not only can we not use a recursive remote_src copy routine, we
+# need almost all the silly default files from the example collection1 core
+- name: copy all the default config files over to our cores
+  command: cp -R "{{ run_directory }}/example/solr/collection1/conf" "{{ cores_directory }}/{{ item }}/"
+  args:
+    creates: "{{ cores_directory }}/{{ item }}/conf"
+  with_items:
+    - "{{ solr_cores }}"
+
+# yet more sadness! the default files break the core at startup!
+# see: https://stackoverflow.com/a/10896359/64911
+- name: replacing stupid elevate.xml file
+  copy:
+    src=elevate.xml
+    dest="{{ cores_directory }}/{{ item }}/conf/"
+    force=yes
+  with_items: "{{ solr_cores }}"
+
+- name: deploy core-specific schema configs
+  copy:
+    src="{{ item }}_schema.xml"
+    dest="{{ cores_directory }}/{{ item }}/conf/schema.xml"
+    force=yes
+  with_items: "{{ solr_cores }}"
+
+- name: deploy core-specific solrconfig files
+  template:
+    src="solrconfig.xml.j2"
+    dest="{{ cores_directory }}/{{ item }}/conf/solrconfig.xml"
+    force=yes
+  with_items: "{{ solr_cores }}"
+
+- name: replace english language config files with our own
+  copy:
+    src="lang"
+    dest="{{ cores_directory }}/{{ item }}/conf"
+    force=yes
+  with_items: "{{ solr_cores }}"
+
+# TODO: do we need these or should we just point the schema.xml configs to
+# the *_en.txt versions?
+- name: touch the base language files
+  file:
+    path="{{ cores_directory }}/{{ item[0] }}/conf/{{ item[1] }}"
+    state=touch
+  with_nested:
+    - "{{ solr_cores }}"
+    - [ 'protwords.txt', 'stopwords.txt', 'synonyms.txt', 'spellings.txt' ]
+
+- name: prepare test versions of the cores
+  command: cp -R "{{ cores_directory }}/{{ item }}" "{{ cores_directory }}/{{ item }}_test"
+  args:
+    creates: "{{ cores_directory }}/{{ item }}_test"
+  with_items:
+    - "{{ solr_cores }}"
+
+- name: set core.properties files
+  lineinfile:
+    name="{{ cores_directory}}/{{ item[0] }}{{ item[1] }}/core.properties"
+    line="name={{ item[0] }}{{ item[1] }}\n"
+    state=present
+    create=yes
+  with_nested:
+    - "{{ solr_cores }}"
+    - [ '', '_test' ]

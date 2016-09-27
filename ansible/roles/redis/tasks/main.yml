@@ -1,0 +1,76 @@
+---
+###################################################################
+#
+#  Redis service role
+#
+###################################################################
+- name: make redis directories
+  become_user: root
+  command: mkdir -p {{ item }}
+  args:
+    creates: "{{ item }}"
+  with_items:
+    - "{{ install_directory }}"
+    - /etc/redis
+    - "{{ run_directory }}"
+    - "{{ log_directory }}"
+
+- name: change redis directory ownership
+  file:
+    path={{ install_directory }}
+    owner={{ redis_user }}
+    group={{ redis_user }}
+
+# TODO: swap over to logic involving getting latest stable by vresion number
+# and validating sha1 hash via
+#   https://github.com/antirez/redis-hashes/blob/master/README
+- name: download and unpack redis
+  unarchive:
+    src=http://download.redis.io/redis-stable.tar.gz
+    copy=no
+    dest="{{ install_directory }}"
+    remote_src=yes
+    creates="{{ install_directory }}/redis-stable"
+
+- name: make redis
+  command: make
+  args:
+    chdir: "{{ install_directory }}/redis-stable"
+    creates: "{{ install_directory }}/redis-stable/src/redis-server"
+
+- name: install redis
+  become_user: root
+  command: make install
+  args:
+    chdir: "{{ install_directory }}/redis-stable"
+    creates: /usr/local/bin/redis-server
+
+- name: copy init and config files
+  become_user: root
+  command: cp {{ item.src }} {{ item.dest }}
+  args:
+    creates: "{{ item.dest }}"
+  with_items:
+    - { src: '{{ install_directory }}/redis-stable/utils/redis_init_script', dest: '/etc/init.d/redis_6379' }
+    - { src: '{{ install_directory }}/redis-stable/redis.conf', dest: '/etc/redis/6379.conf' }
+
+- name: tell redis to include CL overrides
+  lineinfile:
+    dest=/etc/redis/6379.conf
+    line='include /etc/redis/redis_cl_overrides.conf'
+
+# TODO: this will need to be updated to properly construct the
+# ip addresses for other hosts (when not running CL in a single
+# instance) and maybe parameterize the paths used
+- name: copy over the redis_cl_overrides.conf file
+  become_user: root
+  template:
+    src=redis_cl_overrides.conf
+    dest=/etc/redis/
+
+- name: ensure redis is running
+  become_user: root
+  service:
+    name: redis_6379
+    state: started
+    enabled: yes
