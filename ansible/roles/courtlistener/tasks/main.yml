@@ -39,8 +39,7 @@
   with_items:
     - "{{ install_root }}"
     - "{{ log_directory }}"
-    - "{{ reporters_db_directory }}"
-    - "{{ judge_pics_directory }}"
+    - "{{ juriscraper_log_directory }}"
 
 - name: make sure virtualenv is up to date
   become_user: "{{ cl_user }}"
@@ -52,6 +51,13 @@
     - pip
     - setuptools
     - wheel
+
+- name: help people out by sourcing the virtualenv by default
+  become_user: "{{ cl_user }}"
+  lineinfile:
+    name="/home/{{ cl_user }}/.bashrc"
+    state=present
+    line="source {{ virtualenv_directory }}/bin/activate"
 
 - name: installing Reporters-DB and Seal-Rookery from PyPI
   become_user: "{{ cl_user }}"
