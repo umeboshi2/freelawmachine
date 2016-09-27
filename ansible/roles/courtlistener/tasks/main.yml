@@ -4,10 +4,129 @@
 #  Courtlistener service role
 #
 ###################################################################
+
+# dev libraries galore!
+- name: install required packages
+  become_user: root
+  apt:
+    pkg={{ item }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  with_items:
+    - libxml2-dev
+    - libxslt-dev
+    - python-simplejson
+    - python-dev
+    - libav-tools
+    - libffi-dev
+    - postgresql-server-dev-all
+    - poppler-utils
+    - checkinstall
+    - curl
+    - antiword
+    - cython
+    - git
+
 - name: configure CourtListener directories
   become_user: root
   file:
     state=directory
-    path="{{ install_root }}"
+    path="{{ item }}"
     owner="{{ cl_user }}"
     group="{{ cl_user }}"
+  with_items:
+    - "{{ install_root }}"
+    - "{{ log_directory }}"
+    - "{{ reporters_db_directory }}"
+    - "{{ judge_pics_directory }}"
+
+- name: make sure virtualenv is up to date
+  become_user: "{{ cl_user }}"
+  pip:
+    name="{{ item }}"
+    state=latest
+    virtualenv="{{ virtualenv_directory }}"
+  with_items:
+    - pip
+    - setuptools
+    - wheel
+
+- name: installing Reporters DB and Judge Pics
+  become_user: "{{ cl_user }}"
+  pip:
+    name="git+https://github.com/freelawproject/{{ item }}@master"
+    editable=False
+    virtualenv="{{ virtualenv_directory }}"
+  with_items:
+    - reporters-db
+    - judge-pics
+    - seal-rookery
+
+- name: update seal-rookery
+  become_user: "{{ cl_user }}"
+  command: "{{ virtualenv_directory }}/bin/update-seals"
+  ignore_errors: True
+  register: update_result
+
+- name: force update of seal-rookery
+  become_user: "{{ cl_user }}"
+  command: "{{ virtualenv_directory }}/bin/update-seals -f"
+  ignore_errors: True
+
+- name: install NumPy/SciPy stuff
+  become_user: root
+  apt:
+    pkg={{ item }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  with_items:
+    - python-numpy
+    - python-scipy
+    - libblas-dev
+    - liblapack-dev
+    - gfortran
+
+- name: clone CourtListener
+  become_user: "{{ cl_user }}"
+  git:
+    repo=https://github.com/freelawproject/courtlistener
+    dest="{{ install_root }}"
+    update=yes
+
+- name: pip install CourtListener requirements
+  become_user: "{{ cl_user }}"
+  pip:
+    requirements="{{ install_root }}/requirements.txt"
+    virtualenv="{{ virtualenv_directory }}"
+
+- name: setup /etc/courtlistener
+  become_user: root
+  lineinfile:
+    name=/etc/courtlistener
+    line="INSTALL_ROOT='{{ install_root }}'\n"
+    state=present
+    create=yes
+
+- name: copy django settings example file
+  become_user: "{{ cl_user }}"
+  copy:
+    remote_src=True
+    src="{{ install_root }}/cl/settings/05-private.example"
+    dest="{{ install_root }}/cl/settings/05-private.py"
+
+- name: generate a django secret key
+  become_user: "{{ cl_user }}"
+  keygen:
+  register: result
+
+- name: insert django secret key
+  become_user: "{{ cl_user }}"
+  lineinfile:
+    name="{{ install_root }}/cl/settings/05-private.py"
+    line='SECRET_KEY="{{ result.secret_key }}"'
+    state=present
+    create=yes

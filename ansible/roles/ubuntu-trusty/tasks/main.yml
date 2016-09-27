@@ -12,6 +12,9 @@
     cache_valid_time=3600
     autoremove=yes
   with_items:
+    - zlib1g-dev
     - python2.7
     - python-pip
     - python-virtualenv
+    - python-dev
+    - git

@@ -24,6 +24,7 @@
     - "{{ log_directory }}"
 
 - name: install Celery via pip
+  become_user: "{{ celery_user }}"
   pip: name=Celery virtualenv={{ virtualenv_directory }}
 
 - name: install Celery daemon config

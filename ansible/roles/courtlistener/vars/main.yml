@@ -1,3 +1,6 @@
 ---
 # Variables for OCR role
-install_root: /var/www/courtlistener
+install_root: "{{ courtlistener_directory }}"
+log_directory: /var/log/courtlistener
+reporters_db_directory: /usr/local/reporters_db
+judge_pics_directory: /usr/local/judge_pics
