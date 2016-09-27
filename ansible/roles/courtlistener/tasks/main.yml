@@ -53,16 +53,22 @@
     - setuptools
     - wheel
 
-- name: installing Reporters DB and Judge Pics
+- name: installing Reporters-DB and Seal-Rookery from PyPI
   become_user: "{{ cl_user }}"
   pip:
-    name="git+https://github.com/freelawproject/{{ item }}@master"
-    editable=False
+    name="{{ item }}"
+    state=latest
     virtualenv="{{ virtualenv_directory }}"
   with_items:
     - reporters-db
-    - judge-pics
     - seal-rookery
+
+- name: installing Judge-Pics
+  become_user: "{{ cl_user }}"
+  pip:
+    name="git+https://github.com/freelawproject/judge-pics@master"
+    editable=False
+    virtualenv="{{ virtualenv_directory }}"
 
 - name: update seal-rookery
   become_user: "{{ cl_user }}"
@@ -73,7 +79,6 @@
 - name: force update of seal-rookery
   become_user: "{{ cl_user }}"
   command: "{{ virtualenv_directory }}/bin/update-seals -f"
-  ignore_errors: True
 
 - name: install NumPy/SciPy stuff
   become_user: root
@@ -113,23 +118,4 @@
     state=present
     create=yes
 
-- name: copy django settings example file
-  become_user: "{{ cl_user }}"
-  copy:
-    remote_src=True
-    src="{{ install_root }}/cl/settings/05-private.example"
-    dest="{{ install_root }}/cl/settings/05-private.py"
-
-- name: generate a django secret key
-  become_user: "{{ cl_user }}"
-  keygen:
-  register: result
-
-- name: insert an updated django secret key
-  become_user: "{{ cl_user }}"
-  lineinfile:
-    name="{{ install_root }}/cl/settings/05-private.py"
-    regexp="^SECRET_KEY\s+[=]\s+[\'\"](.+?)[\'\"]$"
-    line='SECRET_KEY = "{{ result.secret_key }}"'
-    state=present
-    create=yes
+- include: django.yml
