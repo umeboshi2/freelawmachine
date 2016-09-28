@@ -9,27 +9,17 @@
     "provisioners": [
         {
             "type": "shell",
-            "scripts": [
-                "scripts/vagrant.sh",
-                "scripts/git.sh",
-                "scripts/courtlistener.sh",
-                "scripts/juriscraper.sh",
-                "scripts/postgresql.sh",
-                "scripts/solr.sh",
-                "scripts/tesseract.sh",
-                "scripts/redis.sh",
-                "scripts/celery.sh",
-                "scripts/init.sh",
-                "scripts/zerodisk.sh"
-            ],
-            "environment_vars": [
-              "TARGET_ARCH={{user `target_arch`}}"
-            ],
-            "override": {
-                "virtualbox-iso": {
-                    "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
-                }
-            }
+            "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'",
+            "inline": [
+              "sudo apt-get install -yf ansible",
+              "echo '%sudo    ALL=(ALL)  NOPASSWD:ALL' >> /etc/sudoers"
+            ]
+        },
+        {
+            "type": "ansible-local",
+            "playbook_file": "../ansible/freelawmachine.yml",
+            "playbook_dir": "../ansible",
+            "inventory_file": "../ansible/config/hosts_local"
         }
     ],
     "builders": [
@@ -39,12 +29,12 @@
                 "<esc><esc><enter><wait>",
                 "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
                 "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-                "hostname=freelawbox ",
+                "hostname=freelawbox64 ",
                 "fb=false debconf/frontend=noninteractive ",
                 "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
                 "initrd=/install/initrd.gz -- <enter>"
             ],
-            "headless": true,
+            "headless": false,
             "boot_wait": "10s",
             "disk_size": 20480,
             "guest_os_type": "Ubuntu_64",
