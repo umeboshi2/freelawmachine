@@ -1,0 +1,23 @@
+---
+######### If cloning CL...
+- debug: msg="Doing FULL CL bootstrapping..."
+
+- name: clone CourtListener
+  become_user: "{{ cl_user }}"
+  git:
+    repo=https://github.com/freelawproject/courtlistener
+    dest="{{ install_root }}"
+    update=yes
+  ignore_errors: True
+  register: clone_result
+
+- debug: msg="Assuming you have already cloned CourtListener as there appears to be a repository in {{ install_root }}"
+  when: clone_result|failed
+
+- name: pip install CourtListener requirements
+  become_user: "{{ cl_user }}"
+  pip:
+    requirements="{{ install_root }}/requirements.txt"
+    virtualenv="{{ virtualenv_directory }}"
+
+- include: django.yml
