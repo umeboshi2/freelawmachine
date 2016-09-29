@@ -54,7 +54,7 @@ printf '%0.1s' "-"{1..64} > /etc/motd
 printf '\n' >> /etc/motd
 printf '%3s%-28s%30s' " " "$BOXVERSION" "$BUILT_MSG" >> /etc/motd
 printf '\n' >> /etc/motd
-printf '%8s%s\n' " " "[https://github.com/freelawproject/freelawbox]" >> /etc/motd
+printf '%8s%s\n' " " "[https://github.com/freelawproject/freelawmachine]" >> /etc/motd
 printf '%0.1s' "-"{1..64} >> /etc/motd
 printf '\n' >> /etc/motd
 
