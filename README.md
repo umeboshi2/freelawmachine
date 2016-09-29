@@ -14,7 +14,6 @@ and make having a dev environment as easy as `vagrant up`.
 * (Optional) [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * (Optional) [Packer 0.10.1](https://packer.io/downloads.html)
 
-
 And a high-speed network connection since the VM will need to pull down
 packages! (You are installing Ubuntu...so do this via a cellular data
 connection at your own $$ peril!)
@@ -22,7 +21,12 @@ connection at your own $$ peril!)
 ## New in Version 2.0.0!
 
 Major changes for users of 1.6:
-* TBD
+* _A wild Ansible appears!_ Provisioning is now done via Ansible playbooks
+  instead of nasty hard to maintain shell scripts.
+* The box is set up closer to the original wiki specs, so it uses a Python
+  Virtual Environment, but it should be auto-activated for you upon ssh login.
+* Similar to v1.6, _you only need the Vagrantfile_ to run the box (assuming you
+  have virtualbox and vagrant). It will do the rest.
 
 Major changes for users of 1.5 and earlier:
 * The `flp` directory is no longer used or needed. If you want to pre-clone a
@@ -131,8 +135,7 @@ docs in the index go live:
 You should now have some results on the landing page as well as fully searchable
 opinions!
 
-If you've uncommented the lines in the Vagrantfile to forward the Solr web ports
-you can inspect the index cores directly using your browser:
+You can inspect the Solr index cores directly using your browser:
 [http://localhost:8999/solr/#/](http://localhost:8999/solr/#/)
 
 # Building a new Vagrant Box (For Contributors)
