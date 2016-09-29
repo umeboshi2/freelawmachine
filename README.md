@@ -27,6 +27,8 @@ Major changes for users of 1.6:
   Virtual Environment, but it should be auto-activated for you upon ssh login.
 * Similar to v1.6, _you only need the Vagrantfile_ to run the box (assuming you
   have virtualbox and vagrant). It will do the rest.
+* *Deprecation Warning!* We're removed support for 32-bit boxes. New standard is
+  to use 64-bit to mimic exact same packages as used in Production.
 
 Major changes for users of 1.5 and earlier:
 * The `flp` directory is no longer used or needed. If you want to pre-clone a
@@ -140,11 +142,12 @@ You can inspect the Solr index cores directly using your browser:
 
 # Building a new Vagrant Box (For Contributors)
 Here's how to crank out a box if you've got the Requirements above. Depending
-on your network connection, CPU, disk, etc. this could take anywhere from 5
+on your network connection, CPU, disk, etc. this could take anywhere from 20
 mins to maybe 30 mins. Be patient :-)
 
 All of the tools required to build the box using [Packer](https://packer.io)
-are contained in the [packer](./packer) directory of this project.
+are contained in the [packer](./packer) directory of this project. [Ansible](https://github.com/ansible/ansible) is installed into the VM image
+itself, so there's no need to have it installed on your local machine.
 
   0. Grab the latest Free Law Machine source:
 
@@ -155,9 +158,10 @@ are contained in the [packer](./packer) directory of this project.
     `cd packer`
 
   2. Build the box! (Yes, it's that simple. Since it's configured headless, it
-  may appear nothing is happening for a little while. It's ok.)
+  may appear nothing is happening for a little while. It's ok. This could take
+  about 20-30 minutes!)
 
-    `packer build flm-packer-64.json`
+    `packer build freelawbox64.json`
 
   3. Install the Vagrant box on your local machine. The new _.box_ file will
   have a timestamp in the filename, so make sure to add the correct file:
@@ -167,6 +171,24 @@ are contained in the [packer](./packer) directory of this project.
 Voila! You now have a new Vagrant box installed locally. You can even share the
 _.box_ file with others the old fashioned way, host it at a URL, etc. (Vagrant
 supports pulling boxes via URL.)
+
+# Building your own Vagrant box using the Ansible playbooks
+
+If you aren't looking to build a Vagrant base box and instead just want to take
+a vanilla Ubuntu 14.04 base image (e.g. something like _ubuntu/trusty64_ or
+_/boxcutter/ubuntu1404_), you can install
+[Ansible](https://github.com/ansible/ansible) locally and use the same
+playbooks used when building from scratch with Packer.
+
+  0. Install the latest Ansible via either `pip install ansible` or other means.
+
+  1. Change into the `ansible` directory where there's already a stubbed-out
+  Vagrantfile waiting for you.
+
+  2. The playbooks are executable, so just run: `./freelawmachine.yml` from your
+  command line.
+
+  3. Get a drink because you could be waiting about 20 minutes or so :-)
 
 
 # Vagrant Tips
