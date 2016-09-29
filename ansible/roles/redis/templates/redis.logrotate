@@ -1,0 +1,8 @@
+{{ log_directory }}/*.log {
+    rotate 36500
+    daily
+    dateext
+    notifempty
+    noolddir
+    sharedscripts
+}

@@ -1,0 +1,124 @@
+---
+###################################################################
+#
+#  Courtlistener service role
+#
+###################################################################
+
+# dev libraries galore!
+- name: install required packages
+  become_user: root
+  apt:
+    pkg={{ item }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  with_items:
+    - libxml2-dev
+    - libxslt-dev
+    - python-simplejson
+    - python-dev
+    - libav-tools
+    - libffi-dev
+    - postgresql-server-dev-all
+    - poppler-utils
+    - checkinstall
+    - curl
+    - antiword
+    - cython
+    - git
+
+- name: configure CourtListener directories
+  become_user: root
+  file:
+    state=directory
+    path="{{ item }}"
+    owner="{{ cl_user }}"
+    group="{{ cl_user }}"
+  with_items:
+    - "{{ install_root }}"
+    - "{{ log_directory }}"
+    - "{{ juriscraper_log_directory }}"
+
+- name: make sure virtualenv is up to date
+  become_user: "{{ cl_user }}"
+  pip:
+    name="{{ item }}"
+    state=latest
+    virtualenv="{{ virtualenv_directory }}"
+  with_items:
+    - pip
+    - setuptools
+    - wheel
+
+- name: help people out by sourcing the virtualenv by default
+  become_user: "{{ cl_user }}"
+  lineinfile:
+    name="/home/{{ cl_user }}/.bashrc"
+    state=present
+    line="source {{ virtualenv_directory }}/bin/activate"
+
+- name: installing Reporters-DB and Seal-Rookery from PyPI
+  become_user: "{{ cl_user }}"
+  pip:
+    name="{{ item }}"
+    state=latest
+    virtualenv="{{ virtualenv_directory }}"
+  with_items:
+    - reporters-db
+    - seal-rookery
+
+- name: installing Judge-Pics
+  become_user: "{{ cl_user }}"
+  pip:
+    name="git+https://github.com/freelawproject/judge-pics@master"
+    editable=False
+    virtualenv="{{ virtualenv_directory }}"
+
+- name: update seal-rookery
+  become_user: "{{ cl_user }}"
+  command: "{{ virtualenv_directory }}/bin/update-seals"
+  ignore_errors: True
+  register: update_result
+
+- name: force update of seal-rookery
+  become_user: "{{ cl_user }}"
+  command: "{{ virtualenv_directory }}/bin/update-seals -f"
+  ignore_errors: True
+  # ignore failures for now as if imagemagick isn't installed this won't work
+
+- name: install NumPy/SciPy stuff
+  become_user: root
+  apt:
+    pkg={{ item }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  with_items:
+    - python-numpy
+    - python-scipy
+    - libblas-dev
+    - liblapack-dev
+    - gfortran
+
+- name: setup /etc/courtlistener
+  become_user: root
+  lineinfile:
+    name=/etc/courtlistener
+    line="INSTALL_ROOT='{{ install_root }}'\n"
+    state=present
+    create=yes
+
+# juriscraper install is in a separate file
+- include: juriscraper.yml
+
+# here we have to decide, are we doing a full install of CL? or just preparing
+# a box with the minimal setup because someone else (e.g. Vagrant) will kick off
+# the remainder of the install.
+- include: full.yml
+  when: installing_courtlistener is defined
+
+- include: minimal.yml
+  when: installing_courtlistener is undefined

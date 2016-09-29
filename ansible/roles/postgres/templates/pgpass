@@ -1,0 +1,2 @@
+localhost:5432:*:postgres:{{ pg_password }}
+localhost:5432:courtlistener:django:{{ cl_pg_password }}

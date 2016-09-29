@@ -1,0 +1,43 @@
+---
+###################################################################
+#
+#  OCR service role
+#
+###################################################################
+- name: install required packages via apt-get
+  become_user: root
+  apt:
+    pkg="{{ item }}"
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  with_items:
+    - imagemagick
+    - libpng12-dev
+    - zlib1g-dev
+    - autoconf
+    - automake
+    - libtool
+    - pkg-config
+    - libtiff5-dev
+    - libjpeg8-dev
+
+- name: basic check to see if tesseract and leptonica are available
+  become_user: "{{ ocr_user }}"
+  command: tesseract -v
+  register: result
+  ignore_errors: True
+
+- debug: var=result verbosity=1
+
+- name: running leptonica playbook
+  include: leptonica.yml
+  when: result.failed is defined or "leptonica-{{ leptonica_version }}" not in result.stderr
+
+- name: running tesseract playbook
+  include: tesseract.yml
+  when: result.failed is defined or "tesseract {{ tesseract_version }}" not in result.stderr
+
+- name: clean up any residual ocr installation files
+  file: state=absent path="{{ src_directory }}"

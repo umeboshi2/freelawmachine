@@ -1,4 +1,4 @@
-Free Law (Virtual) Machine v1.6.0
+Free Law (Virtual) Machine v2.0.0
 ==================================
 
 This project is designed to provide automation around building a ready-to-run
@@ -14,16 +14,21 @@ and make having a dev environment as easy as `vagrant up`.
 * (Optional) [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * (Optional) [Packer 0.10.1](https://packer.io/downloads.html)
 
-
 And a high-speed network connection since the VM will need to pull down
 packages! (You are installing Ubuntu...so do this via a cellular data
 connection at your own $$ peril!)
 
-## New in Version 1.6.0!
+## New in Version 2.0.0!
 
-* 64-bit VM support is now the default! (32-bit is now deprecated.)
-* Updated to use the latest Ubuntu 14.04 LTS release.
-* Automatic cloning of CourtListener, so you don't even need a local Git client!
+Major changes for users of 1.6:
+* _A wild Ansible appears!_ Provisioning is now done via Ansible playbooks
+  instead of nasty hard to maintain shell scripts.
+* The box is set up closer to the original wiki specs, so it uses a Python
+  Virtual Environment, but it should be auto-activated for you upon ssh login.
+* Similar to v1.6, _you only need the Vagrantfile_ to run the box (assuming you
+  have virtualbox and vagrant). It will do the rest.
+* *Deprecation Warning!* We're removed support for 32-bit boxes. New standard is
+  to use 64-bit to mimic exact same packages as used in Production.
 
 Major changes for users of 1.5 and earlier:
 * The `flp` directory is no longer used or needed. If you want to pre-clone a
@@ -132,17 +137,17 @@ docs in the index go live:
 You should now have some results on the landing page as well as fully searchable
 opinions!
 
-If you've uncommented the lines in the Vagrantfile to forward the Solr web ports
-you can inspect the index cores directly using your browser:
+You can inspect the Solr index cores directly using your browser:
 [http://localhost:8999/solr/#/](http://localhost:8999/solr/#/)
 
 # Building a new Vagrant Box (For Contributors)
 Here's how to crank out a box if you've got the Requirements above. Depending
-on your network connection, CPU, disk, etc. this could take anywhere from 5
+on your network connection, CPU, disk, etc. this could take anywhere from 20
 mins to maybe 30 mins. Be patient :-)
 
 All of the tools required to build the box using [Packer](https://packer.io)
-are contained in the [packer](./packer) directory of this project.
+are contained in the [packer](./packer) directory of this project. [Ansible](https://github.com/ansible/ansible) is installed into the VM image
+itself, so there's no need to have it installed on your local machine.
 
   0. Grab the latest Free Law Machine source:
 
@@ -153,9 +158,10 @@ are contained in the [packer](./packer) directory of this project.
     `cd packer`
 
   2. Build the box! (Yes, it's that simple. Since it's configured headless, it
-  may appear nothing is happening for a little while. It's ok.)
+  may appear nothing is happening for a little while. It's ok. This could take
+  about 20-30 minutes!)
 
-    `packer build flm-packer-64.json`
+    `packer build freelawbox64.json`
 
   3. Install the Vagrant box on your local machine. The new _.box_ file will
   have a timestamp in the filename, so make sure to add the correct file:
@@ -165,6 +171,24 @@ are contained in the [packer](./packer) directory of this project.
 Voila! You now have a new Vagrant box installed locally. You can even share the
 _.box_ file with others the old fashioned way, host it at a URL, etc. (Vagrant
 supports pulling boxes via URL.)
+
+# Building your own Vagrant box using the Ansible playbooks
+
+If you aren't looking to build a Vagrant base box and instead just want to take
+a vanilla Ubuntu 14.04 base image (e.g. something like _ubuntu/trusty64_ or
+_/boxcutter/ubuntu1404_), you can install
+[Ansible](https://github.com/ansible/ansible) locally and use the same
+playbooks used when building from scratch with Packer.
+
+  0. Install the latest Ansible via either `pip install ansible` or other means.
+
+  1. Change into the `ansible` directory where there's already a stubbed-out
+  Vagrantfile waiting for you.
+
+  2. The playbooks are executable, so just run: `./freelawmachine.yml` from your
+  command line.
+
+  3. Get a drink because you could be waiting about 20 minutes or so :-)
 
 
 # Vagrant Tips

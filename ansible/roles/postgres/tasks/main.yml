@@ -1,0 +1,61 @@
+---
+###################################################################
+#
+#  Postgres service role
+#
+###################################################################
+- name: install postgres via apt-get
+  become_user: root
+  apt:
+    pkg="{{ item }}"
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  with_items:
+    - postgresql-9.3
+    - postgresql-contrib
+    - python-psycopg2
+
+- name: configure postgres using template file
+  become_user: root
+  template:
+    src=pg_hba.conf
+    dest=/etc/postgresql/9.3/main/pg_hba.conf
+
+- name: make sure postgresql is running and set to start on restart
+  become_user: root
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: set up .pgpass for {{ pg_user }}
+  become_user: "{{ pg_user }}"
+  template:
+    src=pgpass
+    dest=/home/{{ pg_user }}/.pgpass
+
+- name: make .pgpass private
+  become_user: "{{ pg_user }}"
+  file:
+    path=/home/{{ pg_user }}/.pgpass
+    owner={{ pg_user }}
+    group={{ pg_user }}
+    mode=0600
+
+- include: postgres-accounts.yml
+
+#- name: configure postgres using template file
+#  become_user: root
+#  template:
+#    src=pg_hba.conf
+#    dest=/etc/postgresql/9.3/main/pg_hba.conf
+#
+
+- name: bounce postgres
+  become_user: root
+  service:
+    name: postgresql
+    state: restarted
+    enabled: yes
