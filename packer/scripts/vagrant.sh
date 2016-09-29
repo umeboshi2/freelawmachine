@@ -1,8 +1,10 @@
 #!/bin/bash -eux
-# NOTE: Do we need all the sudo's? I don't think so...
+
+# NOTE: for some reason I can't get the environment_vars to work with packer,
+# so for now we need to hardcode the version here
+export BOXVERSION=freelawbox64-2.0.0
 
 echo '== VAGRANT PRE-CONFIGURATION =='
-# isntall ansible
 echo 'Installing Ansible...'
 sudo apt-get install -yf ansible
 
@@ -19,11 +21,6 @@ wget --no-check-certificate \
     -O /home/vagrant/.ssh/authorized_keys
 chmod 0600 /home/vagrant/.ssh/authorized_keys
 chown -R vagrant:vagrant /home/vagrant/.ssh
-
-# make mapping directory for /vagrant
-#echo 'Setting up /vagrant...'
-#sudo mkdir /vagrant
-#sudo chown vagrant:vagrant /vagrant
 
 echo '== VIRTUALBOX CONFIGURATION =='
 # Mount the disk image. We don't install CDROM support so Packer will
@@ -45,5 +42,21 @@ echo 'Cleaning up...'
 sudo umount isomount
 sudo rm -rf isomount /home/vagrant/VBoxGuestAdditions.iso
 
-# let's see some color
-# sed -i 's/#force_color_prompt/force_color_prompt/g' /home/vagrant/.bashrc
+################################################################################
+# borrowed from https://github.com/boxcutter/ubuntu/blob/master/script/motd.sh
+echo "==> Recording box generation date"
+date > /etc/vagrant_box_build_date
+
+echo "==> Customizing message of the day"
+BOXVERSION=freelawbox64-2.0.0
+BUILT_MSG=$(printf 'built: %s' $(date +%Y-%m-%d))
+printf '%0.1s' "-"{1..64} > /etc/motd
+printf '\n' >> /etc/motd
+printf '%3s%-28s%30s' " " "$BOXVERSION" "$BUILT_MSG" >> /etc/motd
+printf '\n' >> /etc/motd
+printf '%8s%s\n' " " "[https://github.com/freelawproject/freelawbox]" >> /etc/motd
+printf '%0.1s' "-"{1..64} >> /etc/motd
+printf '\n' >> /etc/motd
+
+echo "==> Message of the day set to:"
+cat /etc/motd
