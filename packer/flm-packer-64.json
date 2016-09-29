@@ -11,14 +11,12 @@
         {
             "type": "shell",
             "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'",
-            "inline": [
-              "sudo apt-get install -yf ansible",
-              "echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL' >> /etc/sudoers.d/vagrant",
-              "chmod 440 /etc/sudoers.d/vagrant",
-              "mkdir /home/vagrant/.ssh && chmod 700 $SSH_USER_HOME/.ssh",
-              "echo '{{user `vagrant_ssh_key`}}' > /home/vagrant/.ssh/authorized_keys",
-              "chmod 600 /home/vagrant.ssh/authorized_keys",
-              "chown -R vagrant:vagrant /home/vagrant/.ssh"
+            "environment_vars": [
+              "FREELAWBOX_VERSION={{user `atlas_name`}}-{{user `version`}}"
+            ],
+            "scripts": [
+              "scripts/motd.sh",
+              "scripts/vagrant.sh"
             ]
         },
         {

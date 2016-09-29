@@ -2,6 +2,10 @@
 # NOTE: Do we need all the sudo's? I don't think so...
 
 echo '== VAGRANT PRE-CONFIGURATION =='
+# isntall ansible
+echo 'Installing Ansible...'
+sudo apt-get install -yf ansible
+
 # sudo configuration
 echo 'Setting up sudoers...'
 sudo bash -c "echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'" >> /etc/sudoers.d/vagrant
@@ -17,9 +21,9 @@ chmod 0600 /home/vagrant/.ssh/authorized_keys
 chown -R vagrant:vagrant /home/vagrant/.ssh
 
 # make mapping directory for /vagrant
-echo 'Setting up /vagrant...'
-sudo mkdir /vagrant
-sudo chown vagrant:vagrant /vagrant
+#echo 'Setting up /vagrant...'
+#sudo mkdir /vagrant
+#sudo chown vagrant:vagrant /vagrant
 
 echo '== VIRTUALBOX CONFIGURATION =='
 # Mount the disk image. We don't install CDROM support so Packer will
@@ -42,4 +46,4 @@ sudo umount isomount
 sudo rm -rf isomount /home/vagrant/VBoxGuestAdditions.iso
 
 # let's see some color
-sed -i 's/#force_color_prompt/force_color_prompt/g' /home/vagrant/.bashrc
+# sed -i 's/#force_color_prompt/force_color_prompt/g' /home/vagrant/.bashrc
