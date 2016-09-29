@@ -18,3 +18,9 @@
     - python-virtualenv
     - python-dev
     - git
+
+- name: generate locales
+  command: locale-gen
+
+- name: configure locale and language settings
+  command: "update-locale LANG=en_US.utf8 LANGUAGE=en_US:utf8"

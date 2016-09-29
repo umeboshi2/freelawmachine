@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+---
+# Update an existing FreeLawBox system
+- hosts: dev
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  vars:
+    installing_courtlistener: yes
+    courtlistener_directory: /var/www/courtlistener
+    virtualenv_directory: /home/vagrant/.virtualenvs/courtlistener
+    cl_user: vagrant
+  roles:
+    - ubuntu-trusty
+    - vagrantbox
+    - courtlistener
