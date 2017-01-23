@@ -26,7 +26,6 @@
   become_user: root
   unarchive:
     src=https://archive.apache.org/dist/lucene/solr/{{ solr_version}}/solr-{{ solr_version }}.tgz
-    copy=no
     dest="{{ install_root }}"
     remote_src=yes
     owner="{{ solr_user }}"

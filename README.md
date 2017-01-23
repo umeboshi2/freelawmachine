@@ -1,4 +1,4 @@
-Free Law (Virtual) Machine v2.0.0
+Free Law (Virtual) Machine v2.0.2
 ==================================
 
 This project is designed to provide automation around building a ready-to-run
@@ -17,6 +17,9 @@ and make having a dev environment as easy as `vagrant up`.
 And a high-speed network connection since the VM will need to pull down
 packages! (You are installing Ubuntu...so do this via a cellular data
 connection at your own $$ peril!)
+
+## Changes in 2.0.2
+* Fix for missing `/reloadCache` Solr endpoint
 
 ## New in Version 2.0.0!
 
