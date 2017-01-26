@@ -8,7 +8,7 @@ fi
 SCRIPT
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "freelawproject/freelawbox64"
+  config.vm.box = "freelawproject/freelawbox64-desktop"
 
   # Forwarding for CourtListener
   config.vm.network "forwarded_port", guest: 8000, host: 8000
@@ -24,12 +24,12 @@ Vagrant.configure(2) do |config|
   # Tweak VM settings for virtualbox here. Feel free to bump up memory or
   # CPU core count as desired, but the defaults should work fine.
   config.vm.provider "virtualbox" do |vb, override|
-    vb.gui = false
-    vb.memory = "2560"
+    vb.gui = true
+    vb.memory = "4096"
     vb.cpus = 2
   end
 
-  # pull down the Asible playbooks
+  # pull down the Asible playbooks if they aren't already
   config.vm.provision "shell", inline: $git_script
 
 	# Use Ansible to set up CourtListener
