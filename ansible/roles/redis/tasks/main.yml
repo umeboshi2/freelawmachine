@@ -27,7 +27,6 @@
 - name: download and unpack redis
   unarchive:
     src=http://download.redis.io/redis-stable.tar.gz
-    copy=no
     dest="{{ install_directory }}"
     remote_src=yes
     creates="{{ install_directory }}/redis-stable"

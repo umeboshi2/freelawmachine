@@ -2,7 +2,7 @@
 
 # NOTE: for some reason I can't get the environment_vars to work with packer,
 # so for now we need to hardcode the version here
-export BOXVERSION=freelawbox64-2.0.0
+export BOXVERSION=freelawbox64-2.0.2
 
 echo '== VAGRANT PRE-CONFIGURATION =='
 echo 'Installing Ansible...'
@@ -48,7 +48,7 @@ echo "==> Recording box generation date"
 date > /etc/vagrant_box_build_date
 
 echo "==> Customizing message of the day"
-BOXVERSION=freelawbox64-2.0.0
+BOXVERSION=freelawbox64-2.0.2
 BUILT_MSG=$(printf 'built: %s' $(date +%Y-%m-%d))
 printf '%0.1s' "-"{1..64} > /etc/motd
 printf '\n' >> /etc/motd

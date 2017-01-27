@@ -1,0 +1,34 @@
+#!/usr/bin/env ansible-playbook
+---
+# Build out a FreeLawMachine from an Ubuntu Trusty64 Vagrantbox with a GUI
+- hosts: dev
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  vars:
+    courtlistener_directory: /var/www/courtlistener
+    cl_pg_password: your-password
+    virtualenv_directory: /home/vagrant/.virtualenvs/courtlistener
+    celery_user: vagrant
+    redis_user: vagrant
+    pg_user: vagrant
+    solr_user: vagrant
+    solr_version: 4.10.4
+    solr_cores:
+      - collection1
+      - audio
+      - opinion
+      - recap
+      - person
+    ocr_user: vagrant
+    cl_user: vagrant
+  roles:
+    - ubuntu-trusty
+    - vagrantbox
+    - desktop
+    - redis
+    - celery
+    - postgres
+    - solr
+    - ocr
+    - courtlistener

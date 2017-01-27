@@ -26,7 +26,6 @@
   become_user: root
   unarchive:
     src=https://archive.apache.org/dist/lucene/solr/{{ solr_version}}/solr-{{ solr_version }}.tgz
-    copy=no
     dest="{{ install_root }}"
     remote_src=yes
     owner="{{ solr_user }}"
@@ -60,6 +59,19 @@
 - name: configure solr cores...
   become_user: "{{ solr_user }}"
   include: cores.yml
+
+- name: remove default collection1 example configs
+  become_user: root
+  file: state=absent path="{{ run_directory }}/example/solr/collection1"
+
+- name: symlink our collection1 core to the CL expected location
+  become_user: root
+  file:
+    state=link
+    path="{{ run_directory }}/example/solr/collection1"
+    src="{{ cores_directory }}/collection1"
+    owner="{{ solr_user }}"
+    group="{{ solr_user }}"
 
 - name: start Solr service
   become_user: root

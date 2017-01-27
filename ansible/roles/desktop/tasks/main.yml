@@ -1,0 +1,35 @@
+---
+###################################################################
+#
+#  Install and configure a XFCE Desktop Environment
+#
+#################################################################### vagrantbox role
+- name: install xfce desktop environment & chromium stuff
+  become_user: root
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+  with_items:
+    - lxdm
+    - xfce4
+    - xfce4-goodies
+    - chromium-browser
+    - chromium-chromedriver
+
+- name: symlink chromedriver into path
+  become_user: root
+  file:
+    state: link
+    src: "/usr/lib/chromium-browser/chromedriver"
+    path: "/usr/bin/chromedriver"
+
+- name: configure automatic login for LXDM
+  become_user: root
+  lineinfile:
+      dest: '/etc/lxdm/lxdm.conf'
+      insertafter: '^\[base\]'
+      state: 'present'
+      line: 'autologin=vagrant'

@@ -21,6 +21,7 @@
     - python-dev
     - libav-tools
     - libffi-dev
+    - libwpd-tools
     - postgresql-server-dev-all
     - poppler-utils
     - checkinstall

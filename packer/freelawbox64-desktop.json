@@ -14,7 +14,7 @@
         },
         {
             "type": "ansible-local",
-            "playbook_file": "../ansible/freelawmachine.yml",
+            "playbook_file": "../ansible/freelawmachine-desktop.yml",
             "playbook_dir": "../ansible",
             "inventory_file": "../ansible/config/hosts_local"
         }
@@ -59,7 +59,7 @@
       [{
         "type": "vagrant",
         "keep_input_artifact": false,
-        "output": "{{user `atlas_name`}}-{{user `version`}}.box"
+        "output": "{{user `atlas_name`}}-{{user `version`}}-desktop.box"
       }]
     ]
 }
