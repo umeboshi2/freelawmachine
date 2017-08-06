@@ -5,7 +5,7 @@ This project is designed to provide automation around building a ready-to-run
 development environment for the [Free Law Project](https://github.com/freelawproject) using Vagrant boxes.
 
 Hopefully, it will do away with the manual process described
-[here](https://github.com/freelawproject/courtlistener/wiki/Installing-CourtLitener-on-Ubuntu-Linux)
+[here](https://github.com/freelawproject/courtlistener/wiki/Installing-CourtListener-on-Ubuntu-Linux)
 and make having a dev environment as easy as `vagrant up`.
 
 ## Requirements
@@ -114,7 +114,7 @@ _For more details on why this is, check out this StackOverflow
 Fire up your browser (on your local machine!) and confirm you've got a local
 instance that looks like [courtlistener.com](https://www.courtlistener.com/).
 
-  Navigate to: [http://localhost:8888](http://localhost:8888)
+  Navigate to: [http://localhost:8000](http://localhost:8000)
 
 
 ## Scrape Some Court Opinions!
