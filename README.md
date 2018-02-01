@@ -90,6 +90,7 @@ Vagrant provisioning scripts.
 
   ``` bash
   cd /var/www/courtlistener
+  pip install -U requirements.txt
   ./manage.py migrate
   ./manage.py syncdb #to create the admin user
   ```
