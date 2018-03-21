@@ -30,7 +30,7 @@ Install the following.  Use a high-speed connection.  (These components are larg
 
   `vagrant up`
 
-   And the base box will be pulled down from it's hosted location, installed into VirtualBox, started, and last-mile provisioning steps will take place.  _This now includes cloning the latest copy of CourtListener for you!_
+   And the base box will be pulled down from its hosted location, installed into VirtualBox, started, and last-mile provisioning steps will take place.  _This now includes cloning the latest copy of CourtListener for you!_
 
 5. Now to log into the box...it's a simple:
 
