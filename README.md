@@ -3,7 +3,7 @@ Free Law (Virtual) Machine v2.1.0
 
 Want to help develop Free Law Project functionality?
 
-Follow the steps below to build a development environment for the [Free Law Project](https://github.com/freelawproject) components like the [CourtListener repository](https://github.com/freelawprojectcourtlistener) website.  You will also be able to build new or custom Vagrant boxes and contribute back to this freelawmachine repository.
+Follow the steps below to build a development environment for the [Free Law Project](https://github.com/freelawproject) components like the [CourtListener](https://github.com/freelawproject/courtlistener) website.  You will also be able to build new or custom Vagrant boxes and contribute back to this freelawmachine repository.
 
 This repository and the steps supercede the manual process [described](https://github.com/freelawproject/courtlistener/wiki/Installing-CourtListener-on-Ubuntu-Linux) in the CourtListener [wiki](https://github.com/freelawproject/courtlistener/wiki).  They are intended to make the creation of a dev environment about as easy as a `vagrant up` command.
 
