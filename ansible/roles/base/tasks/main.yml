@@ -1,0 +1,40 @@
+---
+###################################################################
+#
+#  Ubuntu Trusty 64-bit management routines
+#
+####################################################################
+
+- name: configure apt-proxy using template file
+  template:
+    src=apt-proxy.conf
+    dest=/etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+  when: use_apt_cache
+  
+
+- name: import packages tasks
+  include: packages.yml
+
+- name: update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: false
+    
+
+- name: install most pager
+  apt:
+    pkg: most
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    
+- name: make most the default pager
+  alternatives:
+    name: pager
+    link: /usr/bin/pager
+    path: /usr/bin/most
+    
+
+

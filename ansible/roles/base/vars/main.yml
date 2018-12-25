@@ -1,0 +1,8 @@
+---
+#use_apt_cache: false
+use_apt_cache: true
+aptproxy: http://10.0.2.2:3142/
+extra_util_packages:
+  - nmap
+  - minicom
+  
