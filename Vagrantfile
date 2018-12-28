@@ -10,14 +10,20 @@ fi
 SCRIPT
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "freelawproject/freelawbox64"
-
+  #config.vm.box = "freelawproject/freelawbox64"
+  #config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "mydesktop3"
+  #config.vm.box = "freelawproject/freelawbox64"
+  
   # Forwarding for CourtListener
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
-  config.vm.network "forwarded_port", guest: 8081, host: 8081
+  #config.vm.network "forwarded_port", guest: 8000, host: 8000
+  #config.vm.network "forwarded_port", guest: 8081, host: 8081
   # Forarding for Solr
   config.vm.network "forwarded_port", guest: 8983, host: 8983
-
+  # I need different ports
+  config.vm.network "forwarded_port", guest:8000, host:9000
+  config.vm.network "forwarded_port", guest:8081, host:9081
+  
   # Sets up the shared folder. If you already have CourtListener checked out
   # somewhere else on your system, update the first argument to point to that
   # clone of the repo.
@@ -37,6 +43,7 @@ Vagrant.configure(2) do |config|
 	# Use Ansible to set up CourtListener
   config.vm.provision :ansible_local do |ansible|
     ansible.provisioning_path = "/vagrant/ansible"
+    #ansible.playbook = "xenialbox.yml"
     ansible.playbook = "freelawbox.yml"
     ansible.limit = "all"
     ansible.inventory_path = "/vagrant/ansible/config/hosts_local"

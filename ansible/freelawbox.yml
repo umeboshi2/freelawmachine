@@ -11,6 +11,7 @@
     virtualenv_directory: /home/vagrant/.virtualenvs/courtlistener
     cl_user: vagrant
   roles:
+    - base
     - ubuntu-trusty
     - vagrantbox
     - courtlistener

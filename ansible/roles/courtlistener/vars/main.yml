@@ -8,7 +8,7 @@ phantomjs_version: 2.1.1
 phantomjs_symlink_root: /usr/local/bin
 
 # github repo
-judge_pics_repo: "git+https://github.com/freelawproject/judge-pics@master"
+#judge_pics_repo: "git+https://github.com/freelawproject/judge-pics@master"
 
 # cloned repo
 # Each time the virtual machine is provisioned, the judge-pics repo
@@ -17,4 +17,4 @@ judge_pics_repo: "git+https://github.com/freelawproject/judge-pics@master"
 # working directory to reduce internet usage when provisioning.
 # If this is preferred, comment the above variable, and uncomment
 # the variable below.
-# judge_pics_repo: "/vagrant/judge-pics"
+judge_pics_repo: "/vagrant/judge-pics"

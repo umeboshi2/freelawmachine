@@ -8,7 +8,7 @@
   apt:
     update_cache: yes
     cache_valid_time: 3600
-    
+  when: false
     
 - name: install base packages
   apt:
@@ -19,6 +19,7 @@
     autoremove: yes
   with_items:
     - aptitude
+    - cowsay
     - etckeeper
     
 - name: install dictionaries
@@ -59,7 +60,6 @@
     #- emacs
     - htop
     - iotop
-    - git
     - keychain
     - hardlink
     - fdupes
