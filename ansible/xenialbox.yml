@@ -1,0 +1,40 @@
+#!/usr/bin/env ansible-playbook
+---
+# Update an existing FreeLawBox system
+- hosts: dev
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  vars:
+    #use_apt_cache: false
+    use_apt_cache: true
+    aptproxy: http://10.0.2.2:3142/
+    installing_courtlistener: yes
+    courtlistener_directory: /var/www/courtlistener
+    cl_pg_password: your-password
+    virtualenv_directory: /home/vagrant/.virtualenvs/courtlistener
+    celery_user: vagrant
+    redis_user: vagrant
+    pg_user: vagrant
+    solr_user: vagrant
+    solr_version: 4.10.4
+    solr_cores:
+      - collection1
+      - audio
+      - opinion
+      - recap
+      - person
+    ocr_user: vagrant
+    cl_user: vagrant
+  roles:
+    - apt-cache
+    - ubuntu-trusty
+    - vagrantbox
+    - redis
+    - celery
+    - role: postgres
+      tags:
+        - postgres
+    - solr
+    - ocr
+    - courtlistener

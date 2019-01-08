@@ -1,0 +1,13 @@
+---
+###################################################################
+#
+#  Use apt-proxy if enabled
+#
+####################################################################
+
+- name: configure apt-proxy using template file
+  template:
+    src=apt-proxy.conf
+    dest=/etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+  when: use_apt_cache
+  
