@@ -9,10 +9,23 @@ if [ ! -d /vagrant/ansible ]; then
 fi
 SCRIPT
 
+$proxy_script = <<SCRIPT
+aptfile=/vagrant/apt-proxy.conf
+pipfile=/vagrant/pip.conf
+if [ ! -r /etc/apt/apt.conf.d/000apt-cacher-ng-proxy ]; then
+  sudo cp $aptfile /etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+  echo "Created /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+fi
+if [ ! -r /etc/pip.conf ]; then
+  sudo cp $pipfile /etc/pip.conf
+  echo "Created /etc/pip.conf"
+fi
+SCRIPT
+
 Vagrant.configure(2) do |config|
-  #config.vm.box = "freelawproject/freelawbox64"
+  config.vm.box = "freelawproject/freelawbox64"
   #config.vm.box = "ubuntu/xenial64"
-  config.vm.box = "mydesktop3"
+  #config.vm.box = "mydesktop3"
   #config.vm.box = "freelawproject/freelawbox64"
   
   # Forwarding for CourtListener
@@ -39,11 +52,13 @@ Vagrant.configure(2) do |config|
 
   # pull down the Asible playbooks
   config.vm.provision "shell", inline: $git_script
+  
+  # enable proxies before installing ansible
+  config.vm.provision "shell", inline: $proxy_script
 
 	# Use Ansible to set up CourtListener
   config.vm.provision :ansible_local do |ansible|
     ansible.provisioning_path = "/vagrant/ansible"
-    #ansible.playbook = "xenialbox.yml"
     ansible.playbook = "freelawbox.yml"
     ansible.limit = "all"
     ansible.inventory_path = "/vagrant/ansible/config/hosts_local"
