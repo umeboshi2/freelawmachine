@@ -60,7 +60,7 @@ if [ ! -d dwz-0.12 ]; then
 fi    
 echo "Finished dwz  ********************************************"
 
-oldstripper=strip-nondeterminism-0,034
+oldstripper=strip-nondeterminism-0.034
 if [ ! -d $oldstripper ]; then
     apt-get source strip-nondeterminism=0.034-1
     pushd $oldstripper
