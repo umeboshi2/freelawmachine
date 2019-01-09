@@ -6,9 +6,13 @@
   become: yes
   become_method: sudo
   vars:
-    #use_apt_cache: false
+    #-----------------------------------------------
     use_apt_cache: true
+    use_devpi_cache: true
     aptproxy: http://10.0.2.2:3142/
+    devpi_base_url: http://10.0.2.2:4040
+    build_deb_packages: true
+    #-----------------------------------------------
     installing_courtlistener: yes
     courtlistener_directory: /var/www/courtlistener
     cl_pg_password: your-password
@@ -27,14 +31,14 @@
     ocr_user: vagrant
     cl_user: vagrant
   roles:
-    - apt-cache
+    - net-cache
     - ubuntu-trusty
     - vagrantbox
-    - redis
-    - celery
-    - role: postgres
-      tags:
-        - postgres
-    - solr
-    - ocr
-    - courtlistener
+    #- redis
+    #- celery
+    #- role: postgres
+    #  tags:
+    #    - postgres
+    #- solr
+    #- ocr
+    #- courtlistener
