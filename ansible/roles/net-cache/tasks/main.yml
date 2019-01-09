@@ -1,7 +1,7 @@
 ---
 ###################################################################
 #
-#  Use apt-proxy if enabled
+#  Use apt-proxy and devpi  if enabled
 #
 ####################################################################
 
@@ -10,4 +10,25 @@
     src=apt-proxy.conf
     dest=/etc/apt/apt.conf.d/000apt-cacher-ng-proxy
   when: use_apt_cache
+
+- name: create ~/.pip
+  file:
+    path: ~/.pip
+    state: directory
+  become_user: vagrant
+
+- name: configure pip.conf
+  become_user: vagrant
+  template:
+    src: pip.conf
+    dest: ~/.pip/pip.conf
+  when: use_devpi_cache
+
+- name: configure pydistutils.cfg
+  become_user: vagrant
+  template:
+    src: pydistutils.cfg
+    dest: ~/.pydistutils.cfg
+  when: use_devpi_cache
+  
   
