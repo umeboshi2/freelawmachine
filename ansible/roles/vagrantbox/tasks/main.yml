@@ -9,3 +9,35 @@
     dest=/home/vagrant/.bashrc
     regexp='^force_color_prompt=yes$'
     line='force_color_prompt=yes'
+
+- name: update util packages
+  apt:
+    pkg={{ packages }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  vars:
+    packages:
+      - aptitude
+      - tmux
+      - htop
+      - iotop
+
+- name: install most pager
+  apt:
+    pkg: most
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+  when: use_most_as_pager
+  
+- name: make most the default pager
+  alternatives:
+    name: pager
+    link: /usr/bin/pager
+    path: /usr/bin/most
+  when: use_most_as_pager
+    
+      
