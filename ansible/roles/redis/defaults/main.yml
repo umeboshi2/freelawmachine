@@ -3,3 +3,4 @@
 install_directory: /opt/redis
 run_directory: /var/redis/6379
 log_directory: /var/log/redis
+redis_archive: http://download.redis.io/redis-stable.tar.gz
