@@ -21,6 +21,9 @@
       - libeatmydata1
       - sbuild
       
+- name: setup schroot_roots_directory
+  file: "{{ schroot_roots_directory }}"
+  state: directory
 
 - name: configure schroot default copyfiles
   template:
