@@ -4,6 +4,11 @@
 #  Celery service role
 #
 ###################################################################
+- name: import build celery deps
+  import_tasks: build-celery.yml
+  
+
+
 - name: prepare Celery directories
   become_user: root
   command: mkdir -p {{ item }}

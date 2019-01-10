@@ -74,11 +74,12 @@ stripper=strip-nondeterminism-1.0.0
 if [ ! -d $stripper ]; then
     apt-get source strip-nondeterminism
     pushd $stripper
+    echo 10 > debian/compat
     dpkg-buildpackage -us -uc -d
     popd
 fi
-
 sudo dpkg -i dh-strip-nondeterminism_1.0.0-1_all.deb libfile-stripnondeterminism-perl_1.0.0-1_all.deb
+echo "finished strip-nondeterminism-1.0.0 **********************"
 
 
 if [ ! -d debhelper-12 ]; then
@@ -86,6 +87,39 @@ if [ ! -d debhelper-12 ]; then
     pushd debhelper-12
     dpkg-buildpackage
     popd
+    sudo dpkg -i debhelper_12_all.deb dh-systemd_12_all.deb
 fi
+echo "finished debhelper-12 ********************************************"
 
-#sudo dpkg -i debhelper_12_all.deb dh-systemd_12_all.deb
+sphinx=sphinx-1.7.9
+if [ ! -d $sphinx ]; then
+    apt-get source sphinx
+    pushd $sphinx
+    dpkg-buildpackage -us -uc
+    sudo debi
+    popd
+fi
+echo "Finished $sphinx *************************************************"
+
+sphinx_celery=sphinx-celery-1.3.1
+if [ ! -d $sphinx_celery ]; then
+    apt-get source sphinx-celery
+    pushd $sphinx_celery
+    dpkg-buildpackage -us -uc
+    sudo debi
+    popd
+fi
+echo "Finished $sphinx_celery ******************************************"
+
+
+cdir=case-1.5.3+dfsg
+#casedeb=libarchive-cpio-perl_0.10-1_all.deb
+if [ ! -d $cdir ]; then
+    apt-get source python-case
+    pushd $cdir
+    dpkg-buildpackage -us -uc
+    sudo debi
+    popd
+fi
+echo "Finished $cdir ******************************************"
+

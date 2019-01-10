@@ -1,0 +1,161 @@
+---
+###################################################################
+#
+#  Ubuntu Trusty 64-bit management routines
+#
+#################################################################### 
+- name: update debian packaging tools
+  apt:
+    pkg={{ packages }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  when: build_deb_packages
+  vars:
+    packages:
+      - devscripts
+      - debian-archive-keyring
+      - equivs
+      - aptitude
+      - po4a
+      - debhelper
+      - autopoint
+      - libelf-dev
+      - libdevel-cover-perl
+      - autoconf
+      - automake
+      - automake
+      - libtool
+      
+- name: update celery builddeps
+  apt:
+    pkg={{ packages }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  when: build_deb_packages
+  vars:
+    packages:
+      - dh-python
+      - docbook-to-man
+      - dvipng
+      - python-all
+      - python-billiard
+      #- python-case
+      - python-dateutil
+      - python-doc
+      - python-eventlet
+      - python-gevent
+      - python-kombu
+      - python-kombu-doc
+      - python-mailer
+      - python-memcache
+      - python-mock
+      - python-nose
+      - python-openssl
+      - python-pyparsing
+      - python-pytest
+      - python-pytyrant
+      - python-redis
+      - python-setuptools
+      - python-sqlalchemy
+      - python-tz
+      - python-unittest2
+      #- python-vine
+      - python3-all
+      - python3-billiard
+      #- python3-case
+      - python3-dateutil
+      - python3-doc
+      - python3-eventlet
+      - python3-gevent
+      - python3-kombu
+      - python3-memcache
+      - python3-mock
+      - python3-nose
+      - python3-openssl
+      - python3-pyparsing
+      - python3-pytest
+      - python3-redis
+      - python3-setuptools
+      - python3-sphinx
+      #- python3-sphinx-celery
+      - python3-sqlalchemy
+      - python3-tz
+      #- python3-vine
+      - texlive-latex-base
+      - texlive-latex-extra
+      
+      
+- name: update kombu builddeps
+  apt:
+    pkg={{ packages }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+    autoremove=yes
+  when: build_deb_packages
+  vars:
+    packages:
+      - python-amqp
+      - python-anyjson
+      - python-beanstalkc
+      - python-boto
+      - python-couchdb
+      - python-django
+      - python-funcsigs
+      - python-msgpack
+      - python-pika
+      - python-pymongo
+      - python-simplejson
+      - python-yaml
+      - python3-amqp
+      - python3-anyjson
+      - python3-django
+      - python3-funcsigs
+      - python3-msgpack
+      - python3-pymongo
+      - python3-simplejson
+      - python3-yaml
+      
+
+- name: add apt-keys for sid
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items:
+    - 8B48AD6246925553
+    - 7638D0442B90D010
+      
+#- name: add apt-keys for sid
+#  command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys {{ item }}
+#  with_items:
+#    - 8B48AD6246925553
+#    - 7638D0442B90D010
+    
+- name: add stretch source repository to apt sources
+  apt_repository:
+    repo:  deb-src http://ftp.us.debian.org/debian stretch main contrib non-free
+    state: present
+    filename: stretch-src
+    
+- name: add sid source repository to apt sources
+  apt_repository:
+    repo:  deb-src http://ftp.us.debian.org/debian sid main contrib non-free
+    state: present
+    filename: sid-src
+
+- name: create workspace
+  file:
+    path: ~/workspace
+    state: directory
+  become_user: vagrant
+
+- name: assure build script present
+  template:
+    src: build-celery-deps.sh
+    dest: /usr/local/bin/build-celery-deps
+    mode: 0755
+  
