@@ -1,0 +1,50 @@
+---
+###################################################################
+#
+#  Base debian setup
+#
+####################################################################
+
+- name: install schroot packages
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - schroot
+      - pbuilder
+      - debootstrap
+      - git-buildpackage
+      - cowbuilder
+      - ccache
+      - libeatmydata1
+      - sbuild
+      
+
+- name: configure schroot default copyfiles
+  template:
+    src: schroot-default-copyfiles
+    dest: /etc/schroot/default/copyfiles
+
+- name: pbuilder hook directory
+  file:
+    path: /var/cache/pbuilder/hooks
+    state: directory
+
+- name: pbuilder ccache directory world writable
+  file:
+    path: /var/cache/pbuilder/ccache
+    state: directory
+    mode: 0777
+    
+- name: pbuilder hook "{{ item }}"
+  template:
+    src: pbuilder-hook-{{ item }}
+    dest: /var/cache/pbuilder/hooks/{{ item }}
+    mode: 0755
+  loop:
+    - A10ccache
+    - B90lintian
+    - C10shell
+    

@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+apt-get -y --force-yes install lintian
+echo "+++ lintian output +++"
+su -c "lintian -i -I --show-overrides /tmp/buildd/*.changes; :" -l pbuilder
+echo "+++ end of lintian output +++"
