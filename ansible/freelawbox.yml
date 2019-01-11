@@ -6,11 +6,14 @@
   become: yes
   become_method: sudo
   vars:
+    #use_apt_cache: true
+    #use_devpi_cache: true
     installing_courtlistener: yes
     courtlistener_directory: /var/www/courtlistener
     virtualenv_directory: /home/vagrant/.virtualenvs/courtlistener
     cl_user: vagrant
   roles:
+    - net-cache
     - ubuntu-trusty
     - vagrantbox
     - courtlistener
