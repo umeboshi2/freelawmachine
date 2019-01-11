@@ -11,11 +11,18 @@
     dest=/etc/apt/apt.conf.d/000apt-cacher-ng-proxy
   when: use_apt_cache
 
+- name: configure /etc/pip.conf
+  template:
+    src: pip.conf
+    dest: /etc/pip.conf
+  when: use_devpi_cache
+
 - name: create ~/.pip
+  become_user: vagrant
   file:
     path: ~/.pip
     state: directory
-  become_user: vagrant
+  when: use_devpi_cache
 
 - name: configure pip.conf
   become_user: vagrant
