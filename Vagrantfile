@@ -48,7 +48,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: $git_script
   
   # enable proxies before installing ansible
-  config.vm.provision "shell", inline: $proxy_script
+  #config.vm.provision "shell", inline: $proxy_script
 
 	# Use Ansible to set up CourtListener
   config.vm.provision :ansible_local do |ansible|
