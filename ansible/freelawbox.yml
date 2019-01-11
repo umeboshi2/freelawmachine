@@ -7,6 +7,8 @@
   become_method: sudo
   vars:
     #use_apt_cache: true
+    # if using devpi server, uncomment below and set the variables
+    # defined in ./roles/net-cache/defaults/main.yml as needed
     #use_devpi_cache: true
     installing_courtlistener: yes
     courtlistener_directory: /var/www/courtlistener
