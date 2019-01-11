@@ -11,14 +11,9 @@ SCRIPT
 
 $proxy_script = <<SCRIPT
 aptfile=/vagrant/extra/apt-proxy.conf
-pipfile=/vagrant/extra/pip.conf
 if [ ! -r /etc/apt/apt.conf.d/000apt-cacher-ng-proxy ]; then
   sudo cp $aptfile /etc/apt/apt.conf.d/000apt-cacher-ng-proxy
   echo "Created /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
-fi
-if [ ! -r /etc/pip.conf ]; then
-  sudo cp $pipfile /etc/pip.conf
-  echo "Created /etc/pip.conf"
 fi
 SCRIPT
 
