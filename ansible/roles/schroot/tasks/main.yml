@@ -20,16 +20,30 @@
       - ccache
       - libeatmydata1
       - sbuild
-      
+
+- name: add vagrant user to sbuild group
+  user:
+    name: vagrant
+    groups: sbuild
+    append: true
+    
 - name: setup schroot_roots_directory
-  file: "{{ schroot_roots_directory }}"
-  state: directory
+  file:
+    path: "{{ schroot_roots_directory }}"
+    state: directory
 
 - name: configure schroot default copyfiles
   template:
     src: schroot-default-copyfiles
     dest: /etc/schroot/default/copyfiles
+  when: use_apt_cache
 
+- name: use apt proxy in sbuild chroot
+  lineinfile:
+    dest=/etc/schroot/sbuild/copyfiles
+    line=/etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+  when: use_apt_cache
+  
 - name: pbuilder hook directory
   file:
     path: /var/cache/pbuilder/hooks
@@ -50,4 +64,69 @@
     - A10ccache
     - B90lintian
     - C10shell
+
+- name: add apt-keys for sid
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items:
+    - 8B48AD6246925553
+    - 7638D0442B90D010
+  when: false
+  
+- name: add bionic source repositories to apt sources
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.filename }}"
+    update_cache: true
+  with_items:
+    - repo: deb-src http://archive.ubuntu.com/ubuntu bionic main restricted
+      filename: bionic-main
+    - repo: deb-src http://archive.ubuntu.com/ubuntu bionic universe
+      filename: bionic-universe
+    - repo: deb-src http://archive.ubuntu.com/ubuntu bionic multiverse
+      filename: bionic-multiverse
+      
+- name: add stretch source repository to apt sources
+  apt_repository:
+    repo:  deb-src http://ftp.us.debian.org/debian stretch main contrib non-free
+    state: present
+    filename: stretch-src
+  when: false
     
+- name: add sid source repository to apt sources
+  apt_repository:
+    repo:  deb-src http://ftp.us.debian.org/debian sid main contrib non-free
+    state: present
+    filename: sid-src
+  when: false
+
+- name: create xenial chroot 
+  command:
+  args:
+    argv:
+      - sbuild-createchroot
+      - --include=eatmydata,ccache,gnupg
+      - xenial
+      - xenial
+      - http://archive.ubuntu.com/ubuntu
+    chdir: "{{ schroot_roots_directory }}"
+    creates: "{{ schroot_roots_directory }}/xenial"
+  when: not use_apt_cache
+
+- name: create xenial chroot (using apt-cache proxy)
+  command:
+  args:
+    argv:
+      - sbuild-createchroot
+      - --include=eatmydata,ccache,gnupg
+      - xenial
+      - xenial
+      - http://archive.ubuntu.com/ubuntu
+    chdir: "{{ schroot_roots_directory }}"
+    creates: "{{ schroot_roots_directory }}/xenial"
+  environment:
+    http_proxy: "{{ aptproxy }}"
+  when: use_apt_cache
+
