@@ -9,9 +9,12 @@
     #-----------------------------------------------
     use_apt_cache: true
     use_devpi_cache: true
-    aptproxy: http://10.0.2.2:3142/
-    devpi_base_url: http://10.0.2.2:4040
+    use_most_as_pager: true
     build_deb_packages: true
+    redis_archive: /vagrant/extra/redis-stable.tar.gz
+    timezone:
+      hwclock: UTC
+      name: US/Central
     #-----------------------------------------------
     installing_courtlistener: yes
     courtlistener_directory: /var/www/courtlistener
@@ -34,7 +37,8 @@
     - net-cache
     - ubuntu-trusty
     - vagrantbox
-    #- redis
+    - schroot
+    - redis
     #- celery
     #- role: postgres
     #  tags:
