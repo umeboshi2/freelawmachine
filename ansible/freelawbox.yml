@@ -6,6 +6,9 @@
   become: yes
   become_method: sudo
   vars:
+    # if using an apt proxy, such as apt-cacher-ng, uncomment below
+    # and set the variables defined in ./roles/net-cache/defaults/main.yml
+    # as needed.
     #use_apt_cache: true
     # if using devpi server, uncomment below and set the variables
     # defined in ./roles/net-cache/defaults/main.yml as needed
