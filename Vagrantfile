@@ -43,6 +43,8 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: $git_script
   
   # enable proxies before installing ansible
+  # If you have apt-cacher-ng running on your network
+  # uncomment the line below and adjust ./extra/apt-proxy.conf
   config.vm.provision "shell", inline: $proxy_script
 
 	# Use Ansible to set up CourtListener

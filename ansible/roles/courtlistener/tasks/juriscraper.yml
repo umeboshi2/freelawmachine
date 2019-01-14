@@ -14,18 +14,18 @@
 - name: download phantomjs
   become_user: root
   unarchive:
-    src="https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{ phantomjs_version }}-linux-x86_64.tar.bz2"
-    copy=no
-    dest="/opt"
-    owner="{{ cl_user }}"
-    group="{{ cl_user }}"
-    creates="/opt/phantomjs-{{ phantomjs_version }}-linux-x86_64"
+    src: "{{ phantomjs_archive }}"
+    copy: no
+    dest: "/opt"
+    owner: "{{ cl_user }}"
+    group: "{{ cl_user }}"
+    creates: "/opt/phantomjs-{{ phantomjs_version }}-linux-x86_64"
 
 - name: symlink phantomjs into /usr/bin
   become_user: root
   file:
-    state=link
-    path="{{ phantomjs_symlink_root}}/phantomjs"
-    src="/opt/phantomjs-{{ phantomjs_version }}-linux-x86_64/bin/phantomjs"
-    owner="{{ cl_user }}"
-    group="{{ cl_user }}"
+    state: link
+    path: "{{ phantomjs_symlink_root}}/phantomjs"
+    src: "/opt/phantomjs-{{ phantomjs_version }}-linux-x86_64/bin/phantomjs"
+    owner: "{{ cl_user }}"
+    group: "{{ cl_user }}"

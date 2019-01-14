@@ -6,14 +6,16 @@ juriscraper_log_directory: /var/log/juriscraper
 
 phantomjs_version: 2.1.1
 phantomjs_symlink_root: /usr/local/bin
+phantomjs_archive: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{ phantomjs_version }}-linux-x86_64.tar.bz2"
 
-# github repo
+# github repos
 judge_pics_repo: "git+https://github.com/freelawproject/judge-pics@master"
+courtlistener_repo: "https://github.com/freelawproject/courtlistener"
 
-# cloned repo
-# Each time the virtual machine is provisioned, the judge-pics repo
-# is downloaded from github and built into a python package.
-# Alternatively, the repo can be cloned into the freelawmachine
+# cloned repos
+# Each time the virtual machine is provisioned, both the judge-pics
+# and the courtlistener repositories are downloaded from github.
+# Alternatively, the repos can be cloned into the freelawmachine
 # working directory to reduce internet usage when provisioning.
 # If this is preferred, comment the above variable, and uncomment
 # the variable below.

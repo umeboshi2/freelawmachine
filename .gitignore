@@ -6,6 +6,10 @@ packer/output-virtualbox-iso/
 
 # cloned repos to be used in VM
 /judge-pics
+# extra stuff
+/extra/*.git
+/extra/*.tar.gz
+/extra/*.tar.bz2
 
 # vagrant stuff
 /.vagrant
