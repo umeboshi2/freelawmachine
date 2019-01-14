@@ -9,26 +9,25 @@
 - name: install required packages
   become_user: root
   apt:
-    pkg={{ item }}
-    state=latest
-    update_cache=yes
-    cache_valid_time=3600
-    autoremove=yes
-  with_items:
-    - libxml2-dev
-    - libxslt-dev
-    - python-simplejson
-    - python-dev
-    - libav-tools
-    - libffi-dev
-    - libwpd-tools
-    - postgresql-server-dev-all
-    - poppler-utils
-    - checkinstall
-    - curl
-    - antiword
-    - cython
-    - git
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - libxml2-dev
+      - libxslt-dev
+      - python-simplejson
+      - python-dev
+      - libav-tools
+      - libffi-dev
+      - libwpd-tools
+      - postgresql-server-dev-all
+      - poppler-utils
+      - checkinstall
+      - curl
+      - antiword
+      - cython
+      - git
 
 - name: configure CourtListener directories
   become_user: root
@@ -92,25 +91,24 @@
 - name: install NumPy/SciPy stuff
   become_user: root
   apt:
-    pkg={{ item }}
-    state=latest
-    update_cache=yes
-    cache_valid_time=3600
-    autoremove=yes
-  with_items:
-    - python-numpy
-    - python-scipy
-    - libblas-dev
-    - liblapack-dev
-    - gfortran
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - python-numpy
+      - python-scipy
+      - libblas-dev
+      - liblapack-dev
+      - gfortran
 
 - name: setup /etc/courtlistener
   become_user: root
   lineinfile:
-    name=/etc/courtlistener
-    line="INSTALL_ROOT='{{ install_root }}'\n"
-    state=present
-    create=yes
+    name: /etc/courtlistener
+    line: "INSTALL_ROOT='{{ install_root }}'\n"
+    state: present
+    create: yes
 
 # juriscraper install is in a separate file
 - include: juriscraper.yml
