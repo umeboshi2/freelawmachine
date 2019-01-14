@@ -15,7 +15,7 @@
     - /etc/redis
     - "{{ run_directory }}"
     - "{{ log_directory }}"
-    
+
 # TODO: swap over to logic involving getting latest stable by vresion number
 # and validating sha1 hash via
 #   https://github.com/antirez/redis-hashes/blob/master/README
