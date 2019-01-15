@@ -84,6 +84,7 @@
       - http://archive.ubuntu.com/ubuntu
     chdir: "{{ schroot_roots_directory }}"
     creates: "{{ schroot_roots_directory }}/xenial"
+  register: sbuild_chroot_created
   when: not use_apt_cache
 
 - name: create xenial chroot (using apt-cache proxy)
@@ -99,6 +100,7 @@
     creates: "{{ schroot_roots_directory }}/xenial"
   environment:
     http_proxy: "{{ aptproxy }}"
+  register: sbuild_chroot_created
   when: use_apt_cache
 
 - name: copy sources.list to sbuild chroot
@@ -124,11 +126,8 @@
   become_user: vagrant
   shell: gpg --export | sudo schroot -u root -c source:xenial-amd64-sbuild apt-key add -
 
-- name: make build packages script
-  template:
-    src: build-packages
-    dest: /usr/local/bin/build-packages
-    mode: 0755
-    
 - name: update sbuild chroot
   shell: sbuild-update -udcar xenial-amd64-sbuild
+  when: sbuild_chroot_created is defined
+  
+  
