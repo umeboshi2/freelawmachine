@@ -1,0 +1,32 @@
+---
+###################################################################
+#
+#  Import insecure keys for apt repo
+#
+####################################################################
+- name: check if keys present
+  become_user: vagrant
+  shell: gpg --list-keys
+  register: have_keys
+
+
+- name: debug check keys present
+  debug:
+    msg: "have_keys {{ have_keys }}"
+    
+- name: list keys
+  become_user: vagrant
+  shell: gpg --list-keys | grep pub | awk '{print $2}' | grep /
+  register: keylist
+  when: have_keys.stdout
+  
+- name: import public key
+  become_user: vagrant
+  shell: wget -O - {{ vagrant_pubkey_url }} | gpg --import
+  when: not have_keys.stdout
+
+- name: import private key
+  become_user: vagrant
+  shell: wget -O - {{ vagrant_privkey_url }} | gpg --import
+  when: not have_keys.stdout
+  
