@@ -1,0 +1,46 @@
+---
+###################################################################
+#
+#  Base debian setup
+#
+####################################################################
+
+- name: install reprepro packages
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - reprepro
+
+
+- name: setup reprepro directories
+  become_user: vagrant
+  file:
+    state: directory
+    path: "{{ repo_directory }}/{{ item }}"
+  with_items:
+    - conf
+    - dists
+    - incoming
+    - indices
+    - logs
+    - pool
+    - project
+
+- name: setup reprepro config files
+  become_user: vagrant
+  template:
+    src: "{{ item }}"
+    dest: "{{ repo_directory }}/conf/{{ item }}"
+  with_items:
+    - distributions
+    - incoming
+    - options
+    - uploaders
+
+- name: export repo
+  become_user: vagrant
+  shell: "reprepro -b {{ repo_directory }} export"
+  
