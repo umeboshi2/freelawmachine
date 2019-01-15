@@ -1,0 +1,8 @@
+Origin: Vagrant Machine
+Label: Vagrant Machine
+Codename: xenial
+Architectures: amd64 source
+Components: main restricted universe multiverse
+UDebComponents: main restricted universe multiverse
+Description: Vagrant APT Repository
+SignWith: yes
