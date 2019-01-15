@@ -115,7 +115,7 @@ $build_arch_all = 1;
 
 # Directory for writing build logs to
 #$log_dir = "$HOME/logs";
-$log_dir = "$HOME/logs";
+$log_dir = "{{ build_log_dir }}";
 
 # Directory for writing build statistics to
 #$stats_dir = "$HOME/stats";
