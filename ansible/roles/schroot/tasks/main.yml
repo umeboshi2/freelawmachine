@@ -13,19 +13,40 @@
     autoremove: yes
     pkg:
       - schroot
-      - pbuilder
       - debootstrap
       - git-buildpackage
-      - cowbuilder
       - ccache
       - libeatmydata1
       - sbuild
+      - reprepro
+      - pgpdump
+      
+- name: import get-keys tasks
+  import_tasks: get-keys.yml
 
+- name: import reprepro tasks
+  import_tasks: reprepro.yml
+
+- name: import source-repo tasks
+  import_tasks: source-repos.yml
+  
 - name: add vagrant user to sbuild group
   user:
     name: vagrant
     groups: sbuild
     append: true
+    
+- name: add .sbuildrc for vagrant user
+  become_user: vagrant
+  template:
+    src: sbuildrc
+    dest: /home/vagrant/.sbuildrc
+
+- name: create logs directory
+  become_user: vagrant
+  file:
+    state: directory
+    path: "{{ build_log_dir }}"
     
 - name: setup schroot_roots_directory
   file:
@@ -40,68 +61,18 @@
 
 - name: use apt proxy in sbuild chroot
   lineinfile:
-    dest=/etc/schroot/sbuild/copyfiles
-    line=/etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+    dest: /etc/schroot/sbuild/copyfiles
+    line: /etc/apt/apt.conf.d/000apt-cacher-ng-proxy
   when: use_apt_cache
-  
-- name: pbuilder hook directory
-  file:
-    path: /var/cache/pbuilder/hooks
-    state: directory
 
-- name: pbuilder ccache directory world writable
-  file:
-    path: /var/cache/pbuilder/ccache
-    state: directory
-    mode: 0777
-    
-- name: pbuilder hook "{{ item }}"
-  template:
-    src: pbuilder-hook-{{ item }}
-    dest: /var/cache/pbuilder/hooks/{{ item }}
-    mode: 0755
-  loop:
-    - A10ccache
-    - B90lintian
-    - C10shell
-
-- name: add apt-keys for sid
-  apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: "{{ item }}"
+- name: add bind mounts to sbuild chroot
+  lineinfile:
+    dest: /etc/schroot/sbuild/fstab
+    line: "{{ item }}"
   with_items:
-    - 8B48AD6246925553
-    - 7638D0442B90D010
-  when: false
-  
-- name: add bionic source repositories to apt sources
-  apt_repository:
-    repo: "{{ item.repo }}"
-    state: present
-    filename: "{{ item.filename }}"
-    update_cache: true
-  with_items:
-    - repo: deb-src http://archive.ubuntu.com/ubuntu bionic main restricted
-      filename: bionic-main
-    - repo: deb-src http://archive.ubuntu.com/ubuntu bionic universe
-      filename: bionic-universe
-    - repo: deb-src http://archive.ubuntu.com/ubuntu bionic multiverse
-      filename: bionic-multiverse
-      
-- name: add stretch source repository to apt sources
-  apt_repository:
-    repo:  deb-src http://ftp.us.debian.org/debian stretch main contrib non-free
-    state: present
-    filename: stretch-src
-  when: false
+    - /home /home none rw,bind 0 0
+    - /vagrant /vagrant none rw,bind 0 0
     
-- name: add sid source repository to apt sources
-  apt_repository:
-    repo:  deb-src http://ftp.us.debian.org/debian sid main contrib non-free
-    state: present
-    filename: sid-src
-  when: false
-
 - name: create xenial chroot 
   command:
   args:
@@ -130,3 +101,34 @@
     http_proxy: "{{ aptproxy }}"
   when: use_apt_cache
 
+- name: copy sources.list to sbuild chroot
+  copy:
+    src: /etc/apt/sources.list
+    dest: "{{ schroot_roots_directory }}/xenial/etc/apt/sources.list"
+
+- name: copy source repo lists to sbuild chroot
+  copy:
+    src: "/etc/apt/sources.list.d/{{ item }}"
+    dest: "{{ schroot_roots_directory }}/xenial/etc/apt/sources.list.d/{{ item }}"
+  with_items:
+    - bionic-main.list
+    - bionic-universe.list
+    - bionic-multiverse.list
+    
+- name: copy local sources.list to sbuild chroot
+  template:
+    src: local-apt-source
+    dest: "{{ schroot_roots_directory }}/xenial/etc/apt/sources.list.d/local.list"
+
+- name: import local apt key to sbuild chroot
+  become_user: vagrant
+  shell: gpg --export | sudo schroot -u root -c source:xenial-amd64-sbuild apt-key add -
+
+- name: make build packages script
+  template:
+    src: build-packages
+    dest: /usr/local/bin/build-packages
+    mode: 0755
+    
+- name: update sbuild chroot
+  shell: sbuild-update -udcar xenial-amd64-sbuild
