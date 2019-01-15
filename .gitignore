@@ -10,6 +10,7 @@ packer/output-virtualbox-iso/
 /extra/*.git
 /extra/*.tar.gz
 /extra/*.tar.bz2
+/extra/*.tgz
 
 # vagrant stuff
 /.vagrant
