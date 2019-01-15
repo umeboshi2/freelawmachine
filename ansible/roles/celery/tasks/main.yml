@@ -4,8 +4,8 @@
 #  Celery service role
 #
 ###################################################################
-- name: import build celery deps
-  import_tasks: build-celery.yml
+#- name: import build celery deps
+#  import_tasks: build-celery.yml
   
 
 
@@ -35,14 +35,32 @@
 - name: install Celery daemon config
   become_user: root
   template: src=celeryd.sysv dest=/etc/init.d/celeryd mode=0755
+  when: false
 
-- name: add logrotate settings
+- name: celery config files
   become_user: root
-  template: src=celery.logrotate dest=/etc/logrotate.d/celery
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: celery.conf
+      dest: /etc/default/celery
+    - src: celery.service
+      dest: /etc/systemd/system/celery.service
+    - src: celery.tmpfiles
+      dest: /etc/tmpfiles.d/celery.conf
+    - src: celery.logrotate
+      dest: /etc/logrotate.d/celery
 
 - name: start Celery service
   become_user: root
-  service:
-    name: celeryd
+  systemd:
+    name: celery
     state: started
     enabled: yes
+    
+  #service:
+  #  name: celeryd
+  #  state: started
+  #  enabled: yes
+  
