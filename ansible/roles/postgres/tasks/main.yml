@@ -7,15 +7,14 @@
 - name: install postgres via apt-get
   become_user: root
   apt:
-    pkg="{{ item }}"
-    state=latest
-    update_cache=yes
-    cache_valid_time=3600
-    autoremove=yes
-  with_items:
-    - postgresql-9.3
-    - postgresql-contrib-9.3
-    - python-psycopg2
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - postgresql-{{ postgresql_version }}
+      - postgresql-contrib-{{ postgresql_version }}
+      - python-psycopg2
 
 # Do this first before we change pg_hba.conf so we can guarantee we have the right password.
 - name: configure postgres super user
@@ -29,7 +28,7 @@
   become_user: root
   template:
     src=pg_hba.conf
-    dest=/etc/postgresql/9.3/main/pg_hba.conf
+    dest=/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
 
 - name: make sure postgresql is running and set to start on restart
   become_user: root
