@@ -13,13 +13,13 @@
     autoremove: yes
     pkg:
       - reprepro
-
+      - pgpdump
 
 - name: setup reprepro directories
-  become_user: vagrant
+  become_user: "{{ reprepro_user }}"
   file:
     state: directory
-    path: "{{ repo_directory }}/{{ item }}"
+    path: "{{ reprepro_base_directory }}/{{ item }}"
   with_items:
     - conf
     - dists
@@ -30,17 +30,22 @@
     - project
 
 - name: setup reprepro config files
-  become_user: vagrant
+  become_user: "{{ reprepro_user }}"
   template:
     src: "{{ item }}"
-    dest: "{{ repo_directory }}/conf/{{ item }}"
+    dest: "{{ reprepro_base_directory }}/conf/{{ item }}"
   with_items:
     - distributions
     - incoming
     - options
     - uploaders
 
+- name: import get-keys tasks
+  import_tasks: get-keys.yml
+  when: use_insecure_apt_keys
+  
 - name: export repo
-  become_user: vagrant
-  shell: "reprepro -b {{ repo_directory }} export"
+  become_user: "{{ reprepro_user }}"
+  shell: "reprepro -b {{ reprepro_base_directory }} export"
+  when: false
   

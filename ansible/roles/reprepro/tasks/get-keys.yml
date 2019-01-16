@@ -12,13 +12,13 @@
 
 - name: debug check keys present
   debug:
-    msg: "have_keys {{ have_keys }}"
+    msg: "have_keys {{ have_keys.stdout }}"
     
 - name: list keys
   become_user: vagrant
   shell: gpg --list-keys | grep pub | awk '{print $2}' | grep /
   register: keylist
-  when: have_keys.stdout
+  when: not have_keys.stdout
   
 - name: import public key
   become_user: vagrant

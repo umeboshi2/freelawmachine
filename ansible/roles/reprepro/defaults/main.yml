@@ -1,0 +1,9 @@
+use_insecure_apt_keys: no
+insecure_pubkey_url: https://github.com/umeboshi2/paella/raw/master/vagrant/salt/roots/salt/debrepos/keys/paella-insecure-pub.gpg
+insecure_privkey_url: https://github.com/umeboshi2/paella/raw/master/vagrant/salt/roots/salt/debrepos/keys/paella-insecure-sec.gpg
+
+
+reprepro_base_directory: /srv/debian/repo
+reprepro_user: umeboshi
+reprepro_dist_codename: stretch
+

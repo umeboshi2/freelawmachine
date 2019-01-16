@@ -1,6 +1,6 @@
 Origin: Vagrant Machine
 Label: Vagrant Machine
-Codename: xenial
+Codename: {{ reprepro_dist_codename }}
 Architectures: amd64 source
 Components: main restricted universe multiverse
 UDebComponents: main restricted universe multiverse

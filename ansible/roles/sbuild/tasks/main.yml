@@ -18,32 +18,21 @@
       - ccache
       - libeatmydata1
       - sbuild
-      - reprepro
-      - pgpdump
       
-- name: import get-keys tasks
-  import_tasks: get-keys.yml
-
-- name: import reprepro tasks
-  import_tasks: reprepro.yml
-
-- name: import source-repo tasks
-  import_tasks: source-repos.yml
-  
-- name: add vagrant user to sbuild group
+- name: add sbuild user to sbuild group
   user:
-    name: vagrant
+    name: "{{ sbuild_user }}"
     groups: sbuild
     append: true
     
 - name: add .sbuildrc for vagrant user
-  become_user: vagrant
+  become_user: "{{ sbuild_user }}"
   template:
     src: sbuildrc
-    dest: /home/vagrant/.sbuildrc
+    dest: ~/.sbuildrc
 
 - name: create logs directory
-  become_user: vagrant
+  become_user: "{{ sbuild_user }}"
   file:
     state: directory
     path: "{{ build_log_dir }}"
@@ -71,33 +60,35 @@
     line: "{{ item }}"
   with_items:
     - /home /home none rw,bind 0 0
-    - /vagrant /vagrant none rw,bind 0 0
+    #- /vagrant /vagrant none rw,bind 0 0
     
-- name: create xenial chroot 
+- name: create sbuild chroot 
   command:
   args:
     argv:
       - sbuild-createchroot
       - --include=eatmydata,ccache,gnupg
-      - xenial
-      - xenial
-      - http://archive.ubuntu.com/ubuntu
+      - "{{ sbuild_distribution }}"
+      - "{{ sbuild_distribution }}"
+      #- http://archive.ubuntu.com/ubuntu
+      - http://ftp.us.debian.org/debian
     chdir: "{{ schroot_roots_directory }}"
-    creates: "{{ schroot_roots_directory }}/xenial"
+    creates: "{{ schroot_roots_directory }}/{{ sbuild_distribution}}"
   register: sbuild_chroot_created
   when: not use_apt_cache
 
-- name: create xenial chroot (using apt-cache proxy)
+- name: create sbuild chroot (using apt-cache proxy)
   command:
   args:
     argv:
       - sbuild-createchroot
       - --include=eatmydata,ccache,gnupg
-      - xenial
-      - xenial
-      - http://archive.ubuntu.com/ubuntu
+      - "{{ sbuild_distribution }}"
+      - "{{ sbuild_distribution }}"
+      #- http://archive.ubuntu.com/ubuntu
+      - http://ftp.us.debian.org/debian
     chdir: "{{ schroot_roots_directory }}"
-    creates: "{{ schroot_roots_directory }}/xenial"
+    creates: "{{ schroot_roots_directory }}/{{ sbuild_distribution}}"
   environment:
     http_proxy: "{{ aptproxy }}"
   register: sbuild_chroot_created
@@ -106,28 +97,31 @@
 - name: copy sources.list to sbuild chroot
   copy:
     src: /etc/apt/sources.list
-    dest: "{{ schroot_roots_directory }}/xenial/etc/apt/sources.list"
+    dest: "{{ schroot_roots_directory }}/{{ sbuild_distribution }}/etc/apt/sources.list"
 
 - name: copy source repo lists to sbuild chroot
   copy:
     src: "/etc/apt/sources.list.d/{{ item }}"
-    dest: "{{ schroot_roots_directory }}/xenial/etc/apt/sources.list.d/{{ item }}"
+    dest: "{{ schroot_roots_directory }}/{{ sbuild_distribution }}/etc/apt/sources.list.d/{{ item }}"
   with_items:
     - bionic-main.list
     - bionic-universe.list
     - bionic-multiverse.list
-    
+  when: false
+  
 - name: copy local sources.list to sbuild chroot
   template:
     src: local-apt-source
-    dest: "{{ schroot_roots_directory }}/xenial/etc/apt/sources.list.d/local.list"
-
+    dest: "{{ schroot_roots_directory }}/{{ sbuild_distribution }}/etc/apt/sources.list.d/local.list"
+  when: false
+  
 - name: import local apt key to sbuild chroot
-  become_user: vagrant
-  shell: gpg --export | sudo schroot -u root -c source:xenial-amd64-sbuild apt-key add -
-
+  become_user: "{{ sbuild_user }}"
+  shell: gpg --export | sudo schroot -u root -c source:{{ sbuild_distribution}}-amd64-sbuild apt-key add -
+  when: false
+  
 - name: update sbuild chroot
-  shell: sbuild-update -udcar xenial-amd64-sbuild
+  shell: sbuild-update -udcar {{ sbuild_distribution }}-amd64-sbuild
   when: sbuild_chroot_created is defined
   
   

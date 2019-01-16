@@ -1,0 +1,4 @@
+schroot_roots_directory: /srv/chroot
+build_log_dir: ~/logs
+sbuild_user: umeboshi
+sbuild_distribution: stretch

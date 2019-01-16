@@ -1,7 +1,0 @@
-schroot_roots_directory: /srv/chroot
-vagrant_pubkey_url: https://github.com/umeboshi2/paella/raw/master/vagrant/salt/roots/salt/debrepos/keys/paella-insecure-pub.gpg
-vagrant_privkey_url: https://github.com/umeboshi2/paella/raw/master/vagrant/salt/roots/salt/debrepos/keys/paella-insecure-sec.gpg
-
-
-repo_directory: /vagrant/extra/repo
-build_log_dir: /vagrant/extra/logs
