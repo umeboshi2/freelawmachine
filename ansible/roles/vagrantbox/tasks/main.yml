@@ -6,19 +6,17 @@
 ###################################################################
 - name: configure BASH for colors
   lineinfile:
-    dest=/home/vagrant/.bashrc
-    regexp='^force_color_prompt=yes$'
-    line='force_color_prompt=yes'
+    dest: /home/vagrant/.bashrc
+    regexp: '^force_color_prompt=yes$'
+    line: 'force_color_prompt=yes'
 
 - name: update util packages
   apt:
-    pkg={{ packages }}
-    state=latest
-    update_cache=yes
-    cache_valid_time=3600
-    autoremove=yes
-  vars:
-    packages:
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
       - aptitude
       - tmux
       - htop
