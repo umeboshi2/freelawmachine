@@ -1,0 +1,18 @@
+---
+###################################################################
+#
+#  debian stretch setup
+#
+####################################################################
+
+- name: backports repository in apt sources
+  apt_repository:
+    repo: "{{ item.type }} http://ftp.debian.org/debian stretch-backports main contrib non-free"
+    state: present
+    filename: "{{ item.filename }}"
+  loop:
+    - type: deb
+      filename: backports
+    - type: deb-src
+      filename: backports-src
+    
