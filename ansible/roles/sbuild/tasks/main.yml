@@ -74,9 +74,16 @@
   include_tasks: setup-sbuild-chroot.yml
   vars:
     sbuild_distribution: "{{ sbuild_distribution }}"
+    chroot_dir: "{{ schroot_roots_directory }}//{{ sbuild_distribution }}"
   loop:
     - sid
     - stretch
   loop_control:
     loop_var: sbuild_distribution
+    
+- name: setup buildstuff script
+  template:
+    src: build-stuff.py
+    dest: /usr/local/bin/build-stuff
+    mode: 0755
     

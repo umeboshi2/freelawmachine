@@ -1,42 +1,23 @@
+---
+###################################################################
+#
+#  apt source repos
+#
+####################################################################
+
 - name: add apt-keys for sid
   apt_key:
     keyserver: keyserver.ubuntu.com
     id: "{{ item }}"
-  with_items:
-    - 8B48AD6246925553
-    - 7638D0442B90D010
-    - 3B4FE6ACC0B21F32
-  when: false
+  with_items: "{{ apt_keys }}"
+
   
-- name: add bionic source repositories to apt sources
+- name: add source repositories to apt sources
   apt_repository:
     repo: "{{ item.repo }}"
     state: present
     filename: "{{ item.filename }}"
     update_cache: true
-  with_items:
-    #- repo: deb-src http://archive.ubuntu.com/ubuntu bionic main restricted
-    #  filename: bionic-main
-    #- repo: deb-src http://archive.ubuntu.com/ubuntu bionic universe
-    #  filename: bionic-universe
-    #- repo: deb-src http://archive.ubuntu.com/ubuntu bionic multiverse
-    #  filename: bionic-multiverse
-    - repo: deb-src http://ftp.us.debian.org/debian sid main contrib non-free
-      filename: sid-src
-    - repo: deb-src http://ftp.us.debian.org/debian buster main contrib non-free
-      filename: buster-src
-      
-- name: add stretch source repository to apt sources
-  apt_repository:
-    repo:  deb-src http://ftp.us.debian.org/debian stretch main contrib non-free
-    state: present
-    filename: stretch-src
-  when: false
-    
-- name: add sid source repository to apt sources
-  apt_repository:
-    repo:  deb-src http://ftp.us.debian.org/debian sid main contrib non-free
-    state: present
-    filename: sid-src
-  when: false
+  with_items: "{{ source_repos }}"
 
+      

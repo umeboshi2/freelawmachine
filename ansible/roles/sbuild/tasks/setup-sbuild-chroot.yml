@@ -5,64 +5,67 @@
 #
 ####################################################################
 
-  - name: setup chroot block
-    vars:
-      chroot_dir: "{{ schroot_roots_directory }}/{{ sbuild_distribution}}"
-    block:
-      - name: debug setup chroot
-        debug:
-          msg: setup {{ sbuild_distribution }} chroot
-      - name: create sbuild chroot 
-        command:
-        args:
-          argv: "{{ create_chroot_command }}"
-          chdir: "{{ schroot_roots_directory }}"
-          creates: "{{ chroot_dir }}"
-        register: sbuild_chroot_created
-        when: not use_apt_cache
+- name: setup chroot block
+  vars:
+    chroot_dir: "{{ schroot_roots_directory }}//{{ sbuild_distribution }}"
+    slist_dir: "{{ chroot_dir }}/etc/apt/sources.list.d"
+  block:
+    - name: debug setup chroot
+      debug:
+        msg: setup {{ sbuild_distribution }} chroot
+    # create chroot
+    - name: create sbuild chroot 
+      command:
+      args:
+        argv: "{{ create_chroot_command }}"
+        chdir: "{{ schroot_roots_directory }}"
+        creates: "{{ chroot_dir }}"
+      register: sbuild_chroot_created
+      when: not use_apt_cache
+    # create chroot using proxy
+    - name: create sbuild chroot (using apt-cache proxy)
+      command:
+      args:
+        argv: "{{ create_chroot_command }}"
+        chdir: "{{ schroot_roots_directory }}"
+        creates: "{{ chroot_dir }}"
+      environment:
+        http_proxy: "{{ aptproxy }}"
+      register: sbuild_chroot_created
+      when: use_apt_cache
+    # copy apt source repos to chroot
+    - name: copy source repo lists to sbuild chroot
+      copy:
+        src: "/etc/apt/sources.list.d/{{ item.filename }}.list"
+        dest: "{{ slist_dir }}/{{ item.filename }}.list"
+      with_items: "{{ source_repos }}"
+    # add apt entries to chroot
+    - name: add sources.list entries to sbuild chroot
+      lineinfile:
+        dest: "{{ chroot_dir }}/etc/apt/sources.list"
+        line: "{{ item }}"
+      with_items:
+        - deb file://{{ reprepro_base_directory }}/ {{ reprepro_dist_codename }} {{ reprepro_dist_components }}
+        - deb-src http://ftp.debian.org/debian stretch-backports main contrib non-free
+    # stretch sbuild uses preferred backports
+    - name: backports repo for stretch sbuild chroot
+      lineinfile:
+        dest: "{{ chroot_dir }}/etc/apt/sources.list"
+        line: deb http://ftp.debian.org/debian stretch-backports main contrib non-free
+      when: sbuild_distribution == 'stretch'
+    - name: apt backport preferences for stretch sbuild chroot
+      template:
+        src: apt-prefs
+        dest: "{{ chroot_dir }}/etc/apt/preferences"
+      when: sbuild_distribution == 'stretch'
+    # import local apt key into chroot
+    - name: import local apt key to sbuild chroot
+      become_user: "{{ sbuild_user }}"
+      shell: gpg --export | sudo schroot -u root -c source:{{ sbuild_distribution}}-amd64-sbuild apt-key add -
+    # update chroot
+    - name: update sbuild chroot
+      shell: sbuild-update -udcar {{ sbuild_distribution }}-amd64-sbuild
+      when: sbuild_chroot_created.changed
 
-      - name: create sbuild chroot (using apt-cache proxy)
-        command:
-        args:
-          argv: "{{ create_chroot_command }}"
-          chdir: "{{ schroot_roots_directory }}"
-          creates: "{{ chroot_dir }}"
-        environment:
-          http_proxy: "{{ aptproxy }}"
-        register: sbuild_chroot_created
-        when: use_apt_cache
-
-      - name: copy sources.list to sbuild chroot
-        copy:
-          src: /etc/apt/sources.list
-          dest: "{{ chroot_dir }}/etc/apt/sources.list"
-        when: false
-        
-      - name: copy source repo lists to sbuild chroot
-        copy:
-          src: "/etc/apt/sources.list.d/{{ item }}"
-          dest: "{{ chroot_dir }}/etc/apt/sources.list.d/{{ item }}"
-        with_items: "{{ source_repo_lists }}"
-  
-      - name: add sources.list entries to sbuild chroot
-        lineinfile:
-          dest: "{{ chroot_dir }}/etc/apt/sources.list"
-          line: "{{ item }}"
-        with_items:
-          - deb file://{{ reprepro_base_directory }}/ {{ reprepro_dist_codename }} {{ reprepro_dist_components }}
-          - deb-src http://ftp.us.debian.org/debian buster {{ reprepro_dist_components }}
-          - deb-src http://ftp.debian.org/debian stretch-backports main contrib non-free
-      - name: import local apt key to sbuild chroot
-        become_user: "{{ sbuild_user }}"
-        shell: gpg --export | sudo schroot -u root -c source:{{ sbuild_distribution}}-amd64-sbuild apt-key add -
-        #when: false
-
-      - name: debug sbuild_chroot_created
-        debug:
-          msg: "sbuild_chroot_created {{ sbuild_chroot_created }}"
-          
-      - name: update sbuild chroot
-        shell: sbuild-update -udcar {{ sbuild_distribution }}-amd64-sbuild
-        when: false and sbuild_chroot_created is defined
       
   

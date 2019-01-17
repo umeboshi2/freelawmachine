@@ -11,6 +11,20 @@ create_chroot_command:
       - "{{ sbuild_distribution }}"
       - "{{ sbuild_dist_url }}"
 
-source_repo_lists:
-  - sid-src.list
+apt_keys:
+  - 8B48AD6246925553
+  - 7638D0442B90D010
+  - 3B4FE6ACC0B21F32
+
+source_repos:
+  #- repo: deb-src http://archive.ubuntu.com/ubuntu bionic main restricted
+  #  filename: bionic-main
+  #- repo: deb-src http://archive.ubuntu.com/ubuntu bionic universe
+  #  filename: bionic-universe
+  #- repo: deb-src http://archive.ubuntu.com/ubuntu bionic multiverse
+  #  filename: bionic-multiverse
+  - repo: deb-src http://ftp.us.debian.org/debian sid main contrib non-free
+    filename: sid-src
+  - repo: deb-src http://ftp.us.debian.org/debian buster main contrib non-free
+    filename: buster-src
   
