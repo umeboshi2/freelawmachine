@@ -47,6 +47,7 @@
 #
 #$build_env_cmnd = "";
 
+$ENV{'DEB_BUILD_OPTIONS'} = "nocheck";
 
 ##
 ## SBUILD BEHAVIOUR
@@ -77,7 +78,8 @@ $distribution = '{{ sbuild_distribution }}';
 
 $build_arch_all = 1;
 
-
+#$run_lintian = 1;
+#$lintian_opts = ['-i', '-I'];
 
 
 ##
