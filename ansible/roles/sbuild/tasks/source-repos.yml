@@ -23,6 +23,8 @@
     #  filename: bionic-multiverse
     - repo: deb-src http://ftp.us.debian.org/debian sid main contrib non-free
       filename: sid-src
+    - repo: deb-src http://ftp.us.debian.org/debian buster main contrib non-free
+      filename: buster-src
       
 - name: add stretch source repository to apt sources
   apt_repository:

@@ -18,7 +18,10 @@
       - ccache
       - libeatmydata1
       - sbuild
-      
+
+- name: import source repos
+  import_tasks: source-repos.yml
+  
 - name: add sbuild user to sbuild group
   user:
     name: "{{ sbuild_user }}"
@@ -48,6 +51,11 @@
     dest: /etc/schroot/default/copyfiles
   when: use_apt_cache
 
+- name: configure schroot default copyfiles
+  template:
+    src: 10mount
+    dest: /etc/schroot/setup.d/10mount
+    
 - name: use apt proxy in sbuild chroot
   lineinfile:
     dest: /etc/schroot/sbuild/copyfiles
@@ -60,68 +68,15 @@
     line: "{{ item }}"
   with_items:
     - /home /home none rw,bind 0 0
-    #- /vagrant /vagrant none rw,bind 0 0
+    - /vagrant /vagrant none rw,bind 0 0
+
+- name: import setup chroot tasks
+  include_tasks: setup-sbuild-chroot.yml
+  vars:
+    sbuild_distribution: "{{ sbuild_distribution }}"
+  loop:
+    - sid
+    - stretch
+  loop_control:
+    loop_var: sbuild_distribution
     
-- name: create sbuild chroot 
-  command:
-  args:
-    argv:
-      - sbuild-createchroot
-      - --include=eatmydata,ccache,gnupg
-      - "{{ sbuild_distribution }}"
-      - "{{ sbuild_distribution }}"
-      #- http://archive.ubuntu.com/ubuntu
-      - http://ftp.us.debian.org/debian
-    chdir: "{{ schroot_roots_directory }}"
-    creates: "{{ schroot_roots_directory }}/{{ sbuild_distribution}}"
-  register: sbuild_chroot_created
-  when: not use_apt_cache
-
-- name: create sbuild chroot (using apt-cache proxy)
-  command:
-  args:
-    argv:
-      - sbuild-createchroot
-      - --include=eatmydata,ccache,gnupg
-      - "{{ sbuild_distribution }}"
-      - "{{ sbuild_distribution }}"
-      #- http://archive.ubuntu.com/ubuntu
-      - http://ftp.us.debian.org/debian
-    chdir: "{{ schroot_roots_directory }}"
-    creates: "{{ schroot_roots_directory }}/{{ sbuild_distribution}}"
-  environment:
-    http_proxy: "{{ aptproxy }}"
-  register: sbuild_chroot_created
-  when: use_apt_cache
-
-- name: copy sources.list to sbuild chroot
-  copy:
-    src: /etc/apt/sources.list
-    dest: "{{ schroot_roots_directory }}/{{ sbuild_distribution }}/etc/apt/sources.list"
-
-- name: copy source repo lists to sbuild chroot
-  copy:
-    src: "/etc/apt/sources.list.d/{{ item }}"
-    dest: "{{ schroot_roots_directory }}/{{ sbuild_distribution }}/etc/apt/sources.list.d/{{ item }}"
-  with_items:
-    - bionic-main.list
-    - bionic-universe.list
-    - bionic-multiverse.list
-  when: false
-  
-- name: copy local sources.list to sbuild chroot
-  template:
-    src: local-apt-source
-    dest: "{{ schroot_roots_directory }}/{{ sbuild_distribution }}/etc/apt/sources.list.d/local.list"
-  when: false
-  
-- name: import local apt key to sbuild chroot
-  become_user: "{{ sbuild_user }}"
-  shell: gpg --export | sudo schroot -u root -c source:{{ sbuild_distribution}}-amd64-sbuild apt-key add -
-  when: false
-  
-- name: update sbuild chroot
-  shell: sbuild-update -udcar {{ sbuild_distribution }}-amd64-sbuild
-  when: sbuild_chroot_created is defined
-  
-  

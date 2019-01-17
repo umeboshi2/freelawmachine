@@ -2,3 +2,15 @@ schroot_roots_directory: /srv/chroot
 build_log_dir: ~/logs
 sbuild_user: umeboshi
 sbuild_distribution: stretch
+sbuild_dist_url: http://ftp.us.debian.org/debian
+#sbuild_dist_url: http://archive.ubuntu.com/ubuntu
+create_chroot_command:
+      - sbuild-createchroot
+      - --include=eatmydata,ccache,gnupg
+      - "{{ sbuild_distribution }}"
+      - "{{ sbuild_distribution }}"
+      - "{{ sbuild_dist_url }}"
+
+source_repo_lists:
+  - sid-src.list
+  

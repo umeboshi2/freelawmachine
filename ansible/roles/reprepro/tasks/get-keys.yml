@@ -4,11 +4,33 @@
 #  Import insecure keys for apt repo
 #
 ####################################################################
+- name: check for .gnupg pubring
+  become_user: vagrant
+  stat:
+    path: ~/.gnupg/pubring.gpg
+  register: pubring
+
+- name: debug pubring
+  debug:
+    msg: "pubring {{ pubring }}"
+
+- name: create pubring
+  become_user: vagrant
+  shell: gpg --list-keys
+  args:
+    creates: ~/.gnupg/pubring.gpg
+  register: pubring
+    
+
+- name: debug pubring
+  debug:
+    msg: "pubring {{ pubring }}"
+
 - name: check if keys present
   become_user: vagrant
   shell: gpg --list-keys
   register: have_keys
-
+  when: pubring
 
 - name: debug check keys present
   debug:
@@ -18,15 +40,13 @@
   become_user: vagrant
   shell: gpg --list-keys | grep pub | awk '{print $2}' | grep /
   register: keylist
-  when: not have_keys.stdout
-  
-- name: import public key
-  become_user: vagrant
-  shell: wget -O - {{ vagrant_pubkey_url }} | gpg --import
-  when: not have_keys.stdout
+  when: false
 
-- name: import private key
+- name: import insecure keys
   become_user: vagrant
-  shell: wget -O - {{ vagrant_privkey_url }} | gpg --import
+  shell: curl {{ item }} | gpg --import
   when: not have_keys.stdout
-  
+  loop:
+    - "{{ insecure_pubkey_url }}"
+    - "{{ insecure_privkey_url }}"
+    

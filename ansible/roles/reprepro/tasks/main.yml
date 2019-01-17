@@ -47,5 +47,6 @@
 - name: export repo
   become_user: "{{ reprepro_user }}"
   shell: "reprepro -b {{ reprepro_base_directory }} export"
-  when: false
+  when: use_insecure_apt_keys
+  
   

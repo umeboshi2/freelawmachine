@@ -59,7 +59,7 @@
 # experimental packages will be built for upload to unstable when this
 # is not what is required.
 #$distribution = 'unstable';
-$distribution = 'xenial';
+$distribution = '{{ sbuild_distribution }}';
 
 # Default chroot (defaults to distribution[-arch][-sbuild])
 #$chroot = 'unstable-powerpc-sbuild';

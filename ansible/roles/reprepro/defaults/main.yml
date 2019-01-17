@@ -6,4 +6,5 @@ insecure_privkey_url: https://github.com/umeboshi2/paella/raw/master/vagrant/sal
 reprepro_base_directory: /srv/debian/repo
 reprepro_user: umeboshi
 reprepro_dist_codename: stretch
-
+#reprepro_dist_components: main restricted universe multiverse
+reprepro_dist_components: main contrib non-free
