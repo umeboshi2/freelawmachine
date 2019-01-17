@@ -19,8 +19,8 @@ def dput(pkg, basedir="/vagrant/extra/repo"):
     subprocess.check_call(cmd)
 
 
-packages = ['sphinx-celery', 'vine', 'python-amqp',
-            'case', 'kombu', 'billiard', 'celery']
+packages = ['sphinx-celery', 'case', 'vine', 'python-amqp',
+            'kombu', 'billiard', 'celery']
 
 for package in packages:
     sbuild(package)
