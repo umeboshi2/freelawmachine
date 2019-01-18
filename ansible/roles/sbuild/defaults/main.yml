@@ -1,19 +1,32 @@
 schroot_roots_directory: /srv/chroot
 build_log_dir: ~/logs
 sbuild_user: umeboshi
+
+# sbuild_distribution will be used in ~/.sbuildrc
 sbuild_distribution: stretch
+# these chroots will be created
+# "sbuild_distribution" must be in the list
+# and will be the default
+sbuild_distributions:
+  - sid
+  - stretch
+  
 sbuild_dist_url: http://ftp.us.debian.org/debian
 #sbuild_dist_url: http://archive.ubuntu.com/ubuntu
 create_chroot_command:
       - sbuild-createchroot
       - --include=eatmydata,ccache,gnupg
+      - "--components={{ reprepro_dist_components.split()|join(',') }}"
       - "{{ sbuild_distribution }}"
       - "{{ sbuild_distribution }}"
       - "{{ sbuild_dist_url }}"
-
+      
 apt_keys:
+  # debian archive wheezy
   - 8B48AD6246925553
+  # debian archive jessie
   - 7638D0442B90D010
+  # ubuntu archive 2012
   - 3B4FE6ACC0B21F32
 
 source_repos:

@@ -46,18 +46,26 @@
         line: "{{ item }}"
       with_items:
         - deb file://{{ reprepro_base_directory }}/ {{ reprepro_dist_codename }} {{ reprepro_dist_components }}
-        - deb-src http://ftp.debian.org/debian stretch-backports main contrib non-free
     # stretch sbuild uses preferred backports
-    - name: backports repo for stretch sbuild chroot
+    - name: add sources.list entries to sbuild chroot
       lineinfile:
         dest: "{{ chroot_dir }}/etc/apt/sources.list"
-        line: deb http://ftp.debian.org/debian stretch-backports main contrib non-free
+        line: "{{ item }}"
+      with_items:
+        - deb http://ftp.debian.org/debian stretch-backports main contrib non-free
+        - deb-src http://ftp.debian.org/debian stretch-backports main contrib non-free
       when: sbuild_distribution == 'stretch'
     - name: apt backport preferences for stretch sbuild chroot
       template:
         src: apt-prefs
         dest: "{{ chroot_dir }}/etc/apt/preferences"
       when: sbuild_distribution == 'stretch'
+    # copy apt keys to chroot
+    - name: copy apt keys to chroot
+      become_user: root
+      shell: apt-key export "{{ item }}" | schroot -u root -c source:{{ sbuild_distribution }}-amd64-sbuild apt-key add -
+      with_items: "{{ apt_keys }}"
+      
     # import local apt key into chroot
     - name: import local apt key to sbuild chroot
       become_user: "{{ sbuild_user }}"

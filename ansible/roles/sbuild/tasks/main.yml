@@ -51,7 +51,7 @@
     dest: /etc/schroot/default/copyfiles
   when: use_apt_cache
 
-- name: configure schroot default copyfiles
+- name: modify schroot mount script for vagrant
   template:
     src: 10mount
     dest: /etc/schroot/setup.d/10mount
@@ -75,9 +75,7 @@
   vars:
     sbuild_distribution: "{{ sbuild_distribution }}"
     chroot_dir: "{{ schroot_roots_directory }}//{{ sbuild_distribution }}"
-  loop:
-    - sid
-    - stretch
+  loop: "{{ sbuild_distributions }}"
   loop_control:
     loop_var: sbuild_distribution
     
