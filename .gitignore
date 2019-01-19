@@ -11,6 +11,9 @@ packer/output-virtualbox-iso/
 /extra/*.tar.gz
 /extra/*.tar.bz2
 /extra/*.tgz
+/extra/*.key
+/extra/logs
+/extra/repo
 
 # vagrant stuff
 /.vagrant
@@ -21,3 +24,5 @@ courtlistener/
 !ansible/roles/courtlistener
 .DS_Store
 
+/ubuntu-xenial-16.04-cloudimg-console.log
+/ubuntu-bionic-18.04-cloudimg-console.log
