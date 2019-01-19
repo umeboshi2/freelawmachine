@@ -1,0 +1,82 @@
+#!/usr/bin/env ansible-playbook
+---
+# Update an existing FreeLawBox system
+- hosts: dev
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  vars:
+    #-----------------------------------------------
+    use_apt_cache: true
+    use_devpi_cache: true
+    use_most_as_pager: true
+    build_deb_packages: true
+    redis_archive: /vagrant/extra/redis-stable.tar.gz
+    solr_archive: /vagrant/extra/solr-4.10.4.tgz
+    tesseract_url: /vagrant/extra/3.04.01.tar.gz
+    leptonica_url: /vagrant/extra/v1.73.tar.gz
+    postgresql_version: 9.6
+    reprepro_base_directory: /vagrant/extra/repo
+    reprepro_user: vagrant
+    reprepro_dist_codename: stretch
+    build_log_dir: /vagrant/extra/logs
+    apt_keys:
+      # debian archive wheezy
+      - 8B48AD6246925553
+      # debian archive jessie
+      - 7638D0442B90D010
+      # ubuntu archive 2012
+      - 3B4FE6ACC0B21F32
+      # ubuntu archive 2018
+      - 871920D1991BC93C
+    sbuild_user: vagrant
+    #reprepro_dist_components: main restricted universe multiverse
+    reprepro_dist_components: main contrib non-free
+    use_insecure_apt_keys: yes
+    insecure_privkey_url: file:///vagrant/extra/gpg-priv.key
+    insecure_pubkey_url: file:///vagrant/extra/gpg-pub.key
+    sbuild_dist_url: http://ftp.us.debian.org/debian
+    sbuild_distribution: stretch
+    sbuild_distributions:
+      #- xenial
+      #- bionic
+      - stretch
+      - sid
+      #- cosmic
+      #- disco
+    source_repos:
+      - repo: deb-src http://ftp.us.debian.org/debian sid main contrib non-free
+        filename: sid-src
+    #-----------------------------------------------
+    installing_courtlistener: yes
+    courtlistener_directory: /var/www/courtlistener
+    cl_pg_password: your-password
+    virtualenv_directory: /home/vagrant/.virtualenvs/courtlistener
+    celery_user: vagrant
+    redis_user: vagrant
+    pg_user: vagrant
+    solr_user: vagrant
+    solr_version: 4.10.4
+    solr_cores:
+      - collection1
+      - audio
+      - opinion
+      - recap
+      - person
+    ocr_user: vagrant
+    cl_user: vagrant
+  roles:
+    - net-cache
+    - ubuntu-trusty
+    - debian-stretch
+    - vagrantbox
+    - reprepro
+    - sbuild
+    #- redis
+    #- celery
+    #- role: postgres
+    #  tags:
+    #    - postgres
+    #- solr
+    #- ocr
+    #- courtlistener
