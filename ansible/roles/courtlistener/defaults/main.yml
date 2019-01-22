@@ -1,7 +1,7 @@
 ---
 # Variables for OCR role
 install_root: "{{ courtlistener_directory }}"
-log_directory: /var/log/courtlistener
+cl_log_directory: /var/log/courtlistener
 juriscraper_log_directory: /var/log/juriscraper
 
 phantomjs_version: 2.1.1

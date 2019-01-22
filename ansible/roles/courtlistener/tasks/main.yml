@@ -38,7 +38,7 @@
     group="{{ cl_user }}"
   with_items:
     - "{{ install_root }}"
-    - "{{ log_directory }}"
+    - "{{ cl_log_directory }}"
     - "{{ juriscraper_log_directory }}"
 
 - name: make sure virtualenv is up to date
