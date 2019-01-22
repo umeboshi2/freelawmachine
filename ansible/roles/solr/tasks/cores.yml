@@ -19,7 +19,7 @@
 # epic sadness! not only can we not use a recursive remote_src copy routine, we
 # need almost all the silly default files from the example collection1 core
 - name: copy all the default config files over to our cores
-  command: cp -R "{{ run_directory }}/example/solr/collection1/conf" "{{ cores_directory }}/{{ item }}/"
+  command: cp -R "{{ solr_run_directory }}/example/solr/collection1/conf" "{{ cores_directory }}/{{ item }}/"
   args:
     creates: "{{ cores_directory }}/{{ item }}/conf"
   with_items:

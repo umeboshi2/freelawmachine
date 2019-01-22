@@ -5,7 +5,7 @@
 # created in the standard location.
 
 SOLR_XMX="{{ solr_xmx }}"
-SOLR_LOG_DIR="{{ log_directory }}"
+SOLR_LOG_DIR="{{ solr_log_directory }}"
 SOLR_HOME="{{ cores_directory }}"
 
 start () {
@@ -15,7 +15,7 @@ start () {
     ulimit -n 10000
 
     # start daemon
-    daemon --chdir='{{ run_directory }}/example' --command "java -Dsolr.install.dir={{ run_directory }} -Dsolr.solr.home=$SOLR_HOME -jar -server -Xmx$SOLR_XMX start.jar" --respawn --output=$SOLR_LOG_DIR/solr.log --name=solr --verbose
+    daemon --chdir='{{ solr_run_directory }}/example' --command "java -Dsolr.install.dir={{ solr_run_directory }} -Dsolr.solr.home=$SOLR_HOME -jar -server -Xmx$SOLR_XMX start.jar" --respawn --output=$SOLR_LOG_DIR/solr.log --name=solr --verbose
 
     RETVAL=$?
     if [ $RETVAL = 0 ]
