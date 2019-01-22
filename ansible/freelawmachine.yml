@@ -23,6 +23,7 @@
     ocr_user: vagrant
     cl_user: vagrant
   roles:
+    - net-cache
     - ubuntu-trusty
     - vagrantbox
     - redis
