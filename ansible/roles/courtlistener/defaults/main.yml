@@ -10,7 +10,7 @@ phantomjs_archive: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{
 
 # github repos
 judge_pics_repo: "git+https://github.com/freelawproject/judge-pics@master"
-courtlistener_repo: "https://github.com/freelawproject/courtlistener@master"
+courtlistener_repo: "https://github.com/freelawproject/courtlistener"
 
 # cloned repo
 # Each time the virtual machine is provisioned, the judge-pics repo
