@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # This script will launch Solr in a mode that will automatically respawn if it
-# crashes. Output will be sent to {{log_directory}}/solr.log. A pid file will be
-# created in the standard location.
+# crashes. Output will be sent to {{solr_log_directory}}/solr.log.
+# A pid file will be created in the standard location.
 
 SOLR_XMX="{{ solr_xmx }}"
 SOLR_LOG_DIR="{{ solr_log_directory }}"
