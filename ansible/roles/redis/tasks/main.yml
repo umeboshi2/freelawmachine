@@ -11,10 +11,10 @@
     owner: "{{ redis_user }}"
     group: "{{redis_user }}"
   with_items:
-    - "{{ install_directory }}"
+    - "{{ redis_install_directory }}"
     - /etc/redis
-    - "{{ run_directory }}"
-    - "{{ log_directory }}"
+    - "{{ redis_run_directory }}"
+    - "{{ redis_log_directory }}"
 
 # TODO: swap over to logic involving getting latest stable by vresion number
 # and validating sha1 hash via
@@ -22,21 +22,21 @@
 - name: download and unpack redis
   unarchive:
     src="{{ redis_archive }}"
-    dest="{{ install_directory }}"
+    dest="{{ redis_install_directory }}"
     remote_src=yes
-    creates="{{ install_directory }}/redis-stable"
+    creates="{{ redis_install_directory }}/redis-stable"
 
 - name: make redis
   command: make
   args:
-    chdir: "{{ install_directory }}/redis-stable"
-    creates: "{{ install_directory }}/redis-stable/src/redis-server"
+    chdir: "{{ redis_install_directory }}/redis-stable"
+    creates: "{{ redis_install_directory }}/redis-stable/src/redis-server"
 
 - name: install redis
   become_user: root
   command: make install
   args:
-    chdir: "{{ install_directory }}/redis-stable"
+    chdir: "{{ redis_install_directory }}/redis-stable"
     creates: /usr/local/bin/redis-server
 
 - name: copy init and config files
@@ -45,9 +45,9 @@
   args:
     creates: "{{ item.dest }}"
   with_items:
-    - src: '{{ install_directory }}/redis-stable/utils/redis_init_script'
+    - src: '{{ redis_install_directory }}/redis-stable/utils/redis_init_script'
       dest: '/etc/init.d/redis_6379'
-    - src: '{{ install_directory }}/redis-stable/redis.conf'
+    - src: '{{ redis_install_directory }}/redis-stable/redis.conf'
       dest: '/etc/redis/6379.conf'
 
 - name: tell redis to include CL overrides
