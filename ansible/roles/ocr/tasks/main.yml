@@ -7,21 +7,20 @@
 - name: install required packages via apt-get
   become_user: root
   apt:
-    pkg="{{ item }}"
-    state=latest
-    update_cache=yes
-    cache_valid_time=3600
-    autoremove=yes
-  with_items:
-    - imagemagick
-    - libpng12-dev
-    - zlib1g-dev
-    - autoconf
-    - automake
-    - libtool
-    - pkg-config
-    - libtiff5-dev
-    - libjpeg8-dev
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - imagemagick
+      - libpng12-dev
+      - zlib1g-dev
+      - autoconf
+      - automake
+      - libtool
+      - pkg-config
+      - libtiff5-dev
+      - libjpeg8-dev
 
 - name: basic check to see if tesseract and leptonica are available
   become_user: "{{ ocr_user }}"
