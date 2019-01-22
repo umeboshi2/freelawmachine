@@ -4,25 +4,17 @@
 #  Celery service role
 #
 ###################################################################
-- name: prepare Celery directories
-  become_user: root
-  command: mkdir -p {{ item }}
-  args:
-    creates: "{{ item }}"
-  with_items:
-    - "{{ celery_run_directory }}"
-    - "{{ celery_log_directory }}"
-
-- name: setup ownership for Celery directories
+- name: prepare and set ownership of  Celery directories
   become_user: root
   file:
-    path="{{ item }}"
-    owner="{{ celery_user }}"
-    group="{{ celery_user }}"
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ celery_user }}"
+    group: "{{ celery_user }}"
   with_items:
     - "{{ celery_run_directory }}"
     - "{{ celery_log_directory }}"
-
+    
 - name: install Celery via pip
   become_user: "{{ celery_user }}"
   pip: name=Celery virtualenv={{ virtualenv_directory }}
