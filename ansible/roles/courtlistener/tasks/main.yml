@@ -32,10 +32,10 @@
 - name: configure CourtListener directories
   become_user: root
   file:
-    state=directory
-    path="{{ item }}"
-    owner="{{ cl_user }}"
-    group="{{ cl_user }}"
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ cl_user }}"
+    group: "{{ cl_user }}"
   with_items:
     - "{{ install_root }}"
     - "{{ cl_log_directory }}"
@@ -44,13 +44,12 @@
 - name: make sure virtualenv is up to date
   become_user: "{{ cl_user }}"
   pip:
-    name="{{ item }}"
-    state=latest
-    virtualenv="{{ virtualenv_directory }}"
-  with_items:
-    - pip
-    - setuptools
-    - wheel
+    state: latest
+    virtualenv: "{{ virtualenv_directory }}"
+    name:
+      - pip
+      - setuptools
+      - wheel
 
 - name: help people out by sourcing the virtualenv by default
   become_user: "{{ cl_user }}"
@@ -62,19 +61,18 @@
 - name: installing Reporters-DB and Seal-Rookery from PyPI
   become_user: "{{ cl_user }}"
   pip:
-    name="{{ item }}"
-    state=latest
-    virtualenv="{{ virtualenv_directory }}"
-  with_items:
-    - reporters-db
-    - seal-rookery
+    state: latest
+    virtualenv: "{{ virtualenv_directory }}"
+    name:
+      - reporters-db
+      - seal-rookery
 
 - name: installing Judge-Pics
   become_user: "{{ cl_user }}"
   pip:
-    name="{{ judge_pics_repo }}"
-    editable=False
-    virtualenv="{{ virtualenv_directory }}"
+    name: "{{ judge_pics_repo }}"
+    editable: False
+    virtualenv: "{{ virtualenv_directory }}"
 
 - name: update seal-rookery
   become_user: "{{ cl_user }}"
