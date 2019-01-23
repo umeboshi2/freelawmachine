@@ -1,6 +1,7 @@
 ---
 # Variables for OCR role
 src_directory: /tmp/ocr
+postinst_remove_ocr_src: yes
 tessdata_prefix: /usr/local/share
 tessdata_directory: "{{ tessdata_prefix }}/tessdata"
 

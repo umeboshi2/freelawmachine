@@ -30,13 +30,20 @@
 
 - debug: var=result verbosity=1
 
+- name: set "ocr installed" facts
+  set_fact:
+    leptonica_dirname: "leptonica-{{ leptonica_version }}"
+    tesseract_output: "tesseract {{ tesseract_version }}"
+
 - name: running leptonica playbook
   include: leptonica.yml
-  when: result.failed is defined or "leptonica-{{ leptonica_version }}" not in result.stderr
+  when: result.failed is defined or leptonica_dirname not in result.stderr
 
 - name: running tesseract playbook
   include: tesseract.yml
-  when: result.failed is defined or "tesseract {{ tesseract_version }}" not in result.stderr
+  when: result.failed is defined or tesseract_output not in result.stderr
 
 - name: clean up any residual ocr installation files
   file: state=absent path="{{ src_directory }}"
+  when: postinst_remove_ocr_src
+  
