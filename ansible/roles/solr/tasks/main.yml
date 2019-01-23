@@ -4,9 +4,9 @@
 #  Solr service role
 #
 ###################################################################
-- name: make sure java is installed (using openjdk8)
+- name: make sure java is installed (using openjdk)
   apt:
-    pkg: openjdk-8-jre-headless
+    pkg: "openjdk-{{ openjdk_major_version }}-jre-headless"
     state: latest
     update_cache: yes
     cache_valid_time: 3600

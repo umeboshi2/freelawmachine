@@ -7,3 +7,4 @@ solr_xmx: 500M
 default_core: collection1
 solr_version: 4.10.4
 solr_archive: "https://archive.apache.org/dist/lucene/solr/{{ solr_version}}/solr-{{ solr_version }}.tgz"
+openjdk_major_version: 7
