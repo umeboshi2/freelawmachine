@@ -23,4 +23,3 @@
 
 - name: configure locale and language settings
   command: "update-locale LANG=en_US.utf8 LANGUAGE=en_US:utf8"
-
