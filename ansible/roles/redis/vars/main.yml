@@ -1,5 +1,0 @@
----
-# Variables for Redis role
-install_directory: /opt/redis
-run_directory: /var/redis/6379
-log_directory: /var/log/redis
