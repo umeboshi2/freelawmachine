@@ -6,18 +6,17 @@
 #################################################################### vagrantbox role
 - name: update Python-related requirements
   apt:
-    pkg={{ item }}
-    state=latest
-    update_cache=yes
-    cache_valid_time=3600
-    autoremove=yes
-  with_items:
-    - zlib1g-dev
-    - python2.7
-    - python-pip
-    - python-virtualenv
-    - python-dev
-    - git
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - zlib1g-dev
+      - python2.7
+      - python-pip
+      - python-virtualenv
+      - python-dev
+      - git
 
 - name: generate locales
   command: locale-gen
