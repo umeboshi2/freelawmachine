@@ -4,28 +4,28 @@
 #  Solr service role
 #
 ###################################################################
-- name: make sure java is installed (using openjdk7)
+- name: make sure java is installed (using openjdk)
   apt:
-    pkg=openjdk-7-jre-headless
-    state=latest
-    update_cache=yes
-    cache_valid_time=3600
+    pkg: "openjdk-{{ openjdk_major_version }}-jre-headless"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: make solr log and cores directories
   become_user: root
   file:
-    state=directory
-    path="{{ item }}"
-    owner="{{ solr_user }}"
-    group="{{ solr_user }}"
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}"
   with_items:
-    - "{{ log_directory }}"
+    - "{{ solr_log_directory }}"
     - "{{ cores_directory }}"
 
 - name: download and unpack solr
   become_user: root
   unarchive:
-    src=https://archive.apache.org/dist/lucene/solr/{{ solr_version}}/solr-{{ solr_version }}.tgz
+    src="{{ solr_archive }}"
     dest="{{ install_root }}"
     remote_src=yes
     owner="{{ solr_user }}"
@@ -36,7 +36,7 @@
   become_user: root
   file:
     state=link
-    path="{{ run_directory }}"
+    path="{{ solr_run_directory }}"
     src="{{ install_root }}/solr-{{ solr_version }}"
     owner="{{ solr_user }}"
     group="{{ solr_user }}"
@@ -62,13 +62,13 @@
 
 - name: remove default collection1 example configs
   become_user: root
-  file: state=absent path="{{ run_directory }}/example/solr/collection1"
+  file: state=absent path="{{ solr_run_directory }}/example/solr/collection1"
 
 - name: symlink our collection1 core to the CL expected location
   become_user: root
   file:
     state=link
-    path="{{ run_directory }}/example/solr/collection1"
+    path="{{ solr_run_directory }}/example/solr/collection1"
     src="{{ cores_directory }}/collection1"
     owner="{{ solr_user }}"
     group="{{ solr_user }}"

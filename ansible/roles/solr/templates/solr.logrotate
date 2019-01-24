@@ -1,4 +1,4 @@
-{{ log_directory }}/*.log {
+{{ solr_log_directory }}/*.log {
   weekly
   rotate 12
   compress
