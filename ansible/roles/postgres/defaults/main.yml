@@ -6,3 +6,4 @@ ipv4_address: "127.0.0.1/32"
 ipv4_method: md5
 ipv6_address: "::1/128"
 ipv6_method: md5
+postgresql_version: 9.3
