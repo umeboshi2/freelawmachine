@@ -1,0 +1,41 @@
+---
+###################################################################
+#
+#  Use apt-proxy and devpi  if enabled
+#
+####################################################################
+
+- name: configure apt-proxy using template file
+  template:
+    src=apt-proxy.conf
+    dest=/etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+  when: use_apt_cache
+
+- name: configure /etc/pip.conf
+  template:
+    src: pip.conf
+    dest: /etc/pip.conf
+  when: use_devpi_cache
+
+- name: create ~/.pip
+  become_user: vagrant
+  file:
+    path: ~/.pip
+    state: directory
+  when: use_devpi_cache
+
+- name: configure pip.conf
+  become_user: vagrant
+  template:
+    src: pip.conf
+    dest: ~/.pip/pip.conf
+  when: use_devpi_cache
+
+- name: configure pydistutils.cfg
+  become_user: vagrant
+  template:
+    src: pydistutils.cfg
+    dest: ~/.pydistutils.cfg
+  when: use_devpi_cache
+  
+  
