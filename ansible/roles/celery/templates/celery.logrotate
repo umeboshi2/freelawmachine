@@ -1,4 +1,4 @@
-{{ log_directory }}/*.log {
+{{ celery_log_directory }}/*.log {
     rotate 36500
     daily
     dateext

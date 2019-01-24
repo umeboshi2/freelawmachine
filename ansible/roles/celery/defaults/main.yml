@@ -1,0 +1,4 @@
+---
+# Variables for Celery role
+celery_run_directory: /var/run/celery
+celery_log_directory: /var/log/celery
