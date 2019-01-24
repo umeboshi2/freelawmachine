@@ -22,19 +22,14 @@
     group="{{ ocr_user }}"
     creates="leptonica-{{ leptonica_version }}"
 
-- name: make leptonica configure executable
-  become_user: "{{ ocr_user }}"
-  file:
-    path="{{ src_directory }}/leptonica-{{ leptonica_version }}/configure"
-    mode=u+rwx
-
 - name: make leptonica
   become_user: "{{ ocr_user }}"
-  command: "{{ item }}"
+  shell: "{{ item }}"
   args:
     chdir: "{{ src_directory }}/leptonica-{{ leptonica_version }}"
-    creates: "{{ src_directory }}/leptonica-{{ leptonica_version }}/prog/.libs"
+    creates: "{{ src_directory }}/leptonica-{{ leptonica_version }}/src/.libs"
   with_items:
+    - sh ./autobuild
     - ./configure
     - make
 
@@ -43,4 +38,4 @@
   command: make install
   args:
     chdir: "{{ src_directory }}/leptonica-{{ leptonica_version }}"
-    creates: /usr/local/bin/leptonica
+    creates: /usr/local/lib/liblept.so
