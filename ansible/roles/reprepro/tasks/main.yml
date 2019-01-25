@@ -1,7 +1,7 @@
 ---
 ###################################################################
 #
-#  Base debian setup
+#  Setup and configure reprepro
 #
 ####################################################################
 
@@ -42,11 +42,11 @@
 
 - name: import get-keys tasks
   import_tasks: get-keys.yml
-  when: use_insecure_apt_keys
+  when: generate_unprotected_keys or import_unprotected_keys
   
 - name: export repo
   become_user: "{{ reprepro_user }}"
   shell: "reprepro -b {{ reprepro_base_directory }} export"
-  when: use_insecure_apt_keys
+  when: generate_unprotected_keys or import_unprotected_keys
   
   

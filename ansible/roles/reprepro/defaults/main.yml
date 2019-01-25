@@ -1,10 +1,20 @@
-use_insecure_apt_keys: no
-insecure_pubkey_url: https://github.com/umeboshi2/paella/raw/master/vagrant/salt/roots/salt/debrepos/keys/paella-insecure-pub.gpg
-insecure_privkey_url: https://github.com/umeboshi2/paella/raw/master/vagrant/salt/roots/salt/debrepos/keys/paella-insecure-sec.gpg
+# If you want to import previously generated keys, set to yes
+# and provide file:// urls to the path.  Also, set
+# generate_unprotected_keys to "no"
+# This role defaults to using unprotected keys
+# (imported or generated).  Code to make good use of
+# gpg-agent and passphrase protected keys is welcome.
+import_unprotected_keys: no
+unprotected_pubkey_url: file:///vagrant/extra/gpg-pub.key
+unprotected_privkey_url: file:///vagrant/extra/gpg-priv.key
+
+# The default is to install haveged and generate unprotected
+# keys.
+generate_unprotected_keys: yes
 
 
 reprepro_base_directory: /srv/debian/repo
-reprepro_user: umeboshi
+reprepro_user: vagrant
 reprepro_dist_codename: stretch
-#reprepro_dist_components: main restricted universe multiverse
 reprepro_dist_components: main contrib non-free
+#reprepro_dist_components: main restricted universe multiverse
