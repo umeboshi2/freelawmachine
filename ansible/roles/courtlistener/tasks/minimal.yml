@@ -2,7 +2,7 @@
 ######### Not cloning CL...
 - debug: msg="Doing minimal CL bootstrapping..."
 
-- name: download CourtListener requirements.txt to boostrap virtualenv
+- name: download CourtListener requirements.txt to bootstrap virtualenv
   get_url:
     url=https://raw.githubusercontent.com/freelawproject/courtlistener/master/requirements.txt
     dest=/tmp/requirements.txt

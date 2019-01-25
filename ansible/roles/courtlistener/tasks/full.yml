@@ -13,7 +13,7 @@
 
 - debug:
     msg: "Assuming you have already cloned CourtListener as there appears to be a repository in {{ install_root }}"
-  when: clone_result|failed
+  when: clone_result is failed
 
 - name: pip install CourtListener requirements
   become_user: "{{ cl_user }}"
