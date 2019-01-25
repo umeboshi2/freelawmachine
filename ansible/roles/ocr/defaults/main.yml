@@ -2,16 +2,16 @@
 # Variables for OCR role
 src_directory: /tmp/ocr
 postinst_remove_ocr_src: yes
-tessdata_prefix: /usr/local/share
+tessdata_prefix: /usr/share/tesseract-ocr/4.00
 tessdata_directory: "{{ tessdata_prefix }}/tessdata"
 
-tesseract_version: "3.04.01"
+tesseract_version: "4.0.0-beta.1"
 tesseract_url: https://github.com/tesseract-ocr/tesseract/archive/{{ tesseract_version }}.tar.gz
 
 tessdata_version: "master"
 tessdata_url: https://github.com/tesseract-ocr/tessdata/raw/{{ tessdata_version }}/
 
-leptonica_version: "1.73"
+leptonica_version: "1.75.3"
 leptonica_url: https://github.com/DanBloomberg/leptonica/archive/v{{ leptonica_version }}.tar.gz
 
 # seems they removed all the cube files? not sure what they were for anyways.
