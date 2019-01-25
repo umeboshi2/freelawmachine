@@ -1,0 +1,87 @@
+---
+###################################################################
+#
+#  Base debian setup
+#
+####################################################################
+
+- name: install schroot packages
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - schroot
+      - debootstrap
+      - git-buildpackage
+      - ccache
+      - libeatmydata1
+      - sbuild
+
+- name: import source repos
+  import_tasks: source-repos.yml
+  
+- name: add sbuild user to sbuild group
+  user:
+    name: "{{ sbuild_user }}"
+    groups: sbuild
+    append: true
+    
+- name: add .sbuildrc for vagrant user
+  become_user: "{{ sbuild_user }}"
+  template:
+    src: sbuildrc
+    dest: ~/.sbuildrc
+
+- name: create logs directory
+  become_user: "{{ sbuild_user }}"
+  file:
+    state: directory
+    path: "{{ build_log_dir }}"
+    
+- name: setup schroot_roots_directory
+  file:
+    path: "{{ schroot_roots_directory }}"
+    state: directory
+
+- name: configure schroot default copyfiles
+  template:
+    src: schroot-default-copyfiles
+    dest: /etc/schroot/default/copyfiles
+  when: use_apt_cache
+
+- name: modify schroot mount script for vagrant
+  template:
+    src: 10mount
+    dest: /etc/schroot/setup.d/10mount
+    
+- name: use apt proxy in sbuild chroot
+  lineinfile:
+    dest: /etc/schroot/sbuild/copyfiles
+    line: /etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+  when: use_apt_cache
+
+- name: add bind mounts to sbuild chroot
+  lineinfile:
+    dest: /etc/schroot/sbuild/fstab
+    line: "{{ item }}"
+  with_items:
+    - /home /home none rw,bind 0 0
+    - /vagrant /vagrant none rw,bind 0 0
+
+- name: import setup chroot tasks
+  include_tasks: setup-sbuild-chroot.yml
+  vars:
+    sbuild_distribution: "{{ sbuild_distribution }}"
+    chroot_dir: "{{ schroot_roots_directory }}//{{ sbuild_distribution }}"
+  loop: "{{ sbuild_distributions }}"
+  loop_control:
+    loop_var: sbuild_distribution
+    
+- name: setup buildstuff script
+  template:
+    src: build-stuff.py
+    dest: /usr/local/bin/build-stuff
+    mode: 0755
+    

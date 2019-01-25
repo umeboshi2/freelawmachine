@@ -1,0 +1,6 @@
+# Files to copy into the chroot from the host system.
+#
+# <source and destination>
+/etc/resolv.conf
+/etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+/etc/sudoers

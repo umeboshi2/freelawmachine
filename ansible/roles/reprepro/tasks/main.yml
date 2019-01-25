@@ -1,0 +1,52 @@
+---
+###################################################################
+#
+#  Setup and configure reprepro
+#
+####################################################################
+
+- name: install reprepro packages
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - reprepro
+      - pgpdump
+
+- name: setup reprepro directories
+  become_user: "{{ reprepro_user }}"
+  file:
+    state: directory
+    path: "{{ reprepro_base_directory }}/{{ item }}"
+  with_items:
+    - conf
+    - dists
+    - incoming
+    - indices
+    - logs
+    - pool
+    - project
+
+- name: setup reprepro config files
+  become_user: "{{ reprepro_user }}"
+  template:
+    src: "{{ item }}"
+    dest: "{{ reprepro_base_directory }}/conf/{{ item }}"
+  with_items:
+    - distributions
+    - incoming
+    - options
+    - uploaders
+
+- name: import get-keys tasks
+  import_tasks: get-keys.yml
+  when: generate_unprotected_keys or import_unprotected_keys
+  
+- name: export repo
+  become_user: "{{ reprepro_user }}"
+  shell: "reprepro -b {{ reprepro_base_directory }} export"
+  when: generate_unprotected_keys or import_unprotected_keys
+  
+  

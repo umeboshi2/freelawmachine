@@ -1,0 +1,107 @@
+---
+###################################################################
+#
+#  Import insecure keys for apt repo
+#
+####################################################################
+- name: get gpg version
+  become_user: vagrant
+  shell: gpg --version | grep ^gpg | awk '{print $3}'
+  register: gpg_version
+
+- name: setup ~/.gnupg directory
+  become_user: vagrant
+  file:
+    path: ~/.gnupg
+    state: directory
+    owner: vagrant
+    group: vagrant
+    mode: 0700
+
+# "For GnuPG to use KBX format, you must have the modern
+# branch which is 2.1 and later."
+# http://gnupg.10057.n7.nabble.com/How-to-join-pubring-kbx-and-pubring-gpg-td52451.html
+
+- name: set gpg_keyring_filename for keybox
+  become_user: vagrant
+  set_fact:
+    gpg_keyring_filename: pubring.kbx
+  when: gpg_version.stdout is version("2.1", ">=")
+
+- name: set gpg_keyring_filename for keyring
+  become_user: vagrant
+  set_fact:
+    gpg_keyring_filename: pubring.gpg
+  when: gpg_version.stdout is version("2.1", "<")
+  
+- name: debug gpg_keyring_filename
+  become_user: vagrant
+  debug:
+    var: gpg_keyring_filename
+
+- name: check for existing keyring (or keybox)
+  become_user: vagrant
+  stat:
+    path: "~/.gnupg/{{ gpg_keyring_filename }}"
+  register: gpg_keyring_present
+
+- name: debug keyring exists
+  debug:
+    var: gpg_keyring_present
+    
+- name: create pubring
+  become_user: vagrant
+  shell: gpg --list-keys
+  args:
+    creates: "~/.gnupg/{{ gpg_keyring_filename }}"
+  register: have_keys
+  when: not gpg_keyring_present.stat.exists
+  ignore_errors: yes
+  
+- name: check if keys present
+  become_user: vagrant
+  shell: gpg --list-keys
+  register: have_keys
+  when: gpg_keyring_present.stat.exists or not have_keys.stdout
+
+- name: debug check keys present
+  debug:
+    msg: "have_keys {{ have_keys.stdout }}"
+
+
+- name: debug have_keys
+  debug:
+    var: have_keys
+
+- name: import unprotected keys
+  become_user: vagrant
+  shell: curl {{ item }} | gpg --import
+  when: not have_keys.stdout and import_unprotected_keys
+  loop:
+    - "{{ insecure_pubkey_url }}"
+    - "{{ insecure_privkey_url }}"
+
+- name: assure haveged installed
+  become_user: root
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg: haveged
+  when: generate_unprotected_keys
+  
+- name: use gpg key template
+  become_user: vagrant
+  template:
+    src: gpg-key-template
+    dest: ~/.gnupg/gpg-key-template
+  when: generate_unprotected_keys
+
+- name: generate reprepro signing key
+  become_user: vagrant
+  shell: gpgconf --kill gpg-agent && gpg --batch --generate-key .gnupg/gpg-key-template && gpgconf --launch gpg-agent
+  args:
+    chdir: ~/
+    creates: ~/.gnupg/secring.gpg
+  when: generate_unprotected_keys and not have_keys.stdout

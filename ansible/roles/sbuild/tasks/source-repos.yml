@@ -1,0 +1,23 @@
+---
+###################################################################
+#
+#  apt source repos
+#
+####################################################################
+
+- name: add apt-keys for sid
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items: "{{ apt_keys }}"
+
+  
+- name: add source repositories to apt sources
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.filename }}"
+    update_cache: true
+  with_items: "{{ source_repos }}"
+
+      

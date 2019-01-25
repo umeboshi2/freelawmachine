@@ -1,0 +1,8 @@
+Origin: Vagrant Machine
+Label: Vagrant Machine
+Codename: {{ reprepro_dist_codename }}
+Architectures: amd64 source
+Components: {{ reprepro_dist_components }}
+UDebComponents: {{ reprepro_dist_components }}
+Description: Vagrant APT Repository
+SignWith: yes

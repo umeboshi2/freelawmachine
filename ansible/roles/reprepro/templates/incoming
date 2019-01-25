@@ -1,0 +1,5 @@
+Name: default
+IncomingDir: incoming
+TempDir: /tmp
+Allow: {{ reprepro_dist_codename }}
+Cleanup: on_deny on_error

@@ -1,0 +1,1 @@
+deb file://{{ reprepro_base_directory }}/ {{ reprepro_dist_codename }} {{ reprepro_dist_components }}
