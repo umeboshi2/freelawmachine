@@ -21,6 +21,7 @@
       - tmux
       - htop
       - iotop
+  when: install_utils_for_vagrantbox
 
 - name: install most pager
   apt:
