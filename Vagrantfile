@@ -18,8 +18,9 @@ fi
 SCRIPT
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "freelawproject/freelawbox64"
-
+  #config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/bionic64"
+  
   # Forwarding for CourtListener
   config.vm.network "forwarded_port", guest: 8000, host: 8000
   config.vm.network "forwarded_port", guest: 8081, host: 8081
@@ -49,8 +50,9 @@ Vagrant.configure(2) do |config|
 
 	# Use Ansible to set up CourtListener
   config.vm.provision :ansible_local do |ansible|
+    ansible.compatibility_mode = "2.0"
     ansible.provisioning_path = "/vagrant/ansible"
-    ansible.playbook = "freelawbox.yml"
+    ansible.playbook = "freelawmachine.yml"
     ansible.limit = "all"
     ansible.inventory_path = "/vagrant/ansible/config/hosts_local"
   end

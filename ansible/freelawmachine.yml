@@ -6,6 +6,23 @@
   become: yes
   become_method: sudo
   vars:
+    #-----------------------------------------------
+    use_apt_cache: true
+    use_devpi_cache: true
+    use_most_as_pager: true
+    build_deb_packages: true
+    redis_archive: /vagrant/extra/redis-stable.tar.gz
+    solr_archive: /vagrant/extra/solr-4.10.4.tgz
+    postinst_remove_ocr_src: no
+    tesseract_url: /vagrant/extra/3.04.01.tar.gz
+    leptonica_url: /vagrant/extra/v1.73.tar.gz
+    judge_pics_repo: "git+file:///vagrant/extra/judge-pics.git@master"
+    courtlistener_repo: "/vagrant/extra/courtlistener.git"
+    postgresql_version: 9.3
+    openjdk_major_version: 7
+    install_utils_for_vagrantbox: yes
+    #-----------------------------------------------
+    installing_courtlistener: yes
     courtlistener_directory: /var/www/courtlistener
     cl_pg_password: your-password
     virtualenv_directory: /home/vagrant/.virtualenvs/courtlistener
@@ -23,15 +40,16 @@
     ocr_user: vagrant
     cl_user: vagrant
   roles:
+    - net-cache
     - ubuntu-trusty
     - vagrantbox
-    - redis
-    - celery
-    - role: postgres
-      tags:
-        - postgres
-    - solr
+    #- redis
+    #- celery
+    #- role: postgres
+    #  tags:
+    #    - postgres
+    #- solr
     - ocr
-    - role: courtlistener
-      tags:
-        - courtlistener
+    #- role: courtlistener
+    #  tags:
+    #    - courtlistener
