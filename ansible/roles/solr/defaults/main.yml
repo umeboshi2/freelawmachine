@@ -1,6 +1,6 @@
 ---
-log_directory: /var/log/solr
-run_directory: /usr/local/solr
+solr_log_directory: /var/log/solr
+solr_run_directory: /usr/local/solr
 install_root: /opt
 cores_directory: "{{ install_root }}/solr-cores"
 solr_xmx: 500M
