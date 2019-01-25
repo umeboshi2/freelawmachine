@@ -1,7 +1,7 @@
 ---
 # Variables for OCR role
 install_root: "{{ courtlistener_directory }}"
-log_directory: /var/log/courtlistener
+cl_log_directory: /var/log/courtlistener
 juriscraper_log_directory: /var/log/juriscraper
 
 phantomjs_version: 2.1.1
@@ -12,10 +12,10 @@ phantomjs_archive: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{
 judge_pics_repo: "git+https://github.com/freelawproject/judge-pics@master"
 courtlistener_repo: "https://github.com/freelawproject/courtlistener"
 
-# cloned repos
-# Each time the virtual machine is provisioned, both the judge-pics
-# and the courtlistener repositories are downloaded from github.
-# Alternatively, the repos can be cloned into the freelawmachine
+# cloned repo
+# Each time the virtual machine is provisioned, the judge-pics repo
+# is downloaded from github and built into a python package.
+# Alternatively, the repo can be cloned into the freelawmachine
 # working directory to reduce internet usage when provisioning.
 # If this is preferred, comment the above variable, and uncomment
 # the variable below.
