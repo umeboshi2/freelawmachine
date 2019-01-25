@@ -50,10 +50,12 @@ Vagrant.configure(2) do |config|
 
 	# Use Ansible to set up CourtListener
   config.vm.provision :ansible_local do |ansible|
+    ansible.compatibility_mode = "2.0"
     ansible.provisioning_path = "/vagrant/ansible"
     ansible.playbook = "stretchbox.yml"
     ansible.limit = "all"
     ansible.inventory_path = "/vagrant/ansible/config/hosts_local"
+    ansible.verbose = "v"
   end
 end
 
