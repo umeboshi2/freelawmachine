@@ -68,7 +68,7 @@
       
     # import local apt key into chroot
     - name: import local apt key to sbuild chroot
-      become_user: "{{ sbuild_user }}"
+      become_user: "{{ reprepro_user }}"
       shell: gpg --export | sudo schroot -u root -c source:{{ sbuild_distribution}}-amd64-sbuild apt-key add -
     # update chroot
     - name: update sbuild chroot

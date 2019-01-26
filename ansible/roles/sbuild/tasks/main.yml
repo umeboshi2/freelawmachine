@@ -5,6 +5,21 @@
 #
 ####################################################################
 
+# since we are using ansible-local and must initially
+# login as "vagrant," that user cannot obtain the sbuild group
+# permissions on the initial playbook run.  Therefore, another
+# user needs to be created to build packages on the initial run
+# of the playbook.
+# https://stackoverflow.com/a/44753457/1869821
+# Answer discusses meta: reset_connection which will
+# not work in this peculiar situation.
+- name: check that sbuild build user is not vagrant
+  debug:
+    msg: "Build user is {{ sbuild_user }}"
+  failed_when: sbuild_user ==  'vagrant'
+
+# Install the packages first, so that the sbuild group will be
+# properly created.
 - name: install schroot packages
   apt:
     state: latest
@@ -19,20 +34,47 @@
       - libeatmydata1
       - sbuild
 
-- name: import source repos
-  import_tasks: source-repos.yml
-  
-- name: add sbuild user to sbuild group
+# By default, debian/ubuntu creates a group named after the user
+# for each added user.
+- name: setup build user's main group
+  group:
+    name: "{{ sbuild_user }}"
+    state: present
+    
+- name: setup sbuild user
   user:
     name: "{{ sbuild_user }}"
+    state: present
+    group: sbuild
+    append: yes
+    home: "/home/{{ sbuild_user }}"
+    comment: "{{ sbuild_user_gecos | default('Vagrant Builder') }}"
+    shell: /bin/bash
+    groups:
+      - "{{ sbuild_user }}"
+      - sbuild
+    
+- name: add sbuild user and vagrant to sbuild group
+  user:
+    name: "{{ item }}"
     groups: sbuild
     append: true
+  with_items:
+    - "{{ sbuild_user }}"
+    - vagrant
     
-- name: add .sbuildrc for vagrant user
-  become_user: "{{ sbuild_user }}"
+- name: add .sbuildrc for sbuild users
+  #become_user: "{{ sbuild_user }}"
+  become_user: "{{ item }}"
   template:
     src: sbuildrc
     dest: ~/.sbuildrc
+  with_items:
+    - "{{ sbuild_user }}"
+    - vagrant
+
+- name: import source repos
+  import_tasks: source-repos.yml
 
 - name: create logs directory
   become_user: "{{ sbuild_user }}"
@@ -78,7 +120,21 @@
   loop: "{{ sbuild_distributions }}"
   loop_control:
     loop_var: sbuild_distribution
-    
+
+# FIXME: it would probably be better to register
+# key id of generated/imported key and use it instead of this slop
+- name: import local apt key
+  become_user: "{{ reprepro_user }}"
+  shell: gpg --export | sudo apt-key add -
+  
+- name: use local apt repository
+  apt_repository:
+    repo: deb file://{{ reprepro_base_directory }} {{ reprepro_dist_codename }} {{ reprepro_dist_components }}
+    state: present
+    filename: local.list
+    update_cache: true
+      
+  
 - name: setup buildstuff script
   template:
     src: build-stuff.py
