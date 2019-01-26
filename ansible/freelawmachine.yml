@@ -18,9 +18,36 @@
     leptonica_url: /vagrant/extra/v1.73.tar.gz
     judge_pics_repo: "git+file:///vagrant/extra/judge-pics.git@master"
     courtlistener_repo: "/vagrant/extra/courtlistener.git"
-    postgresql_version: 9.3
     openjdk_major_version: 7
     install_utils_for_vagrantbox: yes
+    postgresql_version: 9.6
+    reprepro_base_directory: /vagrant/extra/repo
+    reprepro_user: vagrant
+    reprepro_dist_codename: bionic
+    reprepro_dist_components: main restricted universe multiverse
+    #reprepro_dist_components: main contrib non-free
+    apt_keys:
+      # debian archive wheezy
+      - 8B48AD6246925553
+      # debian archive jessie
+      - 7638D0442B90D010
+      # ubuntu archive 2012
+      - 3B4FE6ACC0B21F32
+      # ubuntu archive 2018
+      - 871920D1991BC93C
+    #sbuild_user: vagrant
+    sbuild_user: builder
+    sbuild_user_homedir: /home/{{ sbuild_user }}
+    build_log_dir: "{{ sbuild_user_homedir}}/build-logs"
+    sbuild_dist_url: http://archive.ubuntu.com/ubuntu
+    sbuild_distribution: bionic
+    sbuild_distributions:
+      - bionic
+      #- cosmic
+      #- disco
+    source_repos:
+      - repo: deb-src http://ftp.us.debian.org/debian sid main contrib non-free
+        filename: sid-src
     #-----------------------------------------------
     installing_courtlistener: yes
     courtlistener_directory: /var/www/courtlistener
@@ -43,13 +70,15 @@
     - net-cache
     - ubuntu-trusty
     - vagrantbox
+    - reprepro
+    - sbuild
     #- redis
-    #- celery
+    - celery
     #- role: postgres
     #  tags:
     #    - postgres
     #- solr
-    - ocr
+    #- ocr
     #- role: courtlistener
     #  tags:
     #    - courtlistener
