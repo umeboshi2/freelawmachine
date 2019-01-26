@@ -14,18 +14,102 @@
   with_items:
     - "{{ celery_run_directory }}"
     - "{{ celery_log_directory }}"
+  when: false
+
+# TODO: investigate why python-celery doesn't depend on "common" package
+- name: assure celery installed
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+    pkg:
+      - python-celery
+      - python-celery-common
+
+- name: get package facts
+  package_facts:
+    manager: apt
+
+- name: check celery version
+  set_fact:
+    celery_installed_version:
+      "{{ ansible_facts.packages['python-celery'][0].version }}"
+
+- name: debug celery_installed_version
+  debug:
+    var: celery_installed_version
+    
+##################################################################
+# FIXME learn how to do a nested loop
+# Probably better to make a two-task rolw called "build-deploy-pkg"
+# that can be run with a "package" variable.  In this role, I could
+# include_tasks similar to how setup-sbuild-chroot tasks are called
+# in sbuild main task, but since this would possibly be used for
+# multiple roles, making a small single purpose role that can be
+# filled with the appropriate vars seems more effective.  In this
+# set of tasks, the same when condition can be used in the include_tasks
+# that is looped over a list of packages.
+# link: https://stackoverflow.com/questions/30192490/include-tasks-from-another-role-in-ansible-playbook
+- name: build kombu if needed
+  become_user: "{{ sbuild_user }}"
+  shell: sbuild kombu
+  args:
+    chdir: ~/
+  when: celery_installed_version is version('4.2', '<')
+
+- name: add kombu to apt repo
+  become_user: "{{ reprepro_user }}"
+  shell: "reprepro -b {{ reprepro_base_directory }} include {{ reprepro_dist_codename }} kombu_*.changes"
+  args:
+    chdir: "/home/{{ sbuild_user }}"
+  when: celery_installed_version is version('4.2', '<')
+
+- name: build celery if needed
+  become_user: "{{ sbuild_user }}"
+  shell: sbuild celery
+  args:
+    chdir: ~/
+  when: celery_installed_version is version('4.2', '<')
+
+- name: add celery to apt repo
+  become_user: "{{ reprepro_user }}"
+  shell: "reprepro -b {{ reprepro_base_directory }} include {{ reprepro_dist_codename }} celery_*.changes"
+  args:
+    chdir: "/home/{{ sbuild_user }}"
+  when: celery_installed_version is version('4.2', '<')
+##################################################################
+  
+- name: assure latest celery installed
+  apt:
+    state: latest
+    update_cache: yes
+    # make sure to perform the apt-get update before
+    # performing install, or ansible may think that
+    # version is actually "latest"
+    cache_valid_time: 0
+    autoremove: yes
+    pkg:
+      - python-celery
+      - python-celery-common
+  when: celery_installed_version is version('4.2', '<')
+
+    
     
 - name: install Celery via pip
   become_user: "{{ celery_user }}"
   pip: name=Celery virtualenv={{ virtualenv_directory }}
-
+  when: false
+  
 - name: install Celery daemon config
   become_user: root
   template: src=celeryd.sysv dest=/etc/init.d/celeryd mode=0755
+  when: false
 
 - name: add logrotate settings
   become_user: root
   template: src=celery.logrotate dest=/etc/logrotate.d/celery
+  when: false
 
 - name: start Celery service
   become_user: root
@@ -33,3 +117,4 @@
     name: celeryd
     state: started
     enabled: yes
+  when: false
