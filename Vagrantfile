@@ -9,6 +9,14 @@ if [ ! -d /vagrant/ansible ]; then
 fi
 SCRIPT
 
+$proxy_script = <<SCRIPT
+aptfile=/vagrant/extra/apt-proxy.conf
+if [ ! -r /etc/apt/apt.conf.d/000apt-cacher-ng-proxy ]; then
+  sudo cp $aptfile /etc/apt/apt.conf.d/000apt-cacher-ng-proxy
+  echo "Created /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+fi
+SCRIPT
+
 Vagrant.configure(2) do |config|
   config.vm.box = "freelawproject/freelawbox64"
 
@@ -33,6 +41,11 @@ Vagrant.configure(2) do |config|
 
   # pull down the Asible playbooks
   config.vm.provision "shell", inline: $git_script
+  
+  # enable proxies before installing ansible
+  # If you have apt-cacher-ng running on your network
+  # uncomment the line below and adjust ./extra/apt-proxy.conf
+  #config.vm.provision "shell", inline: $proxy_script
 
 	# Use Ansible to set up CourtListener
   config.vm.provision :ansible_local do |ansible|

@@ -1,0 +1,8 @@
+---
+# Variables for net-cache role
+use_apt_cache: false
+use_devpi_cache: false
+aptproxy: http://10.0.2.2:3142/
+devpi_host: 10.0.2.2
+devpi_port: 4040
+devpi_base_url: http://{{ devpi_host }}:{{ devpi_port }}
